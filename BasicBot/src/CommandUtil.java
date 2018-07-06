@@ -57,7 +57,7 @@ public class CommandUtil {
 		{
 			return;
 		}
-
+		
 		// if nothing prevents it, attack the target
 		attacker.attack(targetPosition);
 	}

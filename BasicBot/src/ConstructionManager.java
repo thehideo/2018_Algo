@@ -381,7 +381,6 @@ public class ConstructionManager {
 	public void checkForDeadTerranBuilders()
 	{
 		if (MyBotModule.Broodwar.self().getRace() == Race.Terran) {
-
 			if (MyBotModule.Broodwar.self().completedUnitCount(UnitType.Terran_SCV) <= 0) return;
 				
 			// for each of our buildings under construction

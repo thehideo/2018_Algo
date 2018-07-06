@@ -425,15 +425,15 @@ public class MyBotModule extends DefaultBWListener {
 	private void initializeLostConditionVariables(){
 		
 		timerLimits.add(55);
-		timerLimitsBound.add(320);
+		timerLimitsBound.add(Integer.MAX_VALUE);
 		timerLimitsExceeded.add(0);
 
 		timerLimits.add(1000);
-		timerLimitsBound.add(10);
+		timerLimitsBound.add(Integer.MAX_VALUE);
 		timerLimitsExceeded.add(0);
 
 		timerLimits.add(10000);
-		timerLimitsBound.add(2);
+		timerLimitsBound.add(Integer.MAX_VALUE);
 		timerLimitsExceeded.add(0);
 	}
 	
