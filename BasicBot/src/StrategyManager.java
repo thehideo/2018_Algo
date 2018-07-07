@@ -83,12 +83,9 @@ public class StrategyManager {
 		}
 
 		int frame = MyBotModule.Broodwar.getFrameCount() % 24;
-		if (frame == 0) {
-			MyStrategyManager.getInstance().actionUpdateSelfUnitMap();
-		} else if (frame == 1) {
-			if (MyVariable.isInitialBuildOrderFinished) {
-				MyStrategyManager.getInstance().actionCreateUnit();
-			}
+
+		if (frame == 1) {
+			MyStrategyManager.getInstance().actionCreateUnit();
 		} else if (frame == 2) {
 			MyStrategyManager.getInstance().actionCheckUnitUpdate();
 		} else if (frame == 3) {
@@ -98,24 +95,23 @@ public class StrategyManager {
 		} else if (frame == 5) {
 			MyStrategyManager.getInstance().actionCheckBunker();
 		} else if (frame == 6) {
-			if (MyVariable.isInitialBuildOrderFinished == true) {
-				MyStrategyManager.getInstance().actionCheckBuilding();
-			}
+			MyStrategyManager.getInstance().actionCheckBuilding();
 		} else if (frame == 7) {
 			MyStrategyManager.getInstance().actionControlScanUnit();
 		} else if (frame == 8) {
-			if (MyVariable.isFullScaleAttackStarted == true) {
-				MyStrategyManager.getInstance().actionCheckOtherPoint();
-			}
+			MyStrategyManager.getInstance().actionCheckOtherPoint();
 		} else if (frame == 9) {
 			MyStrategyManager.getInstance().actionAttackEnemyUnitAroundMyStartPoint();
 		} else if (frame == 10) {
-			executeSupplyManagement();
-		} else if (frame == 11) {
 			MyStrategyManager.getInstance().actionSetUnitCountRatio();
+		} else if (frame == 11) {
+			MyStrategyManager.getInstance().actionUpdateSelfUnitMap();
 		} else if (frame == 12) {
-		} else if (frame == 13) {
 			executeCombat();
+		} else if (frame == 13) {
+			executeSupplyManagement();
+		} else if (frame == 14) {
+
 		} else {
 			executeWorkerTraining();
 		}

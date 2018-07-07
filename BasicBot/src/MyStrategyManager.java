@@ -59,13 +59,16 @@ public class MyStrategyManager {
 		}
 
 		// 공격 유닛 비율
-		MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
-		MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
+		MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 10);
+		MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 2);
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 	}
 
 	// 빌딩 지어야할 것을 관리
 	void actionCheckBuilding() {
+		if (MyVariable.isInitialBuildOrderFinished == false) {
+			return;
+		}
 		if (MyVariable.needTerran_Science_Vessel) {
 			if (checkNeedToBuild(UnitType.Terran_Factory, 1))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
@@ -80,16 +83,33 @@ public class MyStrategyManager {
 			if (checkNeedToBuild(UnitType.Terran_Science_Vessel, 1))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
-		if (MyVariable.findMutal) {
-			if (checkNeedToBuild(UnitType.Terran_Factory, 2))
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-		}
+
+		// 기본으로 Factory 2개는 생산한다.
+		if (checkNeedToBuild(UnitType.Terran_Factory, 2))
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		if (checkNeedToBuild(UnitType.Terran_Machine_Shop, 2))
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		/*
+		 * if (checkNeedTechType(TechType.Spider_Mines))
+		 * BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.
+		 * Spider_Mines, false);
+		 */
+		if (checkNeedTechType(TechType.Tank_Siege_Mode))
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
 	}
 
 	// 건설된 것이 하나도 없는지 확인
 	boolean checkNeedToBuild(UnitType unitType, int cnt) {
 		boolean result = false;
 		if (MyBotModule.Broodwar.self().allUnitCount(unitType) < cnt && BuildManager.Instance().getBuildQueue().getItemCount(unitType) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(unitType, null) == 0) {
+			result = true;
+		}
+		return result;
+	}
+
+	boolean checkNeedTechType(TechType techType) {
+		boolean result = false;
+		if (!MyBotModule.Broodwar.self().hasResearched(techType) && MyBotModule.Broodwar.self().isResearchAvailable(techType) && !MyBotModule.Broodwar.self().isResearching(techType) && BuildManager.Instance().getBuildQueue().getItemCount(techType) == 0) {
 			result = true;
 		}
 		return result;
@@ -133,6 +153,10 @@ public class MyStrategyManager {
 
 	// 할일이 없는 유닛의 경우에 다음 포지션으로 이동
 	public void actionCheckOtherPoint() {
+		if (MyVariable.isFullScaleAttackStarted == false) {
+			return;
+		}
+
 		for (Unit unit : MyVariable.attackUnit) {
 			// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
 			if (MyVariable.enemyBuildingUnit.size() == 0) {
@@ -169,6 +193,10 @@ public class MyStrategyManager {
 
 	// 유닛 생산
 	void actionCreateUnit() {
+		if (MyVariable.isInitialBuildOrderFinished == false) {
+			return;
+		}
+
 		if (MyBotModule.Broodwar.self().minerals() >= 200) {
 
 			HashMap<UnitType, Double> tmp = new HashMap<UnitType, Double>();
