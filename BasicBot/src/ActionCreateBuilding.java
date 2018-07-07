@@ -23,6 +23,12 @@ public class ActionCreateBuilding implements ActionInterface {
 			if (checkNeedToBuild(UnitType.Terran_Science_Vessel, 1))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
+
+		if (MyVariable.findLucker || MyVariable.findMutal) {
+			if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2))
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		}
+
 		if (MyVariable.isFullScaleAttackStarted) {
 			if (checkNeedToBuild(UnitType.Terran_Factory, 2))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);

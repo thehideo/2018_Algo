@@ -6,6 +6,8 @@ import bwapi.UnitType;
 
 public class ActionUpdateSelfUnitMap implements ActionInterface {
 
+	int refreshIndex = 0;
+
 	@Override
 	public void action() {
 		MyVariable.clearSelfUnit();
@@ -34,20 +36,23 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 
 					MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
 
-					int x = unit.getTilePosition().getX();
-					int y = unit.getTilePosition().getY();
+					// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
+					refreshIndex++;
+					if (refreshIndex % 50 == 0) {
+						int x = unit.getTilePosition().getX();
+						int y = unit.getTilePosition().getY();
 
-					MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 1));
-					MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 0));
-					MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
+						MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 1));
+						MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 0));
+						MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
 
-					MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y - 1));
-					MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y + 1));
+						MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y - 1));
+						MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y + 1));
 
-					MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 1));
-					MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));
-					MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y + 1));
-
+						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 1));
+						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));
+						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y + 1));
+					}
 					MyVariable.mapSelfAttackUnit.get(unit.getType()).add(unit);
 				}
 			}

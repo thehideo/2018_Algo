@@ -21,6 +21,9 @@ public class MyVariable {
 
 	// 뮤탈리스트를 찾았는지
 	public static boolean findMutal = false;
+	
+	// 뮤탈리스트를 찾았는지
+	public static boolean findLucker = false;
 
 	/////////////////////////////////////////////
 	// 내 유닛 정보
