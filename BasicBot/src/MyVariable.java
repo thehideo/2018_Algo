@@ -18,10 +18,7 @@ public class MyVariable {
 
 	// 싸이언스 베슬이 필요한지
 	public static boolean needTerran_Science_Vessel = false;
-	// 싸이언스 베슬이 있는지
-	public static boolean haveTerran_Science_Vessel = false;
-	// 러커를 찾았는지
-	public static boolean findLucker = false;
+
 	// 뮤탈리스트를 찾았는지
 	public static boolean findMutal = false;
 

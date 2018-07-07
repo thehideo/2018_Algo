@@ -1,7 +1,8 @@
 import bwapi.TechType;
 import bwapi.UnitType;
+import bwapi.UpgradeType;
 
-public class ActionCheckBuilding implements ActionInterface {
+public class ActionCreateBuilding implements ActionInterface {
 
 	@Override
 	public void action() {
@@ -25,17 +26,46 @@ public class ActionCheckBuilding implements ActionInterface {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
-		// 기본으로 Factory 2개는 건설함, 시즈모드 개발
-		if (checkNeedToBuild(UnitType.Terran_Factory, 2))
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-		if (checkNeedToBuild(UnitType.Terran_Machine_Shop, 2))
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-		if (checkNeedToBuild(UnitType.Terran_Armory, 1))
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-		if (checkNeedTechType(TechType.Tank_Siege_Mode))
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+		if (checkNeedToBuild(UnitType.Terran_Barracks, 3)) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Barracks, false);
+		}
+
+		// Terran_Refinery 건설
+		if (checkNeedToBuild(UnitType.Terran_Refinery, MyUtil.getCommandCenterCount())) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, false);
+		}
+
+		// Academy 건설
+		if (checkNeedToBuild(UnitType.Terran_Academy, 1)) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Academy, false);
+		}
+
+		// Comsat Station 건설
+		if (checkNeedToBuild(UnitType.Terran_Comsat_Station, MyUtil.getCommandCenterCount())) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Comsat_Station, false);
+		}
+
+		// Stim Pack 업그레이드
+		if (checkNeedTechType(TechType.Stim_Packs)) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
+		}
+
+		// Engineering Bay 건설
+		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1)) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Engineering_Bay, false);
+		}
 
 		if (MyVariable.isFullScaleAttackStarted) {
+			// 기본으로 Factory 2개는 건설함, 시즈모드 개발
+			if (checkNeedToBuild(UnitType.Terran_Factory, 2))
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			if (checkNeedToBuild(UnitType.Terran_Machine_Shop, 2))
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			if (checkNeedToBuild(UnitType.Terran_Armory, 1))
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			if (checkNeedTechType(TechType.Tank_Siege_Mode))
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+
 			if (checkNeedToBuild(UnitType.Terran_Command_Center, 2)) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Command_Center, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
 			}
@@ -53,7 +83,7 @@ public class ActionCheckBuilding implements ActionInterface {
 
 	boolean checkNeedTechType(TechType techType) {
 		boolean result = false;
-		if (!MyBotModule.Broodwar.self().hasResearched(techType) && MyBotModule.Broodwar.self().isResearchAvailable(techType) && !MyBotModule.Broodwar.self().isResearching(techType) && BuildManager.Instance().getBuildQueue().getItemCount(techType) == 0) {
+		if (MyBotModule.Broodwar.self().isResearchAvailable(techType) && !MyBotModule.Broodwar.self().isResearching(techType) && !MyBotModule.Broodwar.self().hasResearched(techType) && BuildManager.Instance().getBuildQueue().getItemCount(techType) == 0) {
 			result = true;
 		}
 		return result;

@@ -64,9 +64,6 @@ public class ActionSupplyManagement implements ActionInterface {
 					onBuildingSupplyCount += ConstructionManager.Instance().getConstructionQueueItemCount(InformationManager.Instance().getBasicSupplyProviderUnitType(), null) * InformationManager.Instance().getBasicSupplyProviderUnitType().supplyProvided();
 				}
 
-				// 주석처리
-				// System.out.println("currentSupplyShortage : " + currentSupplyShortage + "
-				// onBuildingSupplyCount : " + onBuildingSupplyCount);
 
 				if (currentSupplyShortage > onBuildingSupplyCount) {
 
@@ -79,9 +76,6 @@ public class ActionSupplyManagement implements ActionInterface {
 						}
 					}
 					if (isToEnqueue) {
-						// 주석처리
-						// System.out.println("enqueue supply provider "
-						// + InformationManager.Instance().getBasicSupplyProviderUnitType());
 						BuildManager.Instance().buildQueue.queueAsHighestPriority(new MetaType(InformationManager.Instance().getBasicSupplyProviderUnitType()), true);
 					}
 				}

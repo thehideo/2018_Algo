@@ -171,11 +171,15 @@ public class WorkerManager {
 		}
 
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
+			int fixCount = 0;
 			// 건물의 경우 아무리 멀어도 무조건 수리. 일꾼 한명이 순서대로 수리
 			if (unit.getType().isBuilding() && unit.isCompleted() == true && unit.getHitPoints() < unit.getType().maxHitPoints()) {
 				Unit repairWorker = chooseRepairWorkerClosestTo(unit.getPosition(), 0);
 				setRepairWorker(repairWorker, unit);
-				break;
+				fixCount++;
+				if (fixCount >= 2) {
+					break;
+				}
 			}
 			// 메카닉 유닛 (SCV, 시즈탱크, 레이쓰 등)의 경우 근처에 SCV가 있는 경우 수리. 일꾼 한명이 순서대로 수리
 			else if (unit.getType().isMechanical() && unit.isCompleted() == true && unit.getHitPoints() < unit.getType().maxHitPoints()) {

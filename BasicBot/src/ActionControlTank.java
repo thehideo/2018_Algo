@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import bwapi.Unit;
 import bwapi.UnitType;
 
-public class ActionTank implements ActionInterface {
+public class ActionControlTank implements ActionInterface {
 
 	public static final int SIEGE_MODE_MIN_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().minRange(); // 64
 	public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384

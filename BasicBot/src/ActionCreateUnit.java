@@ -8,7 +8,7 @@ public class ActionCreateUnit implements ActionInterface {
 
 	// 설정된 비율에 따라서 비율이 낮은것을 생산
 	public void action() {
-		if (MyVariable.isInitialBuildOrderFinished == false) {
+		if (MyVariable.isInitialBuildOrderFinished == false || MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			return;
 		}
 

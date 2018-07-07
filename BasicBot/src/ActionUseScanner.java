@@ -33,7 +33,6 @@ public class ActionUseScanner implements ActionInterface {
 
 	// 스캐너 사용
 	int beforeTime = 0;
-
 	void useScanner_Sweep(Unit unit) {
 		if (MyVariable.mapSelfUnit.containsKey(UnitType.Terran_Comsat_Station)) {
 			ArrayList<Unit> units = MyVariable.mapSelfUnit.get(UnitType.Terran_Comsat_Station);

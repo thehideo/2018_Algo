@@ -45,6 +45,10 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 			}
 		}
 
+		if (MyVariable.mapEnemyUnit.get(UnitType.Zerg_Mutalisk) != null) {
+			MyVariable.findMutal = true;
+		}
+
 	}
 
 }

@@ -17,3 +17,12 @@
 /ActionSupplyManagement.class
 /ActionUseScanner.class
 /ActionTank.class
+/ActionDefenceUnit.class
+/ActionControlTank.class
+/ActionControlMarin.class
+/ActionControlDefenceUnit.class
+/ActionControlAttackUnit.class
+/ActionEventAttackedByEnemyUnitInSelfRegion.class
+/ActionCreateBuilding.class
+/ActionUpgrade.class
+/ActionSetUnitRatio.class

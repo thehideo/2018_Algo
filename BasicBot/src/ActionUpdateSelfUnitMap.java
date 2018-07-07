@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -8,7 +9,6 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 	@Override
 	public void action() {
 		MyVariable.clearSelfUnit();
-
 
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
 			if (unit.isLoaded() == true) {
@@ -27,10 +27,24 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 					MyVariable.scanUnit.add(unit);
 				} else if (unit.canAttack() && unit.getType() != UnitType.Terran_SCV) {
 					MyVariable.attackUnit.add(unit);
+
 					MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
 
-					MyVariable.mapSelfAttackUnit.get(unit.getType()).add(unit);
+					int x = unit.getTilePosition().getX();
+					int y = unit.getTilePosition().getY();
 
+					MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 1));
+					MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 0));
+					MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
+
+					MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y - 1));
+					MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
+
+					MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 1));
+					MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));
+					MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y + 1));
+
+					MyVariable.mapSelfAttackUnit.get(unit.getType()).add(unit);
 				}
 			}
 
@@ -39,13 +53,6 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 				MyVariable.attackedUnit.add(unit);
 			}
 		}
-
-		if (MyVariable.scanUnit.size() > 0) {
-			MyVariable.haveTerran_Science_Vessel = true;
-		} else {
-			MyVariable.haveTerran_Science_Vessel = false;
-		}
-
 	}
 
 	// 방어 유닛 구성
