@@ -24,14 +24,6 @@ public class StrategyManager {
 
 	private CommandUtil commandUtil = new CommandUtil();
 
-	private boolean isFullScaleAttackStarted;
-
-	public boolean isFullScaleAttackStarted() {
-		return isFullScaleAttackStarted;
-	}
-
-	private boolean isInitialBuildOrderFinished;
-
 	// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
 	// 경기 결과 파일 Save / Load 및 로그파일 Save 예제 추가를 위한 변수 및 메소드 선언
 
@@ -56,11 +48,6 @@ public class StrategyManager {
 	/// static singleton 객체를 리턴합니다
 	public static StrategyManager Instance() {
 		return instance;
-	}
-
-	public StrategyManager() {
-		isFullScaleAttackStarted = false;
-		isInitialBuildOrderFinished = false;
 	}
 
 	/// 경기가 시작될 때 일회적으로 전략 초기 세팅 관련 로직을 실행합니다
@@ -92,14 +79,14 @@ public class StrategyManager {
 	/// 경기 진행 중 매 프레임마다 경기 전략 관련 로직을 실행합니다
 	public void update() {
 		if (BuildManager.Instance().buildQueue.isEmpty()) {
-			isInitialBuildOrderFinished = true;
+			MyVariable.isInitialBuildOrderFinished = true;
 		}
 
 		int frame = MyBotModule.Broodwar.getFrameCount() % 24;
 		if (frame == 0) {
 			MyStrategyManager.getInstance().actionUpdateSelfUnitMap();
 		} else if (frame == 1) {
-			if (isInitialBuildOrderFinished) {
+			if (MyVariable.isInitialBuildOrderFinished) {
 				MyStrategyManager.getInstance().actionCreateUnit();
 			}
 		} else if (frame == 2) {
@@ -111,13 +98,13 @@ public class StrategyManager {
 		} else if (frame == 5) {
 			MyStrategyManager.getInstance().actionCheckBunker();
 		} else if (frame == 6) {
-			if (isInitialBuildOrderFinished == true) {
+			if (MyVariable.isInitialBuildOrderFinished == true) {
 				MyStrategyManager.getInstance().actionCheckBuilding();
 			}
 		} else if (frame == 7) {
 			MyStrategyManager.getInstance().actionControlScanUnit();
 		} else if (frame == 8) {
-			if (isFullScaleAttackStarted == true) {
+			if (MyVariable.isFullScaleAttackStarted == true) {
 				MyStrategyManager.getInstance().actionCheckOtherPoint();
 			}
 		} else if (frame == 9) {
@@ -454,7 +441,7 @@ public class StrategyManager {
 	public void executeWorkerTraining() {
 
 		// InitialBuildOrder 진행중에는 아무것도 하지 않습니다
-		if (isInitialBuildOrderFinished == false) {
+		if (MyVariable.isInitialBuildOrderFinished == false) {
 			return;
 		}
 
@@ -524,7 +511,7 @@ public class StrategyManager {
 		// 참가자께서 잘 판단하셔서 개발하시기 바랍니다.
 
 		// InitialBuildOrder 진행중에는 아무것도 하지 않습니다
-		if (isInitialBuildOrderFinished == false) {
+		if (MyVariable.isInitialBuildOrderFinished == false) {
 			return;
 		}
 		// 게임에서는 서플라이 값이 200까지 있지만, BWAPI 에서는 서플라이 값이 400까지 있다
@@ -592,7 +579,7 @@ public class StrategyManager {
 	public void executeCombat() {
 
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
-		if (isFullScaleAttackStarted == false) {
+		if (MyVariable.isFullScaleAttackStarted == false) {
 			Chokepoint firstChokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
 
 			for (Unit unit : MyVariable.attackUnit) {
@@ -604,14 +591,14 @@ public class StrategyManager {
 			// 전투 유닛이 2개 이상 생산되었고, 적군 위치가 파악되었으면 총공격 모드로 전환
 			if (MyVariable.attackUnit.size() > 30) {
 				if (InformationManager.Instance().enemyPlayer != null && InformationManager.Instance().enemyRace != Race.Unknown && InformationManager.Instance().getOccupiedBaseLocations(InformationManager.Instance().enemyPlayer).size() > 0) {
-					isFullScaleAttackStarted = true;
+					MyVariable.isFullScaleAttackStarted = true;
 				}
 			}
 		}
 		// 공격 모드가 되면, 모든 전투유닛들을 적군 Main BaseLocation 로 공격 가도록 합니다
 		else {
 			if (MyVariable.attackUnit.size() < 10) {
-				isFullScaleAttackStarted = false;
+				MyVariable.isFullScaleAttackStarted = false;
 			}
 
 			if (InformationManager.Instance().enemyPlayer != null && InformationManager.Instance().enemyRace != Race.Unknown && InformationManager.Instance().getOccupiedBaseLocations(InformationManager.Instance().enemyPlayer).size() > 0) {

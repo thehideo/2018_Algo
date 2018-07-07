@@ -11,6 +11,11 @@ public class MyVariable {
 	/////////////////////////////////////////////
 	// 전체 전략 판단
 	/////////////////////////////////////////////
+
+	public static boolean isFullScaleAttackStarted = false;
+
+	public static boolean isInitialBuildOrderFinished = false;
+
 	// 싸이언스 베슬이 필요한지
 	public static boolean needTerran_Science_Vessel = false;
 	// 싸이언스 베슬이 있는지
@@ -26,7 +31,7 @@ public class MyVariable {
 
 	// 전체
 	public static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
-	
+
 	public static HashMap<UnitType, ArrayList<Unit>> mapSelfAttackUnit = new HashMap<UnitType, ArrayList<Unit>>();
 
 	// 공격 유닛

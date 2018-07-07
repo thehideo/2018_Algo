@@ -48,7 +48,7 @@ public class MyStrategyManager {
 		MyVariable.attackUnitRatio.clear();
 		MyVariable.defenceUnitCountTotal.clear();
 
-		if (StrategyManager.Instance().isFullScaleAttackStarted()) {
+		if (MyVariable.isFullScaleAttackStarted) {
 			// 방어 유닛 구성
 			MyVariable.defenceUnitCountTotal.put(UnitType.Terran_Marine, 4);
 			MyVariable.defenceUnitCountTotal.put(UnitType.Terran_Medic, 1);
@@ -135,7 +135,7 @@ public class MyStrategyManager {
 	public void actionCheckOtherPoint() {
 		for (Unit unit : MyVariable.attackUnit) {
 			// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
-			if (MyVariable.enemyBuildingUnit.size() == 0 && unit.isIdle() == true) {
+			if (MyVariable.enemyBuildingUnit.size() == 0) {
 				int xValue = minPointX + MyUtil.random.nextInt(maxPointX - minPointX);
 				int yValue = minPointY + MyUtil.random.nextInt(maxPointY - minPointY);
 				TilePosition position = new TilePosition(xValue, yValue);
