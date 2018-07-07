@@ -11,9 +11,11 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 		MyVariable.clearSelfUnit();
 
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
+			// 벙커 안에 있는 것은 스킵
 			if (unit.isLoaded() == true) {
 				continue;
 			}
+			// 발견되지 않는 Type 추가
 			if (!MyVariable.mapSelfUnit.containsKey(unit.getType())) {
 				MyVariable.mapSelfUnit.put(unit.getType(), new ArrayList<Unit>());
 				MyVariable.mapSelfAttackUnit.put(unit.getType(), new ArrayList<Unit>());
@@ -25,7 +27,9 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 				// scanUnit에 할당
 				if (unit.getType() == UnitType.Terran_Science_Vessel) {
 					MyVariable.scanUnit.add(unit);
-				} else if (unit.canAttack() && unit.getType() != UnitType.Terran_SCV) {
+				}
+				// 공격 유닛
+				else if (unit.canAttack() && unit.getType() != UnitType.Terran_SCV) {
 					MyVariable.attackUnit.add(unit);
 
 					MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
@@ -38,7 +42,7 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 					MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
 
 					MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y - 1));
-					MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
+					MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y + 1));
 
 					MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 1));
 					MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));

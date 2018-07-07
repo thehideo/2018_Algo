@@ -1,6 +1,5 @@
 import bwapi.TechType;
 import bwapi.UnitType;
-import bwapi.UpgradeType;
 
 public class ActionCreateBuilding implements ActionInterface {
 
@@ -9,7 +8,6 @@ public class ActionCreateBuilding implements ActionInterface {
 		if (MyVariable.isInitialBuildOrderFinished == false) {
 			return;
 		}
-
 		// 베슬이 필요하면 바로 건설
 		if (MyVariable.needTerran_Science_Vessel) {
 			if (checkNeedToBuild(UnitType.Terran_Factory, 1))
@@ -25,54 +23,45 @@ public class ActionCreateBuilding implements ActionInterface {
 			if (checkNeedToBuild(UnitType.Terran_Science_Vessel, 1))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
-
-		if (checkNeedToBuild(UnitType.Terran_Barracks, 3)) {
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Barracks, false);
-		}
-
-		// Terran_Refinery 건설
-		if (checkNeedToBuild(UnitType.Terran_Refinery, MyUtil.getCommandCenterCount())) {
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, false);
-		}
-
-		// Academy 건설
-		if (checkNeedToBuild(UnitType.Terran_Academy, 1)) {
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Academy, false);
-		}
-
-		// Comsat Station 건설
-		if (checkNeedToBuild(UnitType.Terran_Comsat_Station, MyUtil.getCommandCenterCount())) {
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Comsat_Station, false);
-		}
-
-		// Stim Pack 업그레이드
-		if (checkNeedTechType(TechType.Stim_Packs)) {
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
-		}
-
-		// Engineering Bay 건설
-		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1)) {
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Engineering_Bay, false);
-		}
-
 		if (MyVariable.isFullScaleAttackStarted) {
-			// 기본으로 Factory 2개는 건설함, 시즈모드 개발
 			if (checkNeedToBuild(UnitType.Terran_Factory, 2))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			if (checkNeedToBuild(UnitType.Terran_Machine_Shop, 2))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			if (checkNeedToBuild(UnitType.Terran_Armory, 1))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-			if (checkNeedTechType(TechType.Tank_Siege_Mode))
+			if (checkNeedResearchTechType(TechType.Tank_Siege_Mode))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
-
 			if (checkNeedToBuild(UnitType.Terran_Command_Center, 2)) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Command_Center, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
 			}
 		}
+		// Terran_Barracks 건설
+		if (checkNeedToBuild(UnitType.Terran_Barracks, 3)) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Barracks, false);
+		}
+		// Terran_Refinery 건설
+		if (checkNeedToBuild(UnitType.Terran_Refinery, MyUtil.getCommandCenterCount())) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, false);
+		}
+		// Terran_Academy 건설
+		if (checkNeedToBuild(UnitType.Terran_Academy, 1)) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Academy, false);
+		}
+		// Terran_Comsat_Station 건설
+		if (checkNeedToBuild(UnitType.Terran_Comsat_Station, MyUtil.getCommandCenterCount())) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Comsat_Station, false);
+		}
+		// Stim_Packs 업그레이드
+		if (checkNeedResearchTechType(TechType.Stim_Packs)) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
+		}
+		// Terran_Engineering_Bay 건설
+		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1)) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Engineering_Bay, false);
+		}
 	}
 
-	// 건설된 것이 하나도 없는지 확인
 	boolean checkNeedToBuild(UnitType unitType, int cnt) {
 		boolean result = false;
 		if (MyBotModule.Broodwar.self().allUnitCount(unitType) < cnt && BuildManager.Instance().getBuildQueue().getItemCount(unitType) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(unitType, null) == 0) {
@@ -81,7 +70,7 @@ public class ActionCreateBuilding implements ActionInterface {
 		return result;
 	}
 
-	boolean checkNeedTechType(TechType techType) {
+	boolean checkNeedResearchTechType(TechType techType) {
 		boolean result = false;
 		if (MyBotModule.Broodwar.self().isResearchAvailable(techType) && !MyBotModule.Broodwar.self().isResearching(techType) && !MyBotModule.Broodwar.self().hasResearched(techType) && BuildManager.Instance().getBuildQueue().getItemCount(techType) == 0) {
 			result = true;
