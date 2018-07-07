@@ -72,4 +72,7 @@ public class MyVariable {
 	// 적건물
 	public static HashSet<TilePosition> enemyBuildingUnit = new HashSet<TilePosition>();
 
+	// 적공격 유닛
+	public static ArrayList<Unit> enemyAttactUnit = new ArrayList<Unit>();
+
 }

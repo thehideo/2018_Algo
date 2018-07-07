@@ -38,6 +38,10 @@ public class StrategyManager {
 		ActionManager.Instance().addAction(new ActionUpdateSelfUnitMap(), 11);
 		ActionManager.Instance().addAction(new ActionCombat(), 12);
 		ActionManager.Instance().addAction(new ActionSupplyManagement(), 13);
+
+		// Scanner 체크는 2번
+		ActionManager.Instance().addAction(new ActionUseScanner(), 2);
+		ActionManager.Instance().addAction(new ActionUseScanner(), 14);
 	}
 
 	// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
@@ -97,10 +101,10 @@ public class StrategyManager {
 		if (BuildManager.Instance().buildQueue.isEmpty()) {
 			MyVariable.isInitialBuildOrderFinished = true;
 		}
-		
+
 		ActionManager.Instance().action();
-		
-		executeWorkerTraining();		
+
+		executeWorkerTraining();
 	}
 
 	public void setInitialBuildOrder() {

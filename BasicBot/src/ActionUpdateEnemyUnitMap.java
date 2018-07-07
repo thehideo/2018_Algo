@@ -19,7 +19,12 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 				if (!unit.getType().isRefinery()) {
 					MyVariable.enemyBuildingUnit.add(unit.getTilePosition());
 				}
+			} else {
+				if (unit.canAttack() == true) {
+					MyVariable.enemyAttactUnit.add(unit);
+				}
 			}
+
 			double distance = MyUtil.distance(unit.getTilePosition(), myStartLocation);
 			if (distance < 20) {
 				MyVariable.enemyUnitAroundMyStartPoint.add(unit);
@@ -30,61 +35,6 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 			MyVariable.mapEnemyUnit.get(unit.getType()).add(unit);
 		}
 
-		if (MyVariable.mapEnemyUnit.containsKey(UnitType.Zerg_Lurker)) {
-			for (Unit unit : MyVariable.mapEnemyUnit.get(UnitType.Zerg_Lurker)) {
-				if (unit.isAttacking()) {
-					useScanner_Sweep(unit);
-				}
-			}
-		}
-		if (MyVariable.mapEnemyUnit.containsKey(UnitType.Protoss_Dark_Templar)) {
-			for (Unit unit : MyVariable.mapEnemyUnit.get(UnitType.Protoss_Dark_Templar)) {
-				if (unit.isAttacking()) {
-					useScanner_Sweep(unit);
-				}
-			}
-		}
-		if (MyVariable.mapEnemyUnit.containsKey(UnitType.Terran_Wraith)) {
-			for (Unit unit : MyVariable.mapEnemyUnit.get(UnitType.Terran_Wraith)) {
-				if (unit.isAttacking()) {
-					useScanner_Sweep(unit);
-				}
-			}
-		}
-	}
-
-	// 스캐너 사용
-	int beforeTime = 0;
-
-	void useScanner_Sweep(Unit unit) {
-		if (MyVariable.mapSelfUnit.containsKey(UnitType.Terran_Comsat_Station)) {
-			ArrayList<Unit> units = MyVariable.mapSelfUnit.get(UnitType.Terran_Comsat_Station);
-			for (int i = 0; i < units.size(); i++) {
-				if (units.get(i).canUseTech(TechType.Scanner_Sweep, unit) && MyBotModule.Broodwar.getFrameCount() - beforeTime > 24 * 3) {
-					units.get(i).useTech(TechType.Scanner_Sweep, unit);
-					beforeTime = MyBotModule.Broodwar.getFrameCount();
-					break;
-				}
-			}
-		}
-	}
-
-	// 스캐너 사용이 가능한지 확인
-	void canUseScanner_Sweep(Unit unit) {
-		if (MyVariable.mapSelfUnit.containsKey(UnitType.Terran_Comsat_Station)) {
-			ArrayList<Unit> units = MyVariable.mapSelfUnit.get(UnitType.Terran_Comsat_Station);
-			for (int i = 0; i < units.size(); i++) {
-				if (units.get(i).canUseTech(TechType.Scanner_Sweep, unit)) {
-					if (MyBotModule.Broodwar.getFrameCount() - beforeTime > 24 * 3) {
-						units.get(i).useTech(TechType.Scanner_Sweep, unit);
-						beforeTime = MyBotModule.Broodwar.getFrameCount();
-					}
-					break;
-				} else {
-					MyVariable.needTerran_Science_Vessel = true;
-				}
-			}
-		}
 	}
 
 }
