@@ -17,8 +17,8 @@ public class ActionSetSelfUnitRatio implements ActionInterface {
 		}
 
 		// 공격 유닛 비율
-		MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 10);
-		MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 2);
+		MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 12);
+		MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 3);
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 

@@ -5,7 +5,8 @@ import java.util.HashMap;
 import bwapi.UnitType;
 
 public class ActionCreateUnit implements ActionInterface {
-	@Override
+
+	// 설정된 비율에 따라서 비율이 낮은것을 생산
 	public void action() {
 		if (MyVariable.isInitialBuildOrderFinished == false) {
 			return;
@@ -31,13 +32,16 @@ public class ActionCreateUnit implements ActionInterface {
 			tmp2.addAll(tmp.values());
 			Collections.sort(tmp2);
 
+			/// 여기 까지 정렬 완료
 			for (int i = 0; i < tmp2.size(); i++) {
 				for (UnitType unitType : MyVariable.attackUnitRatio.keySet()) {
-					if (tmp.get(unitType) == tmp2.get(i) && MyBotModule.Broodwar.canMake(unitType)) {
-						if (BuildManager.Instance().buildQueue.getItemCount(unitType) == 0) {
-							BuildManager.Instance().buildQueue.queueAsLowestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+					if (tmp.get(unitType) == tmp2.get(i)) {
+						if (MyBotModule.Broodwar.canMake(unitType)) {
+							if (BuildManager.Instance().buildQueue.getItemCount(unitType) == 0) {
+								BuildManager.Instance().buildQueue.queueAsLowestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+								return;
+							}
 						}
-						return;
 					}
 				}
 			}

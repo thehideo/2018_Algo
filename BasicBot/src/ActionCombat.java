@@ -2,6 +2,7 @@ import java.util.HashSet;
 
 import bwapi.Race;
 import bwapi.Unit;
+import bwapi.UnitType;
 import bwta.BWTA;
 import bwta.BaseLocation;
 import bwta.Chokepoint;
@@ -14,11 +15,17 @@ public class ActionCombat implements ActionInterface {
 	public void action() {
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
 		if (MyVariable.isFullScaleAttackStarted == false) {
-			Chokepoint firstChokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
+			Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
+
+			if (MyVariable.mapSelfUnit.get(UnitType.Terran_Command_Center) != null) {
+				if (MyVariable.mapSelfUnit.get(UnitType.Terran_Command_Center).size() >= 1) {
+					chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+				}
+			}
 
 			for (Unit unit : MyVariable.attackUnit) {
 				if (unit.canAttack() && unit.getType() != InformationManager.Instance().getWorkerType() && unit.isIdle()) {
-					commandUtil.attackMove(unit, firstChokePoint.getCenter());
+					commandUtil.attackMove(unit, chokePoint.getCenter());
 				}
 			}
 

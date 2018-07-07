@@ -34,6 +34,12 @@ public class ActionCheckBuilding implements ActionInterface {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		if (checkNeedTechType(TechType.Tank_Siege_Mode))
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+
+		if (MyVariable.isFullScaleAttackStarted) {
+			if (checkNeedToBuild(UnitType.Terran_Command_Center, 2)) {
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Command_Center, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
+			}
+		}
 	}
 
 	// 건설된 것이 하나도 없는지 확인
