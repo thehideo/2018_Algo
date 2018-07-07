@@ -10,14 +10,14 @@ public class ActionControlMarin implements ActionInterface {
 	public void action() {
 		if (MyVariable.mapSelfUnit.containsKey(UnitType.Terran_Marine)) {
 			for (Unit unit : MyVariable.mapSelfUnit.get(UnitType.Terran_Marine)) {
-				if (unit.isAttacking() && unit.isStimmed() == false) {
+				if (unit.isStartingAttack() && unit.isStimmed() == false) {
 					unit.useTech(TechType.Stim_Packs);
 				}
 			}
 		}
 		if (MyVariable.mapSelfUnit.containsKey(UnitType.Terran_Firebat)) {
 			for (Unit unit : MyVariable.mapSelfUnit.get(UnitType.Terran_Firebat)) {
-				if (unit.isAttacking() && unit.isStimmed() == false) {
+				if (unit.isStartingAttack() && unit.isStimmed() == false) {
 					unit.useTech(TechType.Stim_Packs);
 				}
 			}

@@ -171,15 +171,13 @@ public class WorkerManager {
 		}
 
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
-			int fixCount = 0;
+
 			// 건물의 경우 아무리 멀어도 무조건 수리. 일꾼 한명이 순서대로 수리
 			if (unit.getType().isBuilding() && unit.isCompleted() == true && unit.getHitPoints() < unit.getType().maxHitPoints()) {
 				Unit repairWorker = chooseRepairWorkerClosestTo(unit.getPosition(), 0);
 				setRepairWorker(repairWorker, unit);
-				fixCount++;
-				if (fixCount >= 2) {
-					break;
-				}
+				break;
+
 			}
 			// 메카닉 유닛 (SCV, 시즈탱크, 레이쓰 등)의 경우 근처에 SCV가 있는 경우 수리. 일꾼 한명이 순서대로 수리
 			else if (unit.getType().isMechanical() && unit.isCompleted() == true && unit.getHitPoints() < unit.getType().maxHitPoints()) {
@@ -434,7 +432,7 @@ public class WorkerManager {
 			}
 
 			// Move / Idle Worker 가 없을때, 다른 Worker 중에서 차출한다
-			if (unit.isCompleted() && (workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Move && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Idle && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Build)) {
+			if (unit.isCompleted() && (workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Move && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Idle && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Build && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Scout)) {
 				// if it is a new closest distance, set the pointer
 				double distance = unit.getDistance(buildingPosition.toPosition());
 				if (closestMiningWorker == null || (distance < closestMiningWorkerDistance && unit.isCarryingMinerals() == false && unit.isCarryingGas() == false)) {
