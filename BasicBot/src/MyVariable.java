@@ -49,8 +49,21 @@ public class MyVariable {
 	// 벙커 지키는 유닛
 	public static ArrayList<Unit> bunkerUnit = new ArrayList<Unit>();
 
-	// 본진 근처에 유닛
-	public static ArrayList<Unit> enemyUnitAroundMyStartPoint = new ArrayList<>();
+	public static void clearSelfUnit() {
+		MyVariable.mapSelfUnit.clear();
+		MyVariable.mapSelfAttackUnit.clear();
+
+		// 역할별 유닛 목록
+		MyVariable.attackUnit.clear();
+		MyVariable.attackedUnit.clear();
+		MyVariable.defenceUnit.clear();
+		MyVariable.scanUnit.clear();
+		MyVariable.bunkerUnit.clear();
+
+		// 방어할 유닛 개수 초기화
+		MyVariable.defenceUnitCount.clear();
+
+	}
 
 	/////////////////////////////////////////////
 	// 유닛 구성
@@ -60,19 +73,38 @@ public class MyVariable {
 
 	public static HashMap<UnitType, Integer> defenceUnitCountTotal = new HashMap<UnitType, Integer>();
 
+	// clearSelfUnit에서 초기화함!!!!!!!!!!
 	public static HashMap<UnitType, Integer> defenceUnitCount = new HashMap<UnitType, Integer>();
+
+	public static void clearUnitRaio() {
+		MyVariable.attackUnitRatio.clear();
+		MyVariable.defenceUnitCountTotal.clear();
+	}
 
 	/////////////////////////////////////////////
 	// 전체 전략 판단
 	/////////////////////////////////////////////
 
+	// 적건물, 초기화 대상 아님!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	public static HashSet<TilePosition> enemyBuildingUnit = new HashSet<TilePosition>();
+
 	// 전체
 	public static HashMap<UnitType, ArrayList<Unit>> mapEnemyUnit = new HashMap<UnitType, ArrayList<Unit>>();
 
-	// 적건물
-	public static HashSet<TilePosition> enemyBuildingUnit = new HashSet<TilePosition>();
-
 	// 적공격 유닛
 	public static ArrayList<Unit> enemyAttactUnit = new ArrayList<Unit>();
+
+	// 적공격 지상 유닛
+	public static ArrayList<Unit> enemyGroundUnit = new ArrayList<Unit>();
+
+	// 본진 근처 적유닛
+	public static ArrayList<Unit> enemyUnitAroundMyStartPoint = new ArrayList<>();
+
+	public static void clearEnemyUnit() {
+		MyVariable.mapEnemyUnit.clear();
+		MyVariable.enemyAttactUnit.clear();
+		MyVariable.enemyGroundUnit.clear();
+		MyVariable.enemyUnitAroundMyStartPoint.clear();
+	}
 
 }

@@ -27,10 +27,12 @@ public class ActionCheckOtherPoint implements ActionInterface {
 		for (Unit unit : MyVariable.attackUnit) {
 			// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
 			if (MyVariable.enemyBuildingUnit.size() == 0) {
-				int xValue = minPointX + MyUtil.random.nextInt(maxPointX - minPointX);
-				int yValue = minPointY + MyUtil.random.nextInt(maxPointY - minPointY);
-				TilePosition position = new TilePosition(xValue, yValue);
-				commandUtil.attackMove(unit, position.toPosition());
+				if (unit.isIdle()) {
+					int xValue = minPointX + MyUtil.random.nextInt(maxPointX - minPointX);
+					int yValue = minPointY + MyUtil.random.nextInt(maxPointY - minPointY);
+					TilePosition position = new TilePosition(xValue, yValue);
+					commandUtil.attackMove(unit, position.toPosition());
+				}
 			}
 			// 발견한 건물이 있다면 그쪽으로 이동
 			else {

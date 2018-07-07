@@ -1,5 +1,6 @@
 import bwapi.Unit;
 
+// 내 본진 근처에 있는 적을 공격한다.
 public class ActionAttackEnemyUnitInMyRegion implements ActionInterface {
 	CommandUtil commandUtil = new CommandUtil();
 

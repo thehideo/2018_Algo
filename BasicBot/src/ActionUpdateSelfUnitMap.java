@@ -7,18 +7,8 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 
 	@Override
 	public void action() {
-		MyVariable.mapSelfUnit.clear();
-		MyVariable.mapSelfAttackUnit.clear();
+		MyVariable.clearSelfUnit();
 
-		// 역할별 유닛 목록
-		MyVariable.attackUnit.clear();
-		MyVariable.attackedUnit.clear();
-		MyVariable.defenceUnit.clear();
-		MyVariable.scanUnit.clear();
-		MyVariable.bunkerUnit.clear();
-
-		// 방어할 유닛 개수 초기화
-		MyVariable.defenceUnitCount.clear();
 
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
 			if (unit.isLoaded() == true) {

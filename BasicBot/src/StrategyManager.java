@@ -42,6 +42,9 @@ public class StrategyManager {
 		// Scanner 체크는 2번
 		ActionManager.Instance().addAction(new ActionUseScanner(), 2);
 		ActionManager.Instance().addAction(new ActionUseScanner(), 14);
+
+		ActionManager.Instance().addAction(new ActionTank(), 15);
+
 	}
 
 	// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
@@ -236,6 +239,10 @@ public class StrategyManager {
 
 			// Supply 건설
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getBasicSupplyProviderUnitType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+
+			if (true) {
+				return;
+			}
 
 			// Marine 생산
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Marine, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);

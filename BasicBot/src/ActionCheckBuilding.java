@@ -8,6 +8,8 @@ public class ActionCheckBuilding implements ActionInterface {
 		if (MyVariable.isInitialBuildOrderFinished == false) {
 			return;
 		}
+
+		// 베슬이 필요하면 바로 건설
 		if (MyVariable.needTerran_Science_Vessel) {
 			if (checkNeedToBuild(UnitType.Terran_Factory, 1))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
@@ -23,19 +25,15 @@ public class ActionCheckBuilding implements ActionInterface {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
-		// 기본으로 Factory 2개는 생산한다.
+		// 기본으로 Factory 2개는 건설함, 시즈모드 개발
 		if (checkNeedToBuild(UnitType.Terran_Factory, 2))
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		if (checkNeedToBuild(UnitType.Terran_Machine_Shop, 2))
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-		/*
-		 * if (checkNeedTechType(TechType.Spider_Mines))
-		 * BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.
-		 * Spider_Mines, false);
-		 */
+		if (checkNeedToBuild(UnitType.Terran_Armory, 1))
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		if (checkNeedTechType(TechType.Tank_Siege_Mode))
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
-
 	}
 
 	// 건설된 것이 하나도 없는지 확인

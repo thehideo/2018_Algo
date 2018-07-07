@@ -1,6 +1,7 @@
 import bwapi.Unit;
 import bwapi.UnitType;
 
+// 벙커가 있는데 안에 마린이 없으면 채워넣는다.
 public class ActionCheckBunker implements ActionInterface {
 
 	@Override

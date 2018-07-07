@@ -4,8 +4,7 @@ public class ActionSetSelfUnitRatio implements ActionInterface {
 
 	@Override
 	public void action() {
-		MyVariable.attackUnitRatio.clear();
-		MyVariable.defenceUnitCountTotal.clear();
+		MyVariable.clearUnitRaio();
 
 		if (MyVariable.isFullScaleAttackStarted) {
 			// 방어 유닛 구성
@@ -21,6 +20,7 @@ public class ActionSetSelfUnitRatio implements ActionInterface {
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 10);
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 2);
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
+		MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 
 	}
 }
