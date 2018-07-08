@@ -40,6 +40,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (MyVariable.attackUnit.size() < 10) {
 				MyVariable.isFullScaleAttackStarted = false;
 			}
+
 			for (Unit unit : MyVariable.attackUnit) {
 				// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
 				if (MyVariable.enemyBuildingUnit.size() == 0) {
@@ -52,6 +53,11 @@ public class ActionControlAttackUnit implements ActionInterface {
 				}
 				// 발견한 건물이 있다면 그쪽으로 이동
 				else {
+					// 메딕은 치료할 곳으로 이동한다.
+					if (unit.getType() == UnitType.Terran_Medic && MyVariable.attackedUnit.size() > 0) {
+						commandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
+					}
+
 					for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 						commandUtil.attackMove(unit, tilePosition.toPosition());
 						break;
