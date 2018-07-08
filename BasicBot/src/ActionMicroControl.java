@@ -61,7 +61,7 @@ public class ActionMicroControl implements ActionInterface {
 								}
 							}
 							if (enemyUnit != null && unit.canAttack(enemyUnit)) {
-								unit.attack(enemyUnit.getPosition());
+								unit.attack(enemyUnit);
 							}
 						}
 					}
