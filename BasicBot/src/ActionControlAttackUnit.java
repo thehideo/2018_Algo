@@ -40,6 +40,12 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (MyVariable.attackUnit.size() < 10) {
 				MyVariable.isFullScaleAttackStarted = false;
 			}
+			// 메딕 비율만 높아도 방어 모드로 변경
+			if (MyVariable.mapSelfAttackUnit.get(UnitType.Terran_Medic) != null) {
+				if (1.0 * MyVariable.mapSelfAttackUnit.get(UnitType.Terran_Medic).size() / MyVariable.attackUnit.size() > 0.5) {
+					MyVariable.isFullScaleAttackStarted = false;
+				}
+			}
 
 			for (Unit unit : MyVariable.attackUnit) {
 				// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
@@ -54,8 +60,12 @@ public class ActionControlAttackUnit implements ActionInterface {
 				// 발견한 건물이 있다면 그쪽으로 이동
 				else {
 					// 메딕은 치료할 곳으로 이동한다.
-					if (unit.getType() == UnitType.Terran_Medic && MyVariable.attackedUnit.size() > 0) {
-						commandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
+					if (unit.getType() == UnitType.Terran_Medic) {
+						if (MyVariable.attackedUnit.size() > 0) {
+							commandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
+						} else if (MyVariable.attackUnit.size() > 0) {
+							commandUtil.attackMove(unit, MyVariable.attackUnit.get(0).getPosition());
+						}
 					}
 
 					for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {

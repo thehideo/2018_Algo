@@ -42,7 +42,7 @@ public class ActionMicroControl implements ActionInterface {
 			// 가장 가까운 유닛은 도망간다.
 			if (minUnit != null) {
 				double distance = MyUtil.distancePosition(minUnit.getPosition(), InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
-				if (distance > 50) {
+				if (distance > 20) {
 					minUnit.move(InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
 				}
 			}
