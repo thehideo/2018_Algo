@@ -27,7 +27,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 		if (MyVariable.isFullScaleAttackStarted == false) {
 			Chokepoint saveChokePoint = getSaveChokePoint();
 			for (Unit unit : MyVariable.attackUnit) {
-				if (unit.canAttack() && unit.getType() != InformationManager.Instance().getWorkerType() && unit.isIdle()) {
+				if (unit.getType() != InformationManager.Instance().getWorkerType() && unit.isIdle()) {
 					commandUtil.attackMove(unit, saveChokePoint.getCenter());
 				}
 			}
