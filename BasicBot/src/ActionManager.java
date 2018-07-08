@@ -6,6 +6,8 @@ public class ActionManager {
 
 	private static ActionManager instance = new ActionManager();
 
+	ActionMicroControl actionMicroControl = new ActionMicroControl();
+
 	public static ActionManager Instance() {
 		return instance;
 	}
@@ -27,5 +29,6 @@ public class ActionManager {
 		for (ActionInterface action : map.get(frame)) {
 			action.action();
 		}
+		actionMicroControl.action();
 	}
 }

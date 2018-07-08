@@ -8,6 +8,8 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 
 	int refreshIndex = 0;
 
+	TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
+
 	@Override
 	public void action() {
 		MyVariable.clearSelfUnit();
@@ -30,8 +32,17 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 				if (unit.getType() == UnitType.Terran_Science_Vessel) {
 					MyVariable.scanUnit.add(unit);
 				}
+				// 본진 밖을 벗어난 SCV는 다시 본진으로 위치 시킨다
+				else if (unit.getType() == UnitType.Terran_SCV) {
+					if (unit.isAttackFrame() == true) {
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						if (distance > 20) {
+							unit.move(myStartLocation.toPosition());
+						}
+					}
+				}
 				// 공격 유닛
-				else if (unit.canAttack() && unit.getType() != UnitType.Terran_SCV) {
+				else if (unit.canAttack()) {
 					MyVariable.attackUnit.add(unit);
 
 					MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
