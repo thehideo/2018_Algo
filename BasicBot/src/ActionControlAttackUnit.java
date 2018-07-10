@@ -63,11 +63,8 @@ public class ActionControlAttackUnit implements ActionInterface {
 					if (unit.getType() == UnitType.Terran_Medic) {
 						if (MyVariable.attackedUnit.size() > 0) {
 							commandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
-						} else if (MyVariable.attackUnit.size() > 0) {
-							commandUtil.attackMove(unit, MyVariable.attackUnit.get(0).getPosition());
-						}
+						} 
 					}
-
 					for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 						commandUtil.attackMove(unit, tilePosition.toPosition());
 						break;

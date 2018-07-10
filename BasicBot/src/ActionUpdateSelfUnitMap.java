@@ -10,9 +10,20 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 
 	TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
 
+	static boolean findMineral = false;
+
 	@Override
 	public void action() {
 		MyVariable.clearSelfUnit();
+
+		if (findMineral == false) {
+			findMineral = true;
+			for (Unit unit : MyBotModule.Broodwar.getAllUnits()) {
+				if (unit.getType() == UnitType.Resource_Mineral_Field) {
+					MyVariable.minerals.add(unit);
+				}
+			}
+		}
 
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
 			// 벙커 안에 있는 것은 스킵

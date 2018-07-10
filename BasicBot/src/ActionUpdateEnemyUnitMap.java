@@ -36,10 +36,15 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 				if (unit.isFlying() == false) {
 					MyVariable.enemyGroundUnit.add(unit);
 				}
+
+				if (unit.isAttacking()) {
+					MyVariable.enemyAttactingUnit.add(unit);
+				}
+
 				if (unit.getType() != UnitType.Terran_SCV && unit.getType() != UnitType.Protoss_Probe && unit.getType() != UnitType.Zerg_Drone) {
 					// 내 본진 근처 적유닛
 					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
-					if (distance < 20) {
+					if (distance < 30) {
 						MyVariable.enemyUnitAroundMyStartPoint.add(unit);
 					}
 				}

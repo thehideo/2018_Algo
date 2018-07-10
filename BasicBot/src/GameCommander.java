@@ -89,6 +89,12 @@ public class GameCommander {
 		WorkerManager.Instance().onUnitDestroy(unit);
 
 		InformationManager.Instance().onUnitDestroy(unit);
+		
+		if (MyVariable.isInitialBuildOrderFinished == false) {
+			if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().isBuilding() == false) {
+				BuildManager.Instance().buildQueue.queueAsHighestPriority(unit.getType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			}
+		}
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Morph 될 때 발생하는 이벤트를 처리합니다<br>
@@ -127,6 +133,7 @@ public class GameCommander {
 	/// 유닛(건물/지상유닛/공중유닛)이 Discover 될 때 발생하는 이벤트를 처리합니다<br>
 	/// 아군 유닛이 Create 되었을 때 라든가, 적군 유닛이 Discover 되었을 때 발생합니다
 	public void onUnitDiscover(Unit unit) {
+		
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Evade 될 때 발생하는 이벤트를 처리합니다<br>

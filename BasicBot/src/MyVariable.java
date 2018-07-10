@@ -48,6 +48,8 @@ public class MyVariable {
 
 	// 벙커 지키는 유닛
 	public static ArrayList<Unit> bunkerUnit = new ArrayList<Unit>();
+	
+	public static ArrayList<Unit> minerals = new ArrayList<Unit>();
 
 	public static void clearSelfUnit() {
 		MyVariable.mapSelfUnit.clear();
@@ -62,6 +64,9 @@ public class MyVariable {
 
 		// 방어할 유닛 개수 초기화
 		MyVariable.defenceUnitCount.clear();
+		
+		// 미네랄
+		//MyVariable.minerals.clear();
 
 	}
 
@@ -93,6 +98,9 @@ public class MyVariable {
 
 	// 적공격 유닛
 	public static ArrayList<Unit> enemyAttactUnit = new ArrayList<Unit>();
+	
+	// 적공격 중 유닛
+	public static ArrayList<Unit> enemyAttactingUnit = new ArrayList<Unit>();
 
 	// 적공격 지상 유닛
 	public static ArrayList<Unit> enemyGroundUnit = new ArrayList<Unit>();
@@ -103,6 +111,7 @@ public class MyVariable {
 	public static void clearEnemyUnit() {
 		MyVariable.mapEnemyUnit.clear();
 		MyVariable.enemyAttactUnit.clear();
+		MyVariable.enemyAttactingUnit.clear();
 		MyVariable.enemyGroundUnit.clear();
 		MyVariable.enemyUnitAroundMyStartPoint.clear();
 	}
