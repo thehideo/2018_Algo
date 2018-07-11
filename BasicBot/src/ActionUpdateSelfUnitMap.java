@@ -49,7 +49,7 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 					}
 				}
 				// 공격 유닛
-				else {
+				else if (unit.canAttack() || unit.getType() == UnitType.Terran_Medic) {
 					MyVariable.attackUnit.add(unit);
 					MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
 					// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
