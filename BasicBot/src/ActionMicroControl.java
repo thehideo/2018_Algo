@@ -17,22 +17,24 @@ public class ActionMicroControl implements ActionInterface {
 			for (Unit unit : MyVariable.attackUnit) {
 				for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
 					double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
-					if (minDistance > distance) {
-						minDistance = distance;
-						minUnit = unit;
-						enemyUnit = unit2;
-					}
+					if (unit.getType().groundWeapon() != null && unit.getType().groundWeapon().maxRange() > distance)
+						if (minDistance > distance) {
+							minDistance = distance;
+							minUnit = unit;
+							enemyUnit = unit2;
+						}
 				}
 			}
 
 			for (Unit unit : MyVariable.defenceUnit) {
 				for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
 					double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
-					if (minDistance > distance) {
-						minDistance = distance;
-						minUnit = unit;
-						enemyUnit = unit2;
-					}
+					if (unit.getType().groundWeapon() != null && unit.getType().groundWeapon().maxRange() > distance)
+						if (minDistance > distance) {
+							minDistance = distance;
+							minUnit = unit;
+							enemyUnit = unit2;
+						}
 				}
 			}
 
@@ -85,10 +87,11 @@ public class ActionMicroControl implements ActionInterface {
 				for (Unit unit : MyVariable.attackUnit) {
 					for (Unit unit2 : MyVariable.enemyAttactingUnit) {
 						double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
-						if (minDistance > distance) {
-							minDistance = distance;
-							minUnit = unit;
-						}
+						if (unit.getType().groundWeapon() != null && unit.getType().groundWeapon().maxRange() > distance)
+							if (minDistance > distance) {
+								minDistance = distance;
+								minUnit = unit;
+							}
 					}
 				}
 
