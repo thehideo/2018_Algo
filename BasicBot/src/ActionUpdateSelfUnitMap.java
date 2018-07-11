@@ -49,11 +49,9 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 					}
 				}
 				// 공격 유닛
-				else if (unit.canAttack()) {
+				else {
 					MyVariable.attackUnit.add(unit);
-
 					MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
-
 					// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
 					refreshIndex++;
 					if (refreshIndex % 50 == 0) {
