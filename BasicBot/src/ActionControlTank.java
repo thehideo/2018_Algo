@@ -10,21 +10,20 @@ public class ActionControlTank implements ActionInterface {
 
 	@Override
 	public void action() {
-		ArrayList<Unit> Terran_Siege_Tank_Siege_Mode = MyVariable.mapSelfUnit.get(UnitType.Terran_Siege_Tank_Siege_Mode);
-		ArrayList<Unit> Terran_Siege_Tank_Tank_Mode = MyVariable.mapSelfUnit.get(UnitType.Terran_Siege_Tank_Tank_Mode);
+		ArrayList<Unit> Terran_Siege_Tank_Siege_Mode = MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode);
+		ArrayList<Unit> Terran_Siege_Tank_Tank_Mode = MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode);
 
-		if (Terran_Siege_Tank_Siege_Mode != null)
-			for (Unit unit : Terran_Siege_Tank_Siege_Mode) {
-				if (needSiege(unit) == false) {
-					unit.unsiege();
-				}
+		for (Unit unit : Terran_Siege_Tank_Siege_Mode) {
+			if (needSiege(unit) == false) {
+				unit.unsiege();
 			}
-		if (Terran_Siege_Tank_Tank_Mode != null)
-			for (Unit unit : Terran_Siege_Tank_Tank_Mode) {
-				if (needSiege(unit) == true) {
-					unit.siege();
-				}
+		}
+
+		for (Unit unit : Terran_Siege_Tank_Tank_Mode) {
+			if (needSiege(unit) == true) {
+				unit.siege();
 			}
+		}
 	}
 
 	boolean needSiege(Unit unit) {

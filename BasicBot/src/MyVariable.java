@@ -21,7 +21,7 @@ public class MyVariable {
 
 	// 뮤탈리스트를 찾았는지
 	public static boolean findMutal = false;
-	
+
 	// 뮤탈리스트를 찾았는지
 	public static boolean findLucker = false;
 
@@ -30,9 +30,23 @@ public class MyVariable {
 	/////////////////////////////////////////////
 
 	// 전체
-	public static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
+	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
 
-	public static HashMap<UnitType, ArrayList<Unit>> mapSelfAttackUnit = new HashMap<UnitType, ArrayList<Unit>>();
+	public static ArrayList<Unit> getSelfUnit(UnitType unitType) {
+		if (!mapSelfUnit.containsKey(unitType)) {
+			mapSelfUnit.put(unitType, new ArrayList<Unit>());
+		}
+		return mapSelfUnit.get(unitType);
+	}
+
+	private static HashMap<UnitType, ArrayList<Unit>> mapSelfAttackUnit = new HashMap<UnitType, ArrayList<Unit>>();
+
+	public static ArrayList<Unit> getSelfAttackUnit(UnitType unitType) {
+		if (!mapSelfAttackUnit.containsKey(unitType)) {
+			mapSelfAttackUnit.put(unitType, new ArrayList<Unit>());
+		}
+		return mapSelfAttackUnit.get(unitType);
+	}
 
 	// 공격 유닛
 	public static ArrayList<Unit> attackUnit = new ArrayList<Unit>();
@@ -48,7 +62,7 @@ public class MyVariable {
 
 	// 벙커 지키는 유닛
 	public static ArrayList<Unit> bunkerUnit = new ArrayList<Unit>();
-	
+
 	public static ArrayList<Unit> minerals = new ArrayList<Unit>();
 
 	public static void clearSelfUnit() {
@@ -64,9 +78,9 @@ public class MyVariable {
 
 		// 방어할 유닛 개수 초기화
 		MyVariable.defenceUnitCount.clear();
-		
+
 		// 미네랄
-		//MyVariable.minerals.clear();
+		// MyVariable.minerals.clear();
 
 	}
 
@@ -94,11 +108,18 @@ public class MyVariable {
 	public static HashSet<TilePosition> enemyBuildingUnit = new HashSet<TilePosition>();
 
 	// 전체
-	public static HashMap<UnitType, ArrayList<Unit>> mapEnemyUnit = new HashMap<UnitType, ArrayList<Unit>>();
+	private static HashMap<UnitType, ArrayList<Unit>> mapEnemyUnit = new HashMap<UnitType, ArrayList<Unit>>();
+
+	static public ArrayList<Unit> getEnemyUnit(UnitType unitType) {
+		if (!mapEnemyUnit.containsKey(unitType)) {
+			mapEnemyUnit.put(unitType, new ArrayList<Unit>());
+		}
+		return mapEnemyUnit.get(unitType);
+	}
 
 	// 적공격 유닛
 	public static ArrayList<Unit> enemyAttactUnit = new ArrayList<Unit>();
-	
+
 	// 적공격 중 유닛
 	public static ArrayList<Unit> enemyAttactingUnit = new ArrayList<Unit>();
 

@@ -31,11 +31,7 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 				continue;
 			}
 			// 발견되지 않는 Type 추가
-			if (!MyVariable.mapSelfUnit.containsKey(unit.getType())) {
-				MyVariable.mapSelfUnit.put(unit.getType(), new ArrayList<Unit>());
-				MyVariable.mapSelfAttackUnit.put(unit.getType(), new ArrayList<Unit>());
-			}
-			MyVariable.mapSelfUnit.get(unit.getType()).add(unit);
+			MyVariable.getSelfUnit(unit.getType()).add(unit);
 
 			// defenceUnit에 할당
 			if (!setUnitAsDefence(unit)) {
@@ -75,7 +71,7 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));
 						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y + 1));
 					}
-					MyVariable.mapSelfAttackUnit.get(unit.getType()).add(unit);
+					MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
 				}
 			}
 

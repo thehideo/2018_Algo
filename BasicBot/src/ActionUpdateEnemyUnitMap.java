@@ -17,10 +17,7 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 			// 정상 유닛이면
 			if (unit.exists() && unit.getType() != UnitType.Unknown && unit.getPosition().isValid()) {
 
-				if (!MyVariable.mapEnemyUnit.containsKey(unit.getType())) {
-					MyVariable.mapEnemyUnit.put(unit.getType(), new ArrayList<Unit>());
-				}
-				MyVariable.mapEnemyUnit.get(unit.getType()).add(unit);
+				MyVariable.getEnemyUnit(unit.getType()).add(unit);
 
 				// 건물
 				if (unit.getType().isBuilding()) {
@@ -51,10 +48,10 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 			}
 		}
 
-		if (MyVariable.mapEnemyUnit.get(UnitType.Zerg_Mutalisk) != null) {
+		if (MyVariable.getEnemyUnit(UnitType.Zerg_Mutalisk).size() > 0) {
 			MyVariable.findMutal = true;
 		}
-		if (MyVariable.mapEnemyUnit.get(UnitType.Zerg_Lurker) != null) {
+		if (MyVariable.getEnemyUnit(UnitType.Zerg_Lurker).size() > 0) {
 			MyVariable.findLucker = true;
 		}
 

@@ -21,10 +21,8 @@ public class ActionCreateUnit implements ActionInterface {
 				if (MyVariable.attackUnitRatio.get(unitType) == 0 && MyBotModule.Broodwar.canMake(unitType) == false) {
 					continue;
 				}
-				int count = 0;
-				if (MyVariable.mapSelfAttackUnit.containsKey(unitType)) {
-					count = MyVariable.mapSelfAttackUnit.get(unitType).size();
-				}
+				int count = MyVariable.getSelfAttackUnit(unitType).size();
+
 				tmp.put(unitType, (double) (1.0 * count / MyVariable.attackUnitRatio.get(unitType)));
 			}
 

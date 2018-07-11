@@ -41,10 +41,9 @@ public class ActionControlAttackUnit implements ActionInterface {
 				MyVariable.isFullScaleAttackStarted = false;
 			}
 			// 메딕 비율만 높아도 방어 모드로 변경
-			if (MyVariable.mapSelfAttackUnit.get(UnitType.Terran_Medic) != null) {
-				if (1.0 * MyVariable.mapSelfAttackUnit.get(UnitType.Terran_Medic).size() / MyVariable.attackUnit.size() > 0.5) {
-					MyVariable.isFullScaleAttackStarted = false;
-				}
+
+			if (1.0 * MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() / MyVariable.attackUnit.size() > 0.5) {
+				MyVariable.isFullScaleAttackStarted = false;
 			}
 
 			for (Unit unit : MyVariable.attackUnit) {
@@ -63,7 +62,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 					if (unit.getType() == UnitType.Terran_Medic) {
 						if (MyVariable.attackedUnit.size() > 0) {
 							commandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
-						} 
+						}
 					}
 					for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 						commandUtil.attackMove(unit, tilePosition.toPosition());
@@ -78,11 +77,11 @@ public class ActionControlAttackUnit implements ActionInterface {
 	static Chokepoint getSaveChokePoint() {
 		Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
 		// 확장했으면 확장부분을 지킨다.
-		if (MyVariable.mapSelfUnit.get(UnitType.Terran_Command_Center) != null) {
-			if (MyVariable.mapSelfUnit.get(UnitType.Terran_Command_Center).size() > 1) {
-				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
-			}
+
+		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1) {
+			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
 		}
+
 		return chokePoint;
 	}
 }

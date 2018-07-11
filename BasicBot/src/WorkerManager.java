@@ -105,12 +105,11 @@ public class WorkerManager {
 	/// Idle 일꾼을 Mineral 일꾼으로 만듭니다
 	public void handleIdleWorkers() {
 		// jyh
-		if (MyVariable.mapSelfUnit.get(UnitType.Terran_SCV) != null) {
-			for (Unit unit : MyVariable.mapSelfUnit.get(UnitType.Terran_SCV)) {
-				if (unit.isIdle() == true) {
-					if (workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Idle) {
-						setMineralWorker(unit);
-					}
+
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_SCV)) {
+			if (unit.isIdle() == true) {
+				if (workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Idle) {
+					setMineralWorker(unit);
 				}
 			}
 		}

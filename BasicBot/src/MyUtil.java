@@ -2,6 +2,7 @@ import java.util.Random;
 
 import bwapi.Position;
 import bwapi.TilePosition;
+import bwapi.Unit;
 import bwapi.UnitType;
 import bwta.BWTA;
 import bwta.Chokepoint;
@@ -20,20 +21,14 @@ public class MyUtil {
 
 	static Position GetMyBunkerPosition() {
 		Position bunkerPosition = null;
-		if (MyVariable.mapSelfUnit.get(UnitType.Terran_Bunker) != null) {
-			bunkerPosition = MyVariable.mapSelfUnit.get(UnitType.Terran_Bunker).get(0).getPosition();
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
+			bunkerPosition = unit.getPosition();
 		}
 		return bunkerPosition;
 	}
 
 	static int getCommandCenterCount() {
-		int result = 0;
-		if (MyVariable.mapSelfUnit.get(UnitType.Terran_Command_Center) != null) {
-			result = MyVariable.mapSelfUnit.get(UnitType.Terran_Command_Center).size();
-		}
-		return result;
+		return MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size();
 	}
-	
-	
 
 }

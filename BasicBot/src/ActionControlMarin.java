@@ -8,19 +8,18 @@ public class ActionControlMarin implements ActionInterface {
 
 	@Override
 	public void action() {
-		if (MyVariable.mapSelfUnit.containsKey(UnitType.Terran_Marine)) {
-			for (Unit unit : MyVariable.mapSelfUnit.get(UnitType.Terran_Marine)) {
-				if (unit.isAttacking() && unit.isStimmed() == false && 1.0 * unit.getHitPoints() / unit.getInitialHitPoints() > 0.5) {
-					unit.useTech(TechType.Stim_Packs);
-				}
+
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Marine)) {
+			if (unit.isAttacking() && unit.isStimmed() == false && 1.0 * unit.getHitPoints() / unit.getInitialHitPoints() > 0.5) {
+				unit.useTech(TechType.Stim_Packs);
 			}
 		}
-		if (MyVariable.mapSelfUnit.containsKey(UnitType.Terran_Firebat)) {
-			for (Unit unit : MyVariable.mapSelfUnit.get(UnitType.Terran_Firebat)) {
-				if (unit.isAttacking() && unit.isStimmed() == false && 1.0 * unit.getHitPoints() / unit.getInitialHitPoints() > 0.5) {
-					unit.useTech(TechType.Stim_Packs);
-				}
+
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Firebat)) {
+			if (unit.isAttacking() && unit.isStimmed() == false && 1.0 * unit.getHitPoints() / unit.getInitialHitPoints() > 0.5) {
+				unit.useTech(TechType.Stim_Packs);
 			}
 		}
+
 	}
 }

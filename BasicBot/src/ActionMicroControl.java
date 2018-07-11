@@ -9,7 +9,8 @@ public class ActionMicroControl implements ActionInterface {
 		int enemyCnt = MyVariable.enemyUnitAroundMyStartPoint.size();
 
 		// 적과 나의 숫자가 작을 경우에만 동작
-		if (enemyCnt > 1 && selfCnt * enemyCnt < 200) {
+		if (enemyCnt >= 1 && selfCnt * enemyCnt < 800) {
+			// if (enemyCnt >= 1) {
 			double minDistance = Double.MAX_VALUE;
 			Unit minUnit = null;
 			Unit enemyUnit = null;
@@ -37,7 +38,7 @@ public class ActionMicroControl implements ActionInterface {
 
 			if (selfCnt < enemyCnt && enemyUnit != null) {
 				// SCV가 더 가까우면 제외한다.
-				for (Unit unit : MyVariable.mapSelfUnit.get(UnitType.Terran_SCV)) {
+				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_SCV)) {
 					double distance = MyUtil.distancePosition(unit.getPosition(), enemyUnit.getPosition());
 					if (minDistance + 10 > distance) {
 						minDistance = distance;
@@ -52,33 +53,33 @@ public class ActionMicroControl implements ActionInterface {
 				minUnit.move(InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
 			}
 
-			if (MyVariable.mapSelfUnit.get(UnitType.Terran_SCV) != null) {
-				// 적의 숫자가 많으면 SCV를 동원한다.
-				if (selfCnt < enemyCnt) {
-					for (Unit unit : MyVariable.mapSelfUnit.get(UnitType.Terran_SCV)) {
-						enemyUnit = null;
-						minDistance = Double.MAX_VALUE;
-						for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
-							double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
-							if (minDistance > distance) {
-								minDistance = distance;
-								enemyUnit = unit2;
-							}
-						}
-
-						if (enemyUnit != null) {
-							unit.attack(enemyUnit);
+			// 적의 숫자가 많으면 SCV를 동원한다.
+			if (selfCnt < enemyCnt) {
+				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_SCV)) {
+					enemyUnit = null;
+					minDistance = Double.MAX_VALUE;
+					for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
+						double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
+						if (minDistance > distance) {
+							minDistance = distance;
+							enemyUnit = unit2;
 						}
 					}
 
+					if (enemyUnit != null) {
+						unit.attack(enemyUnit);
+					}
 				}
+
 			}
+
 		} else {
 			selfCnt = MyVariable.attackUnit.size();
 			enemyCnt = MyVariable.enemyAttactUnit.size();
 
 			// 적과 나의 숫자가 작을 경우에만 동작
-			if (enemyCnt > 1 && selfCnt * enemyCnt < 200) {
+			if (enemyCnt >= 1 && selfCnt * enemyCnt < 800) {
+				// if (enemyCnt >= 1) {
 				double minDistance = Double.MAX_VALUE;
 				Unit minUnit = null;
 				for (Unit unit : MyVariable.attackUnit) {
