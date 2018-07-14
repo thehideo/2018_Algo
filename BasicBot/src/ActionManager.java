@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import bwapi.TilePosition;
+import bwta.BWTA;
+
 public class ActionManager {
 	HashMap<Integer, ArrayList<ActionInterface>> map = new HashMap<Integer, ArrayList<ActionInterface>>();
 
@@ -18,6 +21,12 @@ public class ActionManager {
 				map.put(i, new ArrayList<ActionInterface>());
 			}
 		}
+
+		/*
+		for (TilePosition tp : BWTA.getShortestPath(MyBotModule.Broodwar.self().getStartLocation(), InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.self()).getPoint().toTilePosition())) {
+			ConstructionPlaceFinder.Instance().reserveTiles(tp, 1, 1);
+		}*/
+
 	}
 
 	public void addAction(ActionInterface action, int index) {
