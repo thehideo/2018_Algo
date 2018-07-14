@@ -85,6 +85,16 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 					}
 
 				}
+
+				if (unit.getType() == UnitType.Terran_Bunker) {
+					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+					if (MyVariable.distanceOfMostCloseBunker > distance) {
+						MyVariable.distanceOfMostCloseBunker = distance;
+
+						MyVariable.mostCloseBunker = unit;
+					}
+
+				}
 			}
 
 			// 공격당하고 있는 유닛

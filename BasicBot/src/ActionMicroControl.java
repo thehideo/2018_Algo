@@ -2,6 +2,7 @@ import bwapi.Unit;
 import bwapi.UnitType;
 
 public class ActionMicroControl implements ActionInterface {
+	CommandUtil commandUtil = new CommandUtil();
 
 	@Override
 	public void action() {
@@ -75,7 +76,8 @@ public class ActionMicroControl implements ActionInterface {
 					}
 
 					if (enemyUnit != null) {
-						unit.attack(enemyUnit);
+						commandUtil.attackUnit(unit, enemyUnit);
+						// unit.attack(enemyUnit);
 					}
 				}
 

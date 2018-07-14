@@ -51,9 +51,9 @@ public class CommandUtil {
 
 		// get the unit's current command
 		UnitCommand currentCommand = attacker.getLastCommand();
-
+	
 		// if we've already told this unit to attack this target, ignore this command
-		if (currentCommand.getUnitCommandType() == UnitCommandType.Attack_Move &&	currentCommand.getTargetPosition().equals(targetPosition))
+		if (attacker.isIdle() ==false && currentCommand.getUnitCommandType() == UnitCommandType.Attack_Move &&	currentCommand.getTargetPosition().equals(targetPosition))
 		{
 			return;
 		}

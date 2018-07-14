@@ -12,7 +12,7 @@ public class ActionCreateBuilding implements ActionInterface {
 
 	@Override
 	public void action() {
-		if (MyVariable.isInitialBuildOrderFinished == false && MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
+		if (MyVariable.isInitialBuildOrderFinished == false || MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			return;
 		}
 		// 베슬이 필요하면 바로 건설
@@ -80,9 +80,10 @@ public class ActionCreateBuilding implements ActionInterface {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Comsat_Station, false);
 			}
 
-			if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1) {
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
-			}
+			//
+			//if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1) {
+			//	BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+			//}
 
 			// Terran_Factory 건설
 			if (checkNeedToBuild(UnitType.Terran_Factory, 2) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 3 && MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1)

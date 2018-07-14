@@ -32,6 +32,9 @@ public class MyVariable {
 
 	public static double distanceOfMostFarTank = 0;
 	public static Unit mostFarTank = null;
+	
+	public static double distanceOfMostCloseBunker = Double.MAX_VALUE;
+	public static Unit mostCloseBunker = null;
 
 	// 전체
 	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
@@ -86,6 +89,9 @@ public class MyVariable {
 		MyVariable.defenceUnitCount.clear();
 
 		distanceOfMostFarTank = 0;
+		
+		distanceOfMostCloseBunker=Double.MAX_VALUE;
+		mostCloseBunker=null;
 
 		// 미네랄
 		// MyVariable.minerals.clear();

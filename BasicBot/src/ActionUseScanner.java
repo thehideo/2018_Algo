@@ -11,21 +11,21 @@ public class ActionUseScanner implements ActionInterface {
 
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Zerg_Lurker)) {
 			MyVariable.needTerran_Science_Vessel = true;
-			if (unit.isAttacking()) {
+			if (unit.isAttacking() && unit.isBurrowed() == true) {
 				useScanner_Sweep(unit);
 			}
 		}
 
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar)) {
 			MyVariable.needTerran_Science_Vessel = true;
-			if (unit.isAttacking()) {
+			if (unit.isAttacking() && unit.isCloaked() == true) {
 				useScanner_Sweep(unit);
 			}
 		}
 
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_Wraith)) {
 			MyVariable.needTerran_Science_Vessel = true;
-			if (unit.isAttacking()) {
+			if (unit.isAttacking() && unit.isCloaked() == true) {
 				useScanner_Sweep(unit);
 			}
 		}

@@ -160,6 +160,10 @@ public class GameCommander {
 	public void onUnitShow(Unit unit) {
 		InformationManager.Instance().onUnitShow(unit);
 
+		
+		if(unit.getType()==UnitType.Resource_Mineral_Field || unit.getType()==UnitType.Resource_Mineral_Field_Type_2 || unit.getType()==UnitType.Resource_Mineral_Field_Type_3) {
+			ConstructionPlaceFinder.Instance().getTilesToAvoid().add(unit.getTilePosition());
+		}
 		// ResourceDepot 및 Worker 에 대한 처리
 		// WorkerManager.Instance().onUnitShow(unit);
 	}

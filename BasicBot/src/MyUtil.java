@@ -21,8 +21,8 @@ public class MyUtil {
 
 	static Position GetMyBunkerPosition() {
 		Position bunkerPosition = null;
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
-			bunkerPosition = unit.getPosition();
+		if(MyVariable.mostCloseBunker!=null) {
+			bunkerPosition=MyVariable.mostCloseBunker.getPosition();
 		}
 		return bunkerPosition;
 	}
