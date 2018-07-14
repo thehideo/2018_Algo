@@ -47,7 +47,7 @@ public class ActionCreateUnit implements ActionInterface {
 						}
 					}
 				}
-				
+
 			}
 		}
 	}

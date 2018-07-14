@@ -45,7 +45,6 @@ public class ActionUseScanner implements ActionInterface {
 				break;
 			}
 		}
-
 	}
 
 	// 스캐너 사용이 가능한지 확인

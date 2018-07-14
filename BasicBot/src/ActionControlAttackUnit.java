@@ -34,8 +34,15 @@ public class ActionControlAttackUnit implements ActionInterface {
 					commandUtil.attackMove(unit, saveChokePoint.getCenter());
 				}
 			}
-			if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 2) {
-				MyVariable.isFullScaleAttackStarted = true;
+			if (InformationManager.Instance().enemyRace == Race.Protoss) {
+				if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 2) {
+					MyVariable.isFullScaleAttackStarted = true;
+				}
+			} else {
+
+				if (MyVariable.attackUnit.size() > 30) {
+					MyVariable.isFullScaleAttackStarted = true;
+				}
 			}
 		}
 		// 공격 모드가 되면, 모든 전투유닛들을 적군 Main BaseLocation 로 공격 가도록 합니다
@@ -95,7 +102,11 @@ public class ActionControlAttackUnit implements ActionInterface {
 			} else
 				chokePoint = InformationManager.Instance().getFirstChokePoint(InformationManager.Instance().selfPlayer);
 		} else {
-			chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
+			if (MyVariable.attackUnit.size() > 30) {
+				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+			} else {
+				chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
+			}
 			// 확장했으면 확장부분을 지킨다.
 
 			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1) {

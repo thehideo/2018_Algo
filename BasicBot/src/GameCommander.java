@@ -3,6 +3,7 @@ import bwapi.Position;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
+import bwta.BWTA;
 
 /// 실제 봇프로그램의 본체가 되는 class<br>
 /// 스타크래프트 경기 도중 발생하는 이벤트들이 적절하게 처리되도록 해당 Manager 객체에게 이벤트를 전달하는 관리자 Controller 역할을 합니다
@@ -85,16 +86,26 @@ public class GameCommander {
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Destroy 될 때 발생하는 이벤트를 처리합니다
 	public void onUnitDestroy(Unit unit) {
+
+		if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().isBuilding() == false) {
+			if (MyVariable.enemyBuildingUnit.size() == 0) {
+				MyVariable.enemyBuildingUnit.add(unit.getTilePosition());
+			}
+		}
+
 		// ResourceDepot 및 Worker 에 대한 처리
 		WorkerManager.Instance().onUnitDestroy(unit);
 
 		InformationManager.Instance().onUnitDestroy(unit);
-		
-		if (MyVariable.isInitialBuildOrderFinished == false) {
+
+		if (MyVariable.isInitialBuildOrderFinished == false)
+
+		{
 			if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().isBuilding() == false) {
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(unit.getType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			}
 		}
+
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Morph 될 때 발생하는 이벤트를 처리합니다<br>
@@ -133,7 +144,7 @@ public class GameCommander {
 	/// 유닛(건물/지상유닛/공중유닛)이 Discover 될 때 발생하는 이벤트를 처리합니다<br>
 	/// 아군 유닛이 Create 되었을 때 라든가, 적군 유닛이 Discover 되었을 때 발생합니다
 	public void onUnitDiscover(Unit unit) {
-		
+
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Evade 될 때 발생하는 이벤트를 처리합니다<br>
