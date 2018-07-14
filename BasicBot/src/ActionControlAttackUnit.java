@@ -34,7 +34,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 					commandUtil.attackMove(unit, saveChokePoint.getCenter());
 				}
 			}
-			if (InformationManager.Instance().enemyRace == Race.Protoss) {
+			if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
 				if (MyVariable.attackUnit.size() > 30 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 5) {
 					MyVariable.isFullScaleAttackStarted = true;
 				}
@@ -97,7 +97,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 		Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
 
 		if (InformationManager.Instance().enemyRace == Race.Protoss) {
-			if (MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() >=2) {
+			if (MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() >= 2) {
 				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
 			} else
 				chokePoint = InformationManager.Instance().getFirstChokePoint(InformationManager.Instance().selfPlayer);

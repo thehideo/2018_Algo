@@ -39,7 +39,7 @@ public class ActionCreateBuilding implements ActionInterface {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
-		if (InformationManager.Instance().enemyRace == Race.Protoss) {
+		if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
 
 			if (MyVariable.isFullScaleAttackStarted) {
 				if (checkNeedToBuild(UnitType.Terran_Factory, 3))
@@ -91,7 +91,7 @@ public class ActionCreateBuilding implements ActionInterface {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 
 			// Terran_Machine_Shop 건설
-			if (checkNeedToBuild(UnitType.Terran_Machine_Shop, MyVariable.getSelfUnit(UnitType.Terran_Factory).size())){
+			if (checkNeedToBuild(UnitType.Terran_Machine_Shop, MyVariable.getSelfUnit(UnitType.Terran_Factory).size())) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			}
 
@@ -151,7 +151,7 @@ public class ActionCreateBuilding implements ActionInterface {
 
 	boolean checkNeedToBuild(UnitType unitType, int cnt) {
 		boolean result = false;
-		if (cnt>0 && MyBotModule.Broodwar.self().allUnitCount(unitType) < cnt && BuildManager.Instance().getBuildQueue().getItemCount(unitType) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(unitType, null) == 0) {
+		if (cnt > 0 && MyBotModule.Broodwar.self().allUnitCount(unitType) < cnt && BuildManager.Instance().getBuildQueue().getItemCount(unitType) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(unitType, null) == 0) {
 			result = true;
 		}
 		return result;

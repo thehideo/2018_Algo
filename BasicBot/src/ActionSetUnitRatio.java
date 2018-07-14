@@ -7,7 +7,7 @@ public class ActionSetUnitRatio implements ActionInterface {
 	@Override
 	public void action() {
 		MyVariable.clearUnitRaio();
-		if (InformationManager.Instance().enemyRace == Race.Protoss) {
+		if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
 			if (MyVariable.isFullScaleAttackStarted) {
 				// 방어 유닛 구성
 				MyVariable.defenceUnitCountTotal.put(UnitType.Terran_Marine, 4);
