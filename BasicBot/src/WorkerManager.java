@@ -418,20 +418,21 @@ public class WorkerManager {
 			if (workerData.getWorkers().size() >= 2 && avoidWorkerID != 0 && unit.getID() == avoidWorkerID)
 				continue;
 
-			// Move / Idle Worker
-			if (unit.isCompleted() && (workerData.getWorkerJob(unit) == WorkerData.WorkerJob.Move || workerData.getWorkerJob(unit) == WorkerData.WorkerJob.Idle)) {
-				// if it is a new closest distance, set the pointer
-				double distance = unit.getDistance(buildingPosition.toPosition());
-				if (closestMovingWorker == null || (distance < closestMovingWorkerDistance && unit.isCarryingMinerals() == false && unit.isCarryingGas() == false)) {
-					if (BWTA.isConnected(unit.getTilePosition(), buildingPosition)) {
-						closestMovingWorker = unit;
-						closestMovingWorkerDistance = distance;
-					}
-				}
-			}
+			// jyh
+			/*
+			 * // Move / Idle Worker if (unit.isCompleted() &&
+			 * (workerData.getWorkerJob(unit) == WorkerData.WorkerJob.Move ||
+			 * workerData.getWorkerJob(unit) == WorkerData.WorkerJob.Idle)) { // if it is a
+			 * new closest distance, set the pointer double distance =
+			 * unit.getDistance(buildingPosition.toPosition()); if (closestMovingWorker ==
+			 * null || (distance < closestMovingWorkerDistance && unit.isCarryingMinerals()
+			 * == false && unit.isCarryingGas() == false)) { if
+			 * (BWTA.isConnected(unit.getTilePosition(), buildingPosition)) {
+			 * closestMovingWorker = unit; closestMovingWorkerDistance = distance; } } }
+			 */
 
 			// Move / Idle Worker 가 없을때, 다른 Worker 중에서 차출한다
-			if (unit.isCompleted() && (workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Move && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Idle && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Build && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Scout)) {
+			if (unit.isCompleted() && (workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Move && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Idle && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Build && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Scout && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Gas)) {
 				// if it is a new closest distance, set the pointer
 				double distance = unit.getDistance(buildingPosition.toPosition());
 				if (closestMiningWorker == null || (distance < closestMiningWorkerDistance && unit.isCarryingMinerals() == false && unit.isCarryingGas() == false)) {

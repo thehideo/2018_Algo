@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -27,9 +25,13 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
 			// 벙커 안에 있는 것은 스킵
-			if (unit.isLoaded() == true) {
-				continue;
+
+			if (unit.getType() == UnitType.Terran_Vulture_Spider_Mine) {
+				if (!MyVariable.spinderMinePosition.contains(unit.getPosition())) {
+					MyVariable.spinderMinePosition.add(unit.getPosition());
+				}
 			}
+
 			// 발견되지 않는 Type 추가
 			MyVariable.getSelfUnit(unit.getType()).add(unit);
 
@@ -49,12 +51,14 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 					}
 				}
 				// 공격 유닛
-				else if (unit.canAttack() || unit.getType() == UnitType.Terran_Medic) {
+				// else if (unit.isLoaded() == false && (unit.canAttack() || unit.getType() ==
+				// UnitType.Terran_Medic)) {
+				else if (unit.isLoaded() == false && unit.getType().isBuilding() == false) {
 					MyVariable.attackUnit.add(unit);
 					MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
 					// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
 					refreshIndex++;
-					if (refreshIndex % 50 == 0) {
+					if (refreshIndex % 3 == 0) {
 						int x = unit.getTilePosition().getX();
 						int y = unit.getTilePosition().getY();
 
@@ -69,7 +73,17 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));
 						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y + 1));
 					}
+
 					MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
+				}
+				if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+					if (MyVariable.distanceOfMostFarTank < distance) {
+						MyVariable.distanceOfMostFarTank = distance;
+
+						MyVariable.mostFarTank = unit;
+					}
+
 				}
 			}
 

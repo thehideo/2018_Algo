@@ -54,10 +54,16 @@ public class ActionMicroControl implements ActionInterface {
 				double distance = MyUtil.distancePosition(minUnit.getPosition(), InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
 				minUnit.move(InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
 			}
-
 			// 적의 숫자가 많으면 SCV를 동원한다.
 			if (selfCnt < enemyCnt) {
+				int cnt = 0;
 				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_SCV)) {
+
+					cnt++;
+
+					if (cnt > 10) {
+						break;
+					}
 					enemyUnit = null;
 					minDistance = Double.MAX_VALUE;
 					for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import bwapi.Position;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -28,6 +29,9 @@ public class MyVariable {
 	/////////////////////////////////////////////
 	// 내 유닛 정보
 	/////////////////////////////////////////////
+
+	public static double distanceOfMostFarTank = 0;
+	public static Unit mostFarTank = null;
 
 	// 전체
 	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
@@ -63,6 +67,8 @@ public class MyVariable {
 	// 벙커 지키는 유닛
 	public static ArrayList<Unit> bunkerUnit = new ArrayList<Unit>();
 
+	public static HashSet<Position> spinderMinePosition = new HashSet<Position>();
+
 	public static ArrayList<Unit> minerals = new ArrayList<Unit>();
 
 	public static void clearSelfUnit() {
@@ -78,6 +84,8 @@ public class MyVariable {
 
 		// 방어할 유닛 개수 초기화
 		MyVariable.defenceUnitCount.clear();
+
+		distanceOfMostFarTank = 0;
 
 		// 미네랄
 		// MyVariable.minerals.clear();
@@ -135,6 +143,7 @@ public class MyVariable {
 		MyVariable.enemyAttactingUnit.clear();
 		MyVariable.enemyGroundUnit.clear();
 		MyVariable.enemyUnitAroundMyStartPoint.clear();
+		mostFarTank = null;
 	}
 
 }

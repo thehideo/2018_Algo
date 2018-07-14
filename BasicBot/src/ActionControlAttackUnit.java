@@ -1,3 +1,4 @@
+import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -23,15 +24,17 @@ public class ActionControlAttackUnit implements ActionInterface {
 
 	@Override
 	public void action() {
+		TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
+
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
 		if (MyVariable.isFullScaleAttackStarted == false) {
 			Chokepoint saveChokePoint = getSaveChokePoint();
 			for (Unit unit : MyVariable.attackUnit) {
-				if (unit.getType() != InformationManager.Instance().getWorkerType() && unit.isIdle()) {
+				if (unit.isIdle()) {
 					commandUtil.attackMove(unit, saveChokePoint.getCenter());
 				}
 			}
-			if (MyVariable.attackUnit.size() > 30) {
+			if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 2) {
 				MyVariable.isFullScaleAttackStarted = true;
 			}
 		}
@@ -45,6 +48,8 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (1.0 * MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() / MyVariable.attackUnit.size() > 0.5) {
 				MyVariable.isFullScaleAttackStarted = false;
 			}
+
+			int tank_cnt = MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size();
 
 			for (Unit unit : MyVariable.attackUnit) {
 				// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
@@ -64,10 +69,16 @@ public class ActionControlAttackUnit implements ActionInterface {
 							commandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
 						}
 					}
-					for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
-						commandUtil.attackMove(unit, tilePosition.toPosition());
-						break;
-					}
+
+					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+					if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && MyVariable.distanceOfMostFarTank > 50 && distance > MyVariable.distanceOfMostFarTank) {
+						commandUtil.attackMove(unit, myStartLocation.toPosition());
+					} else
+
+						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
+							commandUtil.attackMove(unit, tilePosition.toPosition());
+							break;
+						}
 				}
 			}
 		}
@@ -75,13 +86,22 @@ public class ActionControlAttackUnit implements ActionInterface {
 
 	// 방어할 ChokePoint를 구한다.
 	static Chokepoint getSaveChokePoint() {
+
 		Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
-		// 확장했으면 확장부분을 지킨다.
 
-		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1) {
-			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+		if (InformationManager.Instance().enemyRace == Race.Protoss) {
+			if (MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() > 4) {
+				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+			} else
+				chokePoint = InformationManager.Instance().getFirstChokePoint(InformationManager.Instance().selfPlayer);
+		} else {
+			chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
+			// 확장했으면 확장부분을 지킨다.
+
+			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1) {
+				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+			}
 		}
-
 		return chokePoint;
 	}
 }
