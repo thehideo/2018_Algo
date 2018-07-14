@@ -21,12 +21,6 @@ public class ActionManager {
 				map.put(i, new ArrayList<ActionInterface>());
 			}
 		}
-
-		/*
-		for (TilePosition tp : BWTA.getShortestPath(MyBotModule.Broodwar.self().getStartLocation(), InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.self()).getPoint().toTilePosition())) {
-			ConstructionPlaceFinder.Instance().reserveTiles(tp, 1, 1);
-		}*/
-
 	}
 
 	public void addAction(ActionInterface action, int index) {

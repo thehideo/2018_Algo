@@ -36,7 +36,6 @@ public class ActionUseScanner implements ActionInterface {
 	int beforeTime = 0;
 
 	void useScanner_Sweep(Unit unit) {
-
 		ArrayList<Unit> units = MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station);
 		for (int i = 0; i < units.size(); i++) {
 			if (units.get(i).canUseTech(TechType.Scanner_Sweep, unit) && MyBotModule.Broodwar.getFrameCount() - beforeTime > 24 * 3) {
