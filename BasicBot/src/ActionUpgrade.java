@@ -10,13 +10,25 @@ public class ActionUpgrade implements ActionInterface {
 
 	@Override
 	public void action() {
-		if (InformationManager.Instance().enemyRace == Race.Protoss) {
-			
+		if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
+
 			if (MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() > 0) {
 				if (checkNeedResearchTechType(TechType.Tank_Siege_Mode)) {
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
 				}
 			}
+
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() > 4)
+				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
+					if (unit.canUpgrade(UpgradeType.Charon_Boosters)) {
+						if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Charon_Boosters) == 0) {
+							{
+								BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Charon_Boosters, false);
+								break;
+							}
+						}
+					}
+				}
 
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Armory)) {
 				if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Weapons)) {

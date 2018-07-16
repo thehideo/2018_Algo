@@ -1,3 +1,4 @@
+import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -6,11 +7,12 @@ public class ActionMicroControl implements ActionInterface {
 
 	@Override
 	public void action() {
+		TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
 		int selfCnt = MyVariable.attackUnit.size() + MyVariable.defenceUnit.size();
 		int enemyCnt = MyVariable.enemyUnitAroundMyStartPoint.size();
 
 		// 적과 나의 숫자가 작을 경우에만 동작
-		if (enemyCnt >= 1 && selfCnt * enemyCnt < 800) {
+		if (enemyCnt >= 1 && selfCnt * enemyCnt < 200) {
 			// if (enemyCnt >= 1) {
 			double minDistance = Double.MAX_VALUE;
 			Unit minUnit = null;
@@ -55,29 +57,40 @@ public class ActionMicroControl implements ActionInterface {
 				double distance = MyUtil.distancePosition(minUnit.getPosition(), InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
 				minUnit.move(InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
 			}
+
 			// 적의 숫자가 많으면 SCV를 동원한다.
-			if (selfCnt < enemyCnt) {
+			if (selfCnt < enemyCnt * 2 && selfCnt < 10) {
 				int cnt = 0;
 				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_SCV)) {
-
-					cnt++;
-
-					if (cnt > 10) {
-						break;
+					double distance1 = 50;
+					if (MyVariable.mostCloseBunker != null) {
+						distance1 = MyUtil.distanceTilePosition(MyVariable.mostCloseBunker.getTilePosition(), myStartLocation.getPoint());
 					}
-					enemyUnit = null;
-					minDistance = Double.MAX_VALUE;
-					for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
-						double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
-						if (minDistance > distance) {
-							minDistance = distance;
-							enemyUnit = unit2;
+					double distance2 = MyUtil.distanceTilePosition(myStartLocation.getPoint(), unit.getPoint().toTilePosition());
+
+					if (distance1 + 3 <= distance2) {
+						commandUtil.attackMove(unit, myStartLocation.getPoint().toPosition());
+					} else {
+						cnt++;
+						if (cnt > 10) {
+							break;
 						}
-					}
+						enemyUnit = null;
+						minDistance = Double.MAX_VALUE;
+						for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
+							if (unit2.getType() != UnitType.Terran_SCV && unit2.getType() != UnitType.Protoss_Probe && unit2.getType() != UnitType.Zerg_Drone) {
+								double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
+								if (minDistance > distance) {
+									minDistance = distance;
+									enemyUnit = unit2;
+								}
+							}
+						}
 
-					if (enemyUnit != null) {
-						commandUtil.attackUnit(unit, enemyUnit);
-						// unit.attack(enemyUnit);
+						if (enemyUnit != null) {
+							commandUtil.attackUnit(unit, enemyUnit);
+							// unit.attack(enemyUnit);
+						}
 					}
 				}
 
@@ -88,7 +101,7 @@ public class ActionMicroControl implements ActionInterface {
 			enemyCnt = MyVariable.enemyAttactUnit.size();
 
 			// 적과 나의 숫자가 작을 경우에만 동작
-			if (enemyCnt >= 1 && selfCnt * enemyCnt < 800) {
+			if (enemyCnt >= 1 && selfCnt * enemyCnt < 200) {
 				// if (enemyCnt >= 1) {
 				double minDistance = Double.MAX_VALUE;
 				Unit minUnit = null;

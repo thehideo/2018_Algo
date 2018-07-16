@@ -28,10 +28,14 @@ public class ActionManager {
 	}
 
 	public void action() {
-		int frame = MyBotModule.Broodwar.getFrameCount() % 24;
-		for (ActionInterface action : map.get(frame)) {
-			action.action();
+		try {
+			int frame = MyBotModule.Broodwar.getFrameCount() % 24;
+			for (ActionInterface action : map.get(frame)) {
+				action.action();
+			}
+			actionMicroControl.action();
+		} catch (Exception ex) {
+
 		}
-		actionMicroControl.action();
 	}
 }

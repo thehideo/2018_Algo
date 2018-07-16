@@ -26,13 +26,15 @@ public class MyVariable {
 	// 뮤탈리스트를 찾았는지
 	public static boolean findLucker = false;
 
+	public static boolean findCarrier = false;
+
 	/////////////////////////////////////////////
 	// 내 유닛 정보
 	/////////////////////////////////////////////
 
 	public static double distanceOfMostFarTank = 0;
 	public static Unit mostFarTank = null;
-	
+
 	public static double distanceOfMostCloseBunker = Double.MAX_VALUE;
 	public static Unit mostCloseBunker = null;
 
@@ -89,9 +91,9 @@ public class MyVariable {
 		MyVariable.defenceUnitCount.clear();
 
 		distanceOfMostFarTank = 0;
-		
-		distanceOfMostCloseBunker=Double.MAX_VALUE;
-		mostCloseBunker=null;
+
+		distanceOfMostCloseBunker = Double.MAX_VALUE;
+		mostCloseBunker = null;
 
 		// 미네랄
 		// MyVariable.minerals.clear();
@@ -108,6 +110,9 @@ public class MyVariable {
 
 	// clearSelfUnit에서 초기화함!!!!!!!!!!
 	public static HashMap<UnitType, Integer> defenceUnitCount = new HashMap<UnitType, Integer>();
+
+	public static double distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
+	public static Unit mostCloseEnemyUnit = null;
 
 	public static void clearUnitRaio() {
 		MyVariable.attackUnitRatio.clear();

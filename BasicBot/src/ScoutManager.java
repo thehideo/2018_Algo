@@ -4,8 +4,10 @@ import java.util.Vector;
 
 import bwapi.Color;
 import bwapi.Position;
+import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.Unit;
+import bwapi.UnitType;
 import bwta.BWTA;
 import bwta.BaseLocation;
 import bwta.Region;
@@ -152,13 +154,18 @@ public class ScoutManager {
 					commandUtil.move(currentScoutUnit, currentScoutTargetPosition);
 
 				} else {
-					// currentScoutStatus = ScoutStatus.MoveAroundEnemyBaseLocation.ordinal();
-					// currentScoutTargetPosition = getScoutFleePositionFromEnemyRegionVertices();
-					// commandUtil.move(currentScoutUnit, currentScoutTargetPosition);
+					if (MyVariable.getEnemyUnit(UnitType.Protoss_Probe).size() > 0 && MyBotModule.Broodwar.enemy().getRace() == Race.Protoss) {
+						currentScoutUnit.attack(MyVariable.getEnemyUnit(UnitType.Protoss_Probe).get(0));
+					} else if (MyVariable.getEnemyUnit(UnitType.Zerg_Drone).size() > 0 && MyBotModule.Broodwar.enemy().getRace() == Race.Zerg) {
+						currentScoutUnit.attack(MyVariable.getEnemyUnit(UnitType.Zerg_Drone).get(0));
+					} else if (MyVariable.getEnemyUnit(UnitType.Terran_SCV).size() > 0 && MyBotModule.Broodwar.enemy().getRace() == Race.Protoss) {
+						currentScoutUnit.attack(MyVariable.getEnemyUnit(UnitType.Terran_SCV).get(0));
+					} else {
+						WorkerManager.Instance().setIdleWorker(currentScoutUnit);
+						currentScoutStatus = ScoutStatus.NoScout.ordinal();
+						currentScoutTargetPosition = myBaseLocation.getPosition();
+					}
 
-					WorkerManager.Instance().setIdleWorker(currentScoutUnit);
-					currentScoutStatus = ScoutStatus.NoScout.ordinal();
-					currentScoutTargetPosition = myBaseLocation.getPosition();
 				}
 			}
 		}

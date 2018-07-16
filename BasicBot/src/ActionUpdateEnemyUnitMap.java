@@ -14,8 +14,13 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 		TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
 
 		for (Unit unit : MyBotModule.Broodwar.enemy().getUnits()) {
+
 			// 정상 유닛이면
 			if (unit.exists() && unit.getType() != UnitType.Unknown && unit.getPosition().isValid()) {
+
+				if (unit.getType() == UnitType.Protoss_Interceptor) {
+					continue;
+				}
 
 				MyVariable.getEnemyUnit(unit.getType()).add(unit);
 
@@ -44,6 +49,11 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 					if (distance < 30) {
 						MyVariable.enemyUnitAroundMyStartPoint.add(unit);
 					}
+
+					if (MyVariable.distanceOfMostCloseEnemyUnit > distance) {
+						MyVariable.distanceOfMostCloseEnemyUnit = distance;
+						MyVariable.mostCloseEnemyUnit = unit;
+					}
 				}
 			}
 		}
@@ -53,6 +63,9 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 		}
 		if (MyVariable.getEnemyUnit(UnitType.Zerg_Lurker).size() > 0) {
 			MyVariable.findLucker = true;
+		}
+		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
+			MyVariable.findCarrier = true;
 		}
 
 	}
