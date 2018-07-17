@@ -478,7 +478,7 @@ public class ConstructionPlaceFinder {
 
 					TilePosition tp = new TilePosition(x, y);
 
-					if (MyVariable.addonPlace.contains(tp)) {
+					if (MyVariable.addonPlace.contains(tp) && b.getType() != UnitType.Terran_Command_Center) {
 						return false;
 					}
 
