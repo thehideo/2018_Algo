@@ -1,3 +1,4 @@
+
 import bwapi.Race;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -64,7 +65,6 @@ public class ActionSupplyManagement implements ActionInterface {
 					onBuildingSupplyCount += ConstructionManager.Instance().getConstructionQueueItemCount(InformationManager.Instance().getBasicSupplyProviderUnitType(), null) * InformationManager.Instance().getBasicSupplyProviderUnitType().supplyProvided();
 				}
 
-
 				if (currentSupplyShortage > onBuildingSupplyCount) {
 
 					// BuildQueue 최상단에 SupplyProvider 가 있지 않으면 enqueue 한다
@@ -76,7 +76,7 @@ public class ActionSupplyManagement implements ActionInterface {
 						}
 					}
 					if (isToEnqueue) {
-						BuildManager.Instance().buildQueue.queueAsHighestPriority(new MetaType(InformationManager.Instance().getBasicSupplyProviderUnitType()), true);
+						BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Supply_Depot, BuildOrderItem.SeedPositionStrategy.SupplyDepotLocation, true);
 					}
 				}
 			}

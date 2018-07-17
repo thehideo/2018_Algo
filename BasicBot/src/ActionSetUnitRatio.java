@@ -20,28 +20,20 @@ public class ActionSetUnitRatio implements ActionInterface {
 				MyVariable.defenceUnitCountTotal.put(UnitType.Terran_Marine, 8);
 				MyVariable.defenceUnitCountTotal.put(UnitType.Terran_Goliath, 2);
 			}
-			// }
 
-			// 공격 유닛 비율
-			// if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 10) {
-			// MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 2);
-			// }
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
-
 			if (MyVariable.findCarrier == true) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 3);
 			} else {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 3);
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 2);
 			}
-
-			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() <= 20) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 10);
+			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() <= 30) {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 3);
+				if (MyVariable.getSelfUnit(UnitType.Terran_Medic).size() <= 5) {
+					MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
+				}
 			}
-
-			// if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() < 12) {
-			// MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 3);
-			// }
 		} else {
 			if (MyVariable.isFullScaleAttackStarted) {
 				// 방어 유닛 구성

@@ -6,6 +6,8 @@ import bwapi.Position;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
+import bwta.BWTA;
+import bwta.Chokepoint;
 
 public class MyVariable {
 
@@ -31,6 +33,10 @@ public class MyVariable {
 	/////////////////////////////////////////////
 	// 내 유닛 정보
 	/////////////////////////////////////////////
+
+	public static TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation();
+
+	public static TilePosition myFirstchokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition()).getPoint().toTilePosition();
 
 	public static double distanceOfMostFarTank = 0;
 	public static Unit mostFarTank = null;

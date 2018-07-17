@@ -94,25 +94,14 @@ public class ActionControlAttackUnit implements ActionInterface {
 	// 방어할 ChokePoint를 구한다.
 	static Chokepoint getSaveChokePoint() {
 
+		// 기본은 첫번째 초크 포인트
 		Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
 
-		if (InformationManager.Instance().enemyRace == Race.Protoss) {
-			if (MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() >= 2) {
-				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
-			} else
-				chokePoint = InformationManager.Instance().getFirstChokePoint(InformationManager.Instance().selfPlayer);
-		} else {
-			if (MyVariable.attackUnit.size() > 30) {
-				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
-			} else {
-				chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
-			}
-			// 확장했으면 확장부분을 지킨다.
-
-			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1) {
-				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
-			}
+		// 확장했으면 확장부분을 지킨다.
+		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1) {
+			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
 		}
+
 		return chokePoint;
 	}
 }

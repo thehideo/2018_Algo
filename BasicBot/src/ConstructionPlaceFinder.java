@@ -76,6 +76,45 @@ public class ConstructionPlaceFinder {
 				desiredPosition = getBuildLocationNear(buildingType, InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self()).getTilePosition());
 				break;
 
+			case SupplyDepotLocation:
+
+				int totalX = 0;
+				int totalY = 0;
+
+				int avgX = 0;
+				int avgY = 0;
+
+				int minx = Integer.MAX_VALUE;
+				int miny = Integer.MAX_VALUE;
+
+				for (int i = 0; i < MyBotModule.Broodwar.getStartLocations().size(); i++) {
+					totalX += MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX();
+					totalY += MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getY();
+					if (minx > MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX()) {
+						minx = MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX();
+					}
+					if (miny > MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getY()) {
+						miny = MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getY();
+					}
+				}
+				avgX = totalX / MyBotModule.Broodwar.getStartLocations().size();
+				avgY = totalY / MyBotModule.Broodwar.getStartLocations().size();
+
+				desiredPosition = MyVariable.myStartLocation;
+
+				int xx = -1;
+				int yy = -1;
+				if (avgX < desiredPosition.getX()) {
+					xx = 1;
+				}
+				if (avgY < desiredPosition.getY()) {
+					yy = 1;
+				}
+
+				desiredPosition = new TilePosition(desiredPosition.getX(), desiredPosition.getY() + yy * miny);
+
+				break;
+
 			case MainBaseBackYard:
 				tempBaseLocation = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self());
 				tempChokePoint = InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.self());
@@ -246,6 +285,16 @@ public class ConstructionPlaceFinder {
 
 		while (buildingGapSpace >= 0) {
 			testPosition = getBuildLocationNear(buildingType, desiredPosition, buildingGapSpace, constructionPlaceSearchMethod);
+			
+			if(testPosition==null && buildingType==UnitType.Terran_Supply_Depot) {
+				for(Unit unit :  MyVariable.getSelfUnit(UnitType.Terran_Supply_Depot)) {
+					testPosition = getBuildLocationNear(buildingType, unit.getPosition().toTilePosition(), 0, constructionPlaceSearchMethod);
+					if(testPosition!=null) {
+						break;
+					}
+				}
+			}
+			
 			if (testPosition != TilePosition.None && testPosition != TilePosition.Invalid)
 				return testPosition;
 			// 찾을 수 없다면, buildingGapSpace 값을 줄여서 다시 탐색한다
@@ -262,6 +311,8 @@ public class ConstructionPlaceFinder {
 			} else {
 				break;
 			}
+			
+			
 		}
 		return TilePosition.None;
 	}
@@ -663,170 +714,121 @@ public class ConstructionPlaceFinder {
 	}
 
 	/// BaseLocation 과 Mineral / Geyser 사이의 타일들을 찾아 _tilesToAvoid 에 저장합니다<br>
-		/// BaseLocation 과 Geyser 사이, ResourceDepot 건물과 Mineral 사이 공간으로 건물 건설 장소를 정하면<br> 
-		/// 일꾼 유닛들이 장애물이 되어서 건설 시작되기까지 시간이 오래걸리고, 지어진 건물이 장애물이 되어서 자원 채취 속도도 느려지기 때문에, 이 공간은 건물을 짓지 않는 공간으로 두기 위함입니다
-		public void setTilesToAvoid()
-		{
-			// ResourceDepot 건물의 width = 4 타일, height = 3 타일
-			// Geyser 의            width = 4 타일, height = 2 타일
-			// Mineral 의           width = 2 타일, height = 1 타일
+	/// BaseLocation 과 Geyser 사이, ResourceDepot 건물과 Mineral 사이 공간으로 건물 건설 장소를
+	/// 정하면<br>
+	/// 일꾼 유닛들이 장애물이 되어서 건설 시작되기까지 시간이 오래걸리고, 지어진 건물이 장애물이 되어서 자원 채취 속도도 느려지기 때문에, 이
+	/// 공간은 건물을 짓지 않는 공간으로 두기 위함입니다
+	public void setTilesToAvoid() {
+		// ResourceDepot 건물의 width = 4 타일, height = 3 타일
+		// Geyser 의 width = 4 타일, height = 2 타일
+		// Mineral 의 width = 2 타일, height = 1 타일
 
-			for (BaseLocation base : BWTA.getBaseLocations())
-			{
-				// Island 일 경우 건물 지을 공간이 절대적으로 좁기 때문에 건물 안짓는 공간을 두지 않는다
-				if (base.isIsland()) continue;
-				if (BWTA.isConnected(base.getTilePosition(), InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self()).getTilePosition()) == false) continue;
+		for (BaseLocation base : BWTA.getBaseLocations()) {
+			// Island 일 경우 건물 지을 공간이 절대적으로 좁기 때문에 건물 안짓는 공간을 두지 않는다
+			if (base.isIsland())
+				continue;
+			if (BWTA.isConnected(base.getTilePosition(), InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self()).getTilePosition()) == false)
+				continue;
 
-				// dimensions of the base location
-				int bx0 = base.getTilePosition().getX();
-				int by0 = base.getTilePosition().getY();
-				int bx4 = base.getTilePosition().getX() + 4;
-				int by3 = base.getTilePosition().getY() + 3;
+			// dimensions of the base location
+			int bx0 = base.getTilePosition().getX();
+			int by0 = base.getTilePosition().getY();
+			int bx4 = base.getTilePosition().getX() + 4;
+			int by3 = base.getTilePosition().getY() + 3;
 
-				// BaseLocation 과 Geyser 사이의 타일을 BWTA::getShortestPath 를 사용해서 구한 후 _tilesToAvoid 에 추가
-				for (Unit geyser : base.getGeysers())
-				{
-					TilePosition closeGeyserPosition = geyser.getInitialTilePosition();
+			// BaseLocation 과 Geyser 사이의 타일을 BWTA::getShortestPath 를 사용해서 구한 후 _tilesToAvoid
+			// 에 추가
+			for (Unit geyser : base.getGeysers()) {
+				TilePosition closeGeyserPosition = geyser.getInitialTilePosition();
 
-					// dimensions of the closest geyser
-					int gx0 = closeGeyserPosition.getX();
-					int gy0 = closeGeyserPosition.getY();
-					int gx4 = closeGeyserPosition.getX() + 4;
-					int gy2 = closeGeyserPosition.getY() + 2;
+				// dimensions of the closest geyser
+				int gx0 = closeGeyserPosition.getX();
+				int gy0 = closeGeyserPosition.getY();
+				int gx4 = closeGeyserPosition.getX() + 4;
+				int gy2 = closeGeyserPosition.getY() + 2;
 
-					for (int i = bx0; i < bx4; i++) {
-						for (int j = by0; j < by3; j++) {
-							for (int k = gx0; k < gx4; k++) {
-								for (int l = gy0; l < gy2; l++) {
-									List<TilePosition> tileList = (List<TilePosition>) BWTA.getShortestPath(new TilePosition(i, j), new TilePosition(k, l));
-									for (TilePosition t : tileList) {
-										tilesToAvoid.add(t);									
-									}
+				for (int i = bx0; i < bx4; i++) {
+					for (int j = by0; j < by3; j++) {
+						for (int k = gx0; k < gx4; k++) {
+							for (int l = gy0; l < gy2; l++) {
+								List<TilePosition> tileList = (List<TilePosition>) BWTA.getShortestPath(new TilePosition(i, j), new TilePosition(k, l));
+								for (TilePosition t : tileList) {
+									tilesToAvoid.add(t);
 								}
 							}
 						}
 					}
-
-					/*
-					// Geyser 가 Base Location 의 어느방향에 있는가에 따라 최소한의 타일만 판단해서 tilesToAvoid 에 추가하는 방법도 있다
-					//
-					//    11시방향   12시방향  1시방향
-					//
-					//     9시방향             3시방향
-					//
-					//     7시방향    6시방향  5시방향
-					int whichPosition = 0;
-
-					// dimensions of the tilesToAvoid
-					int vx0 = 0;
-					int vx1 = 0;
-					int vy0 = 0;
-					int vy1 = 0;
-
-					// 11시 방향
-					if (gx0 < bx0 && gy0 < by0) {
-						vx0 = gx0 + 1; // Geyser 의 중앙
-						vy0 = gy0;     // Geyser 의 상단
-						vx1 = bx0 + 3; // ResourceDepot 의 중앙
-						vy1 = by0;     // ResourceDepot의 상단
-					}
-					// 9시 방향
-					else if (gx0 < bx0 && gy0 <= by3) {
-						vx0 = gx4; // Geyser 의 오른쪽끝
-						vy0 = gy0; // Geyser 의 상단
-						vx1 = bx0; // ResourceDepot 의 왼쪽끝
-						vy1 = gy2; // Geyser 의 하단 
-					}
-					// 7시 방향
-					else if (gx0 < bx0 && gy2 > by3) {
-						vx0 = gx0 + 1; // Geyser 의 상단 중앙
-						vy0 = by3;     // ResourceDepot 의 하단
-						vx1 = bx0 + 3; // ResourceDepot 의 하단 중앙
-						vy1 = gy0;     // Geyser 의 상단
-					}
-					// 6시 방향
-					else if (gx0 < bx4 && gy0 > by3) {
-						vx0 = bx0 + 1; // ResourceDepot 의 하단 중앙
-						vy0 = by3;     // ResourceDepot 의 하단 
-						vx1 = gx0 + 3; // Geyser 의 상단 중앙
-						vy1 = gy0;     // Geyser 의 상단
-					}
-					// 12시 방향
-					else if (gx0 < bx4 && gy0 < by0) {
-						vx0 = gx0;     // Geyser 의 하단 왼쪽끝
-						vy0 = gy2; 
-						vx1 = gx0 + 3; // Geyser 의 중앙
-						vy1 = by0;     // ResourceDepot 의 상단
-					}
-					// 1시 방향
-					else if (gx0 > bx0 && gy0 < by0) {
-						vx0 = bx0 + 2; // ResourceDepot 의 상단 중앙
-						vy0 = gy0 + 1; // Geyser 의 하단
-						vx1 = gx0 + 2; // Geyser 의 중앙
-						vy1 = by0 + 1; // ResourceDepot 의 상단
-					}
-					// 5시 방향
-					else if (gx0 > bx0 && gy0 >= by3) {
-						vx0 = bx0 + 2; // ResourceDepot 의 하단 중앙
-						vy0 = by0 + 2; // ResourceDepot 의 하단
-						vx1 = gx0 + 2; // Geyser 의 중앙
-						vy1 = gy0 + 1; // Geyser 의 하단
-					}
-					// 3시 방향
-					else if (gx0 > bx0 && gy0 >= by0) {
-						vx0 = bx4; // ResourceDepot 의 오른쪽끝
-						vy0 = gy0; // Geyser 의 상단
-						vx1 = gx0; // Geyser 의 왼쪽 끝
-						vy1 = gy2; // Geyser 의 하단
-					}
-
-					for (int i = vx0; i < vx1; i++) {
-						for (int j = vy0; j < vy1; j++) {
-							_tilesToAvoid.insert(BWAPI::TilePosition(i, j));
-						}
-					}
-					*/
-
 				}
 
-				// BaseLocation 과 Mineral 사이의 타일을 BWTA::getShortestPath 를 사용해서 구한 후 _tilesToAvoid 에 추가
-				for (Unit mineral : base.getMinerals())
-				{
-					TilePosition closeMineralPosition = mineral.getInitialTilePosition();
+				/*
+				 * // Geyser 가 Base Location 의 어느방향에 있는가에 따라 최소한의 타일만 판단해서 tilesToAvoid 에 추가하는
+				 * 방법도 있다 // // 11시방향 12시방향 1시방향 // // 9시방향 3시방향 // // 7시방향 6시방향 5시방향 int
+				 * whichPosition = 0;
+				 * 
+				 * // dimensions of the tilesToAvoid int vx0 = 0; int vx1 = 0; int vy0 = 0; int
+				 * vy1 = 0;
+				 * 
+				 * // 11시 방향 if (gx0 < bx0 && gy0 < by0) { vx0 = gx0 + 1; // Geyser 의 중앙 vy0 =
+				 * gy0; // Geyser 의 상단 vx1 = bx0 + 3; // ResourceDepot 의 중앙 vy1 = by0; //
+				 * ResourceDepot의 상단 } // 9시 방향 else if (gx0 < bx0 && gy0 <= by3) { vx0 = gx4;
+				 * // Geyser 의 오른쪽끝 vy0 = gy0; // Geyser 의 상단 vx1 = bx0; // ResourceDepot 의 왼쪽끝
+				 * vy1 = gy2; // Geyser 의 하단 } // 7시 방향 else if (gx0 < bx0 && gy2 > by3) { vx0 =
+				 * gx0 + 1; // Geyser 의 상단 중앙 vy0 = by3; // ResourceDepot 의 하단 vx1 = bx0 + 3; //
+				 * ResourceDepot 의 하단 중앙 vy1 = gy0; // Geyser 의 상단 } // 6시 방향 else if (gx0 < bx4
+				 * && gy0 > by3) { vx0 = bx0 + 1; // ResourceDepot 의 하단 중앙 vy0 = by3; //
+				 * ResourceDepot 의 하단 vx1 = gx0 + 3; // Geyser 의 상단 중앙 vy1 = gy0; // Geyser 의 상단
+				 * } // 12시 방향 else if (gx0 < bx4 && gy0 < by0) { vx0 = gx0; // Geyser 의 하단 왼쪽끝
+				 * vy0 = gy2; vx1 = gx0 + 3; // Geyser 의 중앙 vy1 = by0; // ResourceDepot 의 상단 }
+				 * // 1시 방향 else if (gx0 > bx0 && gy0 < by0) { vx0 = bx0 + 2; // ResourceDepot 의
+				 * 상단 중앙 vy0 = gy0 + 1; // Geyser 의 하단 vx1 = gx0 + 2; // Geyser 의 중앙 vy1 = by0 +
+				 * 1; // ResourceDepot 의 상단 } // 5시 방향 else if (gx0 > bx0 && gy0 >= by3) { vx0 =
+				 * bx0 + 2; // ResourceDepot 의 하단 중앙 vy0 = by0 + 2; // ResourceDepot 의 하단 vx1 =
+				 * gx0 + 2; // Geyser 의 중앙 vy1 = gy0 + 1; // Geyser 의 하단 } // 3시 방향 else if (gx0
+				 * > bx0 && gy0 >= by0) { vx0 = bx4; // ResourceDepot 의 오른쪽끝 vy0 = gy0; //
+				 * Geyser 의 상단 vx1 = gx0; // Geyser 의 왼쪽 끝 vy1 = gy2; // Geyser 의 하단 }
+				 * 
+				 * for (int i = vx0; i < vx1; i++) { for (int j = vy0; j < vy1; j++) {
+				 * _tilesToAvoid.insert(BWAPI::TilePosition(i, j)); } }
+				 */
 
-					// dimensions of the closest mineral
-					int mx0 = closeMineralPosition.getX();
-					int my0 = closeMineralPosition.getY();
-					int mx2 = mx0 + 2;
-					int my1 = my0 + 1;
+			}
 
-					for (int i = bx0; i < bx4; i++) {
-						for (int j = by0; j < by3; j++) {
-							for (int k = mx0; k < mx2; k++) {
-								List<TilePosition> tileList = (List<TilePosition>) BWTA.getShortestPath(new TilePosition(i, j), new TilePosition(k, my0));
-								for (TilePosition t : tileList) {
-									tilesToAvoid.add(t);								
-								}
+			// BaseLocation 과 Mineral 사이의 타일을 BWTA::getShortestPath 를 사용해서 구한 후
+			// _tilesToAvoid 에 추가
+			for (Unit mineral : base.getMinerals()) {
+				TilePosition closeMineralPosition = mineral.getInitialTilePosition();
+
+				// dimensions of the closest mineral
+				int mx0 = closeMineralPosition.getX();
+				int my0 = closeMineralPosition.getY();
+				int mx2 = mx0 + 2;
+				int my1 = my0 + 1;
+
+				for (int i = bx0; i < bx4; i++) {
+					for (int j = by0; j < by3; j++) {
+						for (int k = mx0; k < mx2; k++) {
+							List<TilePosition> tileList = (List<TilePosition>) BWTA.getShortestPath(new TilePosition(i, j), new TilePosition(k, my0));
+							for (TilePosition t : tileList) {
+								tilesToAvoid.add(t);
 							}
 						}
 					}
-					if(InformationManager.Instance().enemyRace != Race.Protoss) {
-						
-						int fromx = mineral.getTilePosition().getX()-2;
-						int fromy = mineral.getTilePosition().getY()-2;
-						
-						for (int x = fromx; x > 0 && x < fromx + 6 && x < MyBotModule.Broodwar.mapWidth(); x++)
-					        {
-					            for (int y = fromy ; y > 0 && y < fromy + 6 && y < MyBotModule.Broodwar.mapHeight(); y++)
-					            {
-								TilePosition temp = new TilePosition(x,y);
-								tilesToAvoid.add(temp);
-							}
+				}
+				if (InformationManager.Instance().enemyRace != Race.Protoss) {
+
+					int fromx = mineral.getTilePosition().getX() - 2;
+					int fromy = mineral.getTilePosition().getY() - 2;
+
+					for (int x = fromx; x > 0 && x < fromx + 6 && x < MyBotModule.Broodwar.mapWidth(); x++) {
+						for (int y = fromy; y > 0 && y < fromy + 6 && y < MyBotModule.Broodwar.mapHeight(); y++) {
+							TilePosition temp = new TilePosition(x, y);
+							tilesToAvoid.add(temp);
 						}
 					}
 				}
 			}
 		}
+	}
 
 	/// BaseLocation 과 Mineral / Geyser 사이의 타일들의 목록을 리턴합니다
 	public Set<TilePosition> getTilesToAvoid() {

@@ -55,21 +55,30 @@ public class ActionCreateBuilding implements ActionInterface {
 				MyVariable.needTerran_Science_Vessel = true;
 			}
 
-			if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2)
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+			// 벙커 건설
+			if (InformationManager.Instance().enemyRace == Race.Protoss) {
+				if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2)
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
 
-			if (checkNeedToBuild(UnitType.Terran_Bunker, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 6)
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+				if (checkNeedToBuild(UnitType.Terran_Bunker, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 6)
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
 
-			if (checkNeedToBuild(UnitType.Terran_Bunker, 3) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 10)
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+			//	if (checkNeedToBuild(UnitType.Terran_Bunker, 3) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 10)
+			//		BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+
+			} else if (InformationManager.Instance().enemyRace == Race.Terran) {
+				if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2)
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+
+				if (checkNeedToBuild(UnitType.Terran_Bunker, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 6)
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+
+			//	if (checkNeedToBuild(UnitType.Terran_Bunker, 3) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 10)
+			//		BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+			}
 
 			if (checkNeedToBuild(UnitType.Terran_Refinery, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2)
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-
-			if (checkNeedToBuild(UnitType.Terran_Academy, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 3 && MyVariable.getSelfUnit(UnitType.Terran_Missile_Turret).size() >= 2) {
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Academy, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-			}
 
 			if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
@@ -77,12 +86,27 @@ public class ActionCreateBuilding implements ActionInterface {
 
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 1) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1) {
-					
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+					Position BunkerDonthaveTurretPosition = MyUtil.GetMyBunkerDonthaveTurretPosition();
+					if (BunkerDonthaveTurretPosition == null) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+					} else {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BunkerDonthaveTurretPosition.toTilePosition(), false);
+					}
 				}
-
-				if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 3) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+				if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2) {
+					Position BunkerDonthaveTurretPosition = MyUtil.GetMyBunkerDonthaveTurretPosition();
+					if (BunkerDonthaveTurretPosition == null) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+					} else {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BunkerDonthaveTurretPosition.toTilePosition(), false);
+					}
+				}
+				if (checkNeedToBuild(UnitType.Terran_Academy, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Missile_Turret).size() >= 2) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Academy, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+				}
+			} else {
+				if (checkNeedToBuild(UnitType.Terran_Academy, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Academy, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 				}
 			}
 

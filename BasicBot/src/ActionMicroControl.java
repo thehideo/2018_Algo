@@ -11,33 +11,51 @@ public class ActionMicroControl implements ActionInterface {
 		int selfCnt = MyVariable.attackUnit.size() + MyVariable.defenceUnit.size();
 		int enemyCnt = MyVariable.enemyUnitAroundMyStartPoint.size();
 
+		// 내 본진 주위에 다크템플러가 있고, 보이는 경우에 가장 먼저 공격한다.
+		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0 && MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0) {
+			for (Unit enemyUnit : MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar)) {
+				if (enemyUnit.isCloaked() == false) {
+					for (Unit selfUnit : MyVariable.attackUnit) {
+						commandUtil.attackUnit(selfUnit, enemyUnit);
+					}
+					for (Unit selfUnit : MyVariable.defenceUnit) {
+						commandUtil.attackUnit(selfUnit, enemyUnit);
+					}
+					return;
+				}
+			}
+		}
+
 		// 적과 나의 숫자가 작을 경우에만 동작
 		if (enemyCnt >= 1 && selfCnt * enemyCnt < 200) {
 			// if (enemyCnt >= 1) {
 			double minDistance = Double.MAX_VALUE;
 			Unit minUnit = null;
 			Unit enemyUnit = null;
-			for (Unit unit : MyVariable.attackUnit) {
-				for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
-					double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
-					if (unit.getType().groundWeapon() != null && unit.getType().groundWeapon().maxRange() > distance)
-						if (minDistance > distance) {
-							minDistance = distance;
-							minUnit = unit;
-							enemyUnit = unit2;
-						}
-				}
-			}
 
-			for (Unit unit : MyVariable.defenceUnit) {
-				for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
-					double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
-					if (unit.getType().groundWeapon() != null && unit.getType().groundWeapon().maxRange() > distance)
-						if (minDistance > distance) {
-							minDistance = distance;
-							minUnit = unit;
-							enemyUnit = unit2;
-						}
+			if (enemyUnit == null) {
+				for (Unit unit : MyVariable.attackUnit) {
+					for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
+						double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
+						if (unit.getType().groundWeapon() != null && unit.getType().groundWeapon().maxRange() > distance)
+							if (minDistance > distance) {
+								minDistance = distance;
+								minUnit = unit;
+								enemyUnit = unit2;
+							}
+					}
+				}
+
+				for (Unit unit : MyVariable.defenceUnit) {
+					for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
+						double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
+						if (unit.getType().groundWeapon() != null && unit.getType().groundWeapon().maxRange() > distance)
+							if (minDistance > distance) {
+								minDistance = distance;
+								minUnit = unit;
+								enemyUnit = unit2;
+							}
+					}
 				}
 			}
 
@@ -55,7 +73,9 @@ public class ActionMicroControl implements ActionInterface {
 			// 가장 가까운 유닛은 도망간다.
 			if (minUnit != null) {
 				double distance = MyUtil.distancePosition(minUnit.getPosition(), InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
-				minUnit.move(InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
+				if (distance > 3) {
+					minUnit.move(InformationManager.Instance().selfPlayer.getStartLocation().toPosition());
+				}
 			}
 
 			// 적의 숫자가 많으면 SCV를 동원한다.
@@ -63,6 +83,7 @@ public class ActionMicroControl implements ActionInterface {
 				int cnt = 0;
 				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_SCV)) {
 					double distance1 = 50;
+
 					if (MyVariable.mostCloseBunker != null) {
 						distance1 = MyUtil.distanceTilePosition(MyVariable.mostCloseBunker.getTilePosition(), myStartLocation.getPoint());
 					}
@@ -89,7 +110,6 @@ public class ActionMicroControl implements ActionInterface {
 
 						if (enemyUnit != null) {
 							commandUtil.attackUnit(unit, enemyUnit);
-							// unit.attack(enemyUnit);
 						}
 					}
 				}

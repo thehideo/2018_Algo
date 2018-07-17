@@ -19,10 +19,27 @@ public class MyUtil {
 		return Math.sqrt((a.getX() - b.getX()) * (a.getX() - b.getX()) + (a.getY() - b.getY()) * (a.getY() - b.getY()));
 	}
 
+	static Position GetMyBunkerDonthaveTurretPosition() {
+		Position bunkerPosition = null;
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
+			boolean find = false;
+			for (Unit unit2 : MyVariable.getSelfUnit(UnitType.Terran_Missile_Turret)) {
+				if (distanceTilePosition(unit.getTilePosition(), unit2.getTilePosition()) < 4) {
+					find = true;
+					break;
+				}
+			}
+			if (find == false) {
+				bunkerPosition = unit.getPoint();
+			}
+		}
+		return bunkerPosition;
+	}
+
 	static Position GetMyBunkerPosition() {
 		Position bunkerPosition = null;
-		if(MyVariable.mostCloseBunker!=null) {
-			bunkerPosition=MyVariable.mostCloseBunker.getPosition();
+		if (MyVariable.mostCloseBunker != null) {
+			bunkerPosition = MyVariable.mostCloseBunker.getPosition();
 		}
 		return bunkerPosition;
 	}
