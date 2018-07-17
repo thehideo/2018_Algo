@@ -63,8 +63,10 @@ public class ActionCreateBuilding implements ActionInterface {
 				if (checkNeedToBuild(UnitType.Terran_Bunker, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 6)
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
 
-			//	if (checkNeedToBuild(UnitType.Terran_Bunker, 3) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 10)
-			//		BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+				// if (checkNeedToBuild(UnitType.Terran_Bunker, 3) &&
+				// MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 10)
+				// BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker,
+				// BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
 
 			} else if (InformationManager.Instance().enemyRace == Race.Terran) {
 				if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2)
@@ -73,8 +75,10 @@ public class ActionCreateBuilding implements ActionInterface {
 				if (checkNeedToBuild(UnitType.Terran_Bunker, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 6)
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
 
-			//	if (checkNeedToBuild(UnitType.Terran_Bunker, 3) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 10)
-			//		BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
+				// if (checkNeedToBuild(UnitType.Terran_Bunker, 3) &&
+				// MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 10)
+				// BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker,
+				// BuildOrderItem.SeedPositionStrategy.FirstChokePoint, false);
 			}
 
 			if (checkNeedToBuild(UnitType.Terran_Refinery, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2)
