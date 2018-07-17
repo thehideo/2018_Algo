@@ -285,16 +285,16 @@ public class ConstructionPlaceFinder {
 
 		while (buildingGapSpace >= 0) {
 			testPosition = getBuildLocationNear(buildingType, desiredPosition, buildingGapSpace, constructionPlaceSearchMethod);
-			
-			if(testPosition==null && buildingType==UnitType.Terran_Supply_Depot) {
-				for(Unit unit :  MyVariable.getSelfUnit(UnitType.Terran_Supply_Depot)) {
+
+			if (testPosition == null && buildingType == UnitType.Terran_Supply_Depot) {
+				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Supply_Depot)) {
 					testPosition = getBuildLocationNear(buildingType, unit.getPosition().toTilePosition(), 0, constructionPlaceSearchMethod);
-					if(testPosition!=null) {
+					if (testPosition != null) {
 						break;
 					}
 				}
 			}
-			
+
 			if (testPosition != TilePosition.None && testPosition != TilePosition.Invalid)
 				return testPosition;
 			// 찾을 수 없다면, buildingGapSpace 값을 줄여서 다시 탐색한다
@@ -311,8 +311,7 @@ public class ConstructionPlaceFinder {
 			} else {
 				break;
 			}
-			
-			
+
 		}
 		return TilePosition.None;
 	}
@@ -459,7 +458,7 @@ public class ConstructionPlaceFinder {
 			// 테란종족 건물의 경우 다른 건물의 Addon 공간을 확보해주기 위해, 왼쪽 2칸은 반드시 GapSpace가 되도록 한다
 			if (b.getType().getRace() == Race.Terran) {
 				if (buildingGapSpace < 2) {
-					startx = position.getX() - 2;
+					startx = position.getX();
 					endx = position.getX() + width + buildingGapSpace;
 				}
 			}
@@ -474,6 +473,12 @@ public class ConstructionPlaceFinder {
 					}
 
 					if (isReservedTile(x, y)) {
+						return false;
+					}
+
+					TilePosition tp = new TilePosition(x, y);
+
+					if (MyVariable.addonPlace.contains(tp)) {
 						return false;
 					}
 

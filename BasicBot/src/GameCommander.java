@@ -93,6 +93,18 @@ public class GameCommander {
 			}
 		}
 
+		if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().canBuildAddon()) {
+			int width = unit.getType().tileWidth() + 2;
+			int height = unit.getType().tileHeight();
+			TilePosition tp = unit.getPosition().toTilePosition();
+			for (int x = tp.getX()-2; x < tp.getX() + width-1; x++) {
+				for (int y = tp.getY()-1; y < tp.getY() + height-1; y++) {
+					TilePosition tp2 = new TilePosition(x, y);
+					MyVariable.addonPlace.remove(tp2);
+				}
+			}
+		}
+
 		// ResourceDepot 및 Worker 에 대한 처리
 		WorkerManager.Instance().onUnitDestroy(unit);
 
@@ -160,10 +172,22 @@ public class GameCommander {
 	public void onUnitShow(Unit unit) {
 		InformationManager.Instance().onUnitShow(unit);
 
-		
-		if(unit.getType()==UnitType.Resource_Mineral_Field || unit.getType()==UnitType.Resource_Mineral_Field_Type_2 || unit.getType()==UnitType.Resource_Mineral_Field_Type_3) {
+		if (unit.getType() == UnitType.Resource_Mineral_Field || unit.getType() == UnitType.Resource_Mineral_Field_Type_2 || unit.getType() == UnitType.Resource_Mineral_Field_Type_3) {
 			ConstructionPlaceFinder.Instance().getTilesToAvoid().add(unit.getTilePosition());
 		}
+
+		if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().canBuildAddon()) {
+			int width = unit.getType().tileWidth() + 2;
+			int height = unit.getType().tileHeight();
+			TilePosition tp = unit.getPosition().toTilePosition();
+			for (int x = tp.getX()-2; x < tp.getX() + width-1; x++) {
+				for (int y = tp.getY()-1; y < tp.getY() + height-1; y++) {
+					TilePosition tp2 = new TilePosition(x, y);
+					MyVariable.addonPlace.add(tp2);
+				}
+			}
+		}
+
 		// ResourceDepot 및 Worker 에 대한 처리
 		// WorkerManager.Instance().onUnitShow(unit);
 	}

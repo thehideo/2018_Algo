@@ -35,13 +35,28 @@ public class ActionControlAttackUnit implements ActionInterface {
 				}
 			}
 			if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
-				if (MyVariable.attackUnit.size() > 30 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 6) {
-					MyVariable.isFullScaleAttackStarted = true;
+				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
+					if (MyVariable.attackUnit.size() > 30 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 6) {
+						MyVariable.isFullScaleAttackStarted = true;
+					}
+				}
+				// 확장 기지가 2개 라면
+				else {
+					if (MyVariable.attackUnit.size() > 50 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 8) {
+						MyVariable.isFullScaleAttackStarted = true;
+					}
 				}
 			} else {
-
-				if (MyVariable.attackUnit.size() > 30) {
-					MyVariable.isFullScaleAttackStarted = true;
+				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
+					if (MyVariable.attackUnit.size() > 30) {
+						MyVariable.isFullScaleAttackStarted = true;
+					}
+				}
+				// 확장 기지가 2개 라면
+				else {
+					if (MyVariable.attackUnit.size() > 50) {
+						MyVariable.isFullScaleAttackStarted = true;
+					}
 				}
 			}
 		}

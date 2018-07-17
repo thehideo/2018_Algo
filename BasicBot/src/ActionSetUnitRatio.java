@@ -28,7 +28,7 @@ public class ActionSetUnitRatio implements ActionInterface {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 2);
 			}
-			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() <= 30) {
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size() <= 15) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 3);
 				if (MyVariable.getSelfUnit(UnitType.Terran_Medic).size() <= 5) {
 					MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);

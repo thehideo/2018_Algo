@@ -44,6 +44,9 @@ public class MyVariable {
 	public static double distanceOfMostCloseBunker = Double.MAX_VALUE;
 	public static Unit mostCloseBunker = null;
 
+	// 애드온 지을자리를 기억해둔다.
+	public static HashSet<TilePosition> addonPlace = new HashSet<TilePosition>();
+
 	// 전체
 	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
 

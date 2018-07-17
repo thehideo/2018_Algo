@@ -12,7 +12,7 @@ public class ActionCreateUnit implements ActionInterface {
 			return;
 		}
 
-		if (MyBotModule.Broodwar.self().minerals() >= 200) {
+		if (MyBotModule.Broodwar.self().minerals() >= 150) {
 
 			HashMap<UnitType, Double> tmp = new HashMap<UnitType, Double>();
 

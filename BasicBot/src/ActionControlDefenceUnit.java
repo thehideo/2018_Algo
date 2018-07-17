@@ -14,7 +14,7 @@ public class ActionControlDefenceUnit implements ActionInterface {
 				if (MyVariable.isFullScaleAttackStarted == true || position == null) {
 					commandUtil.attackMove(unit, myStartLocation.toPosition());
 				} else {
-					commandUtil.attackMove(unit, position);
+					commandUtil.attackMove(unit, MyVariable.myFirstchokePoint.toPosition());
 				}
 			}
 		}
