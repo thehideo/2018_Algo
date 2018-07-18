@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 import bwapi.Position;
@@ -41,6 +42,19 @@ public class MyUtil {
 		if (MyVariable.mostCloseBunker != null) {
 			bunkerPosition = MyVariable.mostCloseBunker.getPosition();
 		}
+		return bunkerPosition;
+	}
+
+	static Position GetMyBunkerBuildPosition() {
+		Position bunkerPosition = null;
+		List<TilePosition> ltp = BWTA.getShortestPath(MyVariable.myFirstchokePoint, MyVariable.myStartLocation);
+
+		if (ltp.size() > 5) {
+			bunkerPosition = ltp.get(2).toPosition();
+		}
+
+		if (bunkerPosition == null)
+			bunkerPosition = MyVariable.myFirstchokePoint.toPosition();
 		return bunkerPosition;
 	}
 
