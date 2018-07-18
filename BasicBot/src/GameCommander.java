@@ -127,9 +127,7 @@ public class GameCommander {
 
 		InformationManager.Instance().onUnitDestroy(unit);
 
-		if (MyVariable.isInitialBuildOrderFinished == false)
-
-		{
+		if (MyVariable.isInitialBuildOrderFinished == false) {
 			if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().isBuilding() == false) {
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(unit.getType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			}

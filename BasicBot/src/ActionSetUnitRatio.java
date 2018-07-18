@@ -28,10 +28,12 @@ public class ActionSetUnitRatio implements ActionInterface {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 2);
 			}
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size() <= 15) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 3);
-				if (MyVariable.getSelfUnit(UnitType.Terran_Medic).size() <= 5) {
-					MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
+			if (MyVariable.StopMarinProtossTerran == false) {
+				if (MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size() <= 10) {
+					MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 3);
+					if (MyVariable.getSelfUnit(UnitType.Terran_Medic).size() <= 3) {
+						MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
+					}
 				}
 			}
 		} else {
@@ -45,13 +47,15 @@ public class ActionSetUnitRatio implements ActionInterface {
 			}
 
 			// 공격 유닛 비율
-			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 12);
-			if (MyVariable.getSelfUnit(UnitType.Terran_Medic).size() <= 10) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 4);
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 8);
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 < MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 2);
 			}
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 		}
+
+		MyVariable.patrolUnitCountTotal.put(UnitType.Terran_Marine, 1);
 
 	}
 }

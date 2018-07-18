@@ -48,4 +48,17 @@ public class MyUtil {
 		return MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size();
 	}
 
+	// 방어할 ChokePoint를 구한다.
+	public static Chokepoint getSaveChokePoint() {
+		// 기본은 첫번째 초크 포인트
+		Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
+
+		// 확장했으면 확장부분을 지킨다.
+		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1) {
+			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+		}
+
+		return chokePoint;
+	}
+
 }

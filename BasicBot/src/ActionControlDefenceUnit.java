@@ -9,9 +9,9 @@ public class ActionControlDefenceUnit implements ActionInterface {
 	public void action() {
 		Position position = MyUtil.GetMyBunkerPosition();
 		TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
-		if (MyVariable.enemyAttactUnit.size() > 0) {
+		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			for (Unit unit : MyVariable.defenceUnit) {
-				commandUtil.attackMove(unit, MyVariable.enemyAttactUnit.get(0).getPosition());
+				commandUtil.attackMove(unit, MyVariable.enemyUnitAroundMyStartPoint.get(0).getPosition());
 			}
 		} else {
 			for (Unit unit : MyVariable.defenceUnit) {
@@ -19,7 +19,7 @@ public class ActionControlDefenceUnit implements ActionInterface {
 					if (MyVariable.isFullScaleAttackStarted == true || position == null) {
 						commandUtil.attackMove(unit, myStartLocation.toPosition());
 					} else {
-						commandUtil.attackMove(unit, MyVariable.myFirstchokePoint.toPosition());
+						commandUtil.attackMove(unit, MyUtil.getSaveChokePoint().getPoint());
 					}
 				}
 			}

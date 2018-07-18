@@ -19,6 +19,8 @@ public class MyVariable {
 
 	public static boolean isInitialBuildOrderFinished = false;
 
+	public static boolean StopMarinProtossTerran = false;
+
 	// 싸이언스 베슬이 필요한지
 	public static boolean needTerran_Science_Vessel = false;
 
@@ -81,6 +83,9 @@ public class MyVariable {
 	// 벙커 지키는 유닛
 	public static ArrayList<Unit> bunkerUnit = new ArrayList<Unit>();
 
+	// 적 확장 방어 유닛
+	public static ArrayList<Unit> patrolUnit = new ArrayList<Unit>();
+
 	public static HashSet<Position> spinderMinePosition = new HashSet<Position>();
 
 	public static ArrayList<Unit> minerals = new ArrayList<Unit>();
@@ -93,11 +98,14 @@ public class MyVariable {
 		MyVariable.attackUnit.clear();
 		MyVariable.attackedUnit.clear();
 		MyVariable.defenceUnit.clear();
+		MyVariable.patrolUnit.clear();
 		MyVariable.scanUnit.clear();
 		MyVariable.bunkerUnit.clear();
 
 		// 방어할 유닛 개수 초기화
 		MyVariable.defenceUnitCount.clear();
+
+		MyVariable.patrolUnitCount.clear();
 
 		distanceOfMostFarTank = 0;
 
@@ -117,8 +125,12 @@ public class MyVariable {
 
 	public static HashMap<UnitType, Integer> defenceUnitCountTotal = new HashMap<UnitType, Integer>();
 
+	public static HashMap<UnitType, Integer> patrolUnitCountTotal = new HashMap<UnitType, Integer>();
+
 	// clearSelfUnit에서 초기화함!!!!!!!!!!
 	public static HashMap<UnitType, Integer> defenceUnitCount = new HashMap<UnitType, Integer>();
+
+	public static HashMap<UnitType, Integer> patrolUnitCount = new HashMap<UnitType, Integer>();
 
 	public static double distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
 	public static Unit mostCloseEnemyUnit = null;
@@ -126,6 +138,7 @@ public class MyVariable {
 	public static void clearUnitRaio() {
 		MyVariable.attackUnitRatio.clear();
 		MyVariable.defenceUnitCountTotal.clear();
+		MyVariable.patrolUnitCountTotal.clear();
 	}
 
 	/////////////////////////////////////////////

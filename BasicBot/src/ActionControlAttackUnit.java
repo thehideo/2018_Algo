@@ -28,7 +28,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
 		if (MyVariable.isFullScaleAttackStarted == false) {
-			Chokepoint saveChokePoint = getSaveChokePoint();
+			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
 			for (Unit unit : MyVariable.attackUnit) {
 				if (unit.isIdle()) {
 					commandUtil.attackMove(unit, saveChokePoint.getCenter());
@@ -36,13 +36,13 @@ public class ActionControlAttackUnit implements ActionInterface {
 			}
 			if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
 				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-					if (MyVariable.attackUnit.size() > 30 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 6) {
+					if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 4) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
 				// 확장 기지가 2개 라면
 				else {
-					if (MyVariable.attackUnit.size() > 50 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 8) {
+					if (MyVariable.attackUnit.size() > 50 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 6) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
@@ -54,16 +54,27 @@ public class ActionControlAttackUnit implements ActionInterface {
 				}
 				// 확장 기지가 2개 라면
 				else {
-					if (MyVariable.attackUnit.size() > 50) {
+					if (MyVariable.attackUnit.size() > 50 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 4) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
 			}
+
+			if (MyVariable.isFullScaleAttackStarted == true) {
+				MyVariable.StopMarinProtossTerran = true;
+			}
 		}
 		// 공격 모드가 되면, 모든 전투유닛들을 적군 Main BaseLocation 로 공격 가도록 합니다
 		else {
-			if (MyVariable.attackUnit.size() < 10) {
-				MyVariable.isFullScaleAttackStarted = false;
+			if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
+				if (MyVariable.attackUnit.size() < 10 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() <= 2) {
+					MyVariable.isFullScaleAttackStarted = false;
+				}
+			} else {
+				if (MyVariable.attackUnit.size() < 10) {
+					MyVariable.isFullScaleAttackStarted = false;
+
+				}
 			}
 			// 메딕 비율만 높아도 방어 모드로 변경
 
@@ -93,7 +104,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 					}
 
 					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
-					if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 50 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank) {
+					if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank) {
 						commandUtil.attackMove(unit, myStartLocation.toPosition());
 					} else
 
@@ -104,19 +115,5 @@ public class ActionControlAttackUnit implements ActionInterface {
 				}
 			}
 		}
-	}
-
-	// 방어할 ChokePoint를 구한다.
-	static Chokepoint getSaveChokePoint() {
-
-		// 기본은 첫번째 초크 포인트
-		Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
-
-		// 확장했으면 확장부분을 지킨다.
-		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1) {
-			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
-		}
-
-		return chokePoint;
 	}
 }

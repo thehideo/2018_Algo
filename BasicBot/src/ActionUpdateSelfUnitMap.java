@@ -37,63 +37,65 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 
 			// defenceUnit에 할당
 			if (!setUnitAsDefence(unit)) {
-				// scanUnit에 할당
-				if (unit.getType() == UnitType.Terran_Science_Vessel) {
-					MyVariable.scanUnit.add(unit);
-				}
-				// 본진 밖을 벗어난 SCV는 다시 본진으로 위치 시킨다
-				else if (unit.getType() == UnitType.Terran_SCV) {
-					if (unit.isAttackFrame() == true) {
-						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
-						if (distance > 20) {
-							unit.move(myStartLocation.toPosition());
+				if (!setUnitAsPatrol(unit)) {
+					// scanUnit에 할당
+					if (unit.getType() == UnitType.Terran_Science_Vessel) {
+						MyVariable.scanUnit.add(unit);
+					}
+					// 본진 밖을 벗어난 SCV는 다시 본진으로 위치 시킨다
+					else if (unit.getType() == UnitType.Terran_SCV) {
+						if (unit.isAttackFrame() == true) {
+							double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+							if (distance > 20) {
+								unit.move(myStartLocation.toPosition());
+							}
 						}
 					}
-				}
-				// 공격 유닛
-				// else if (unit.isLoaded() == false && (unit.canAttack() || unit.getType() ==
-				// UnitType.Terran_Medic)) {
-				else if (unit.isLoaded() == false && unit.getType().isBuilding() == false) {
-					MyVariable.attackUnit.add(unit);
-					MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
-					// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
-					refreshIndex++;
-					if (refreshIndex % 3 == 0) {
-						int x = unit.getTilePosition().getX();
-						int y = unit.getTilePosition().getY();
+					// 공격 유닛
+					// else if (unit.isLoaded() == false && (unit.canAttack() || unit.getType() ==
+					// UnitType.Terran_Medic)) {
+					else if (unit.isLoaded() == false && unit.getType().isBuilding() == false) {
+						MyVariable.attackUnit.add(unit);
+						MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
+						// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
+						refreshIndex++;
+						if (refreshIndex % 3 == 0) {
+							int x = unit.getTilePosition().getX();
+							int y = unit.getTilePosition().getY();
 
-						MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 1));
-						MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 0));
-						MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 1));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 0));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
 
-						MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y - 1));
-						MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y + 1));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y - 1));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y + 1));
 
-						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 1));
-						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));
-						MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y + 1));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 1));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y + 1));
+						}
+
+						MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
+					}
+					if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						if (MyVariable.distanceOfMostFarTank < distance) {
+							MyVariable.distanceOfMostFarTank = distance;
+
+							MyVariable.mostFarTank = unit;
+						}
+
 					}
 
-					MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
-				}
-				if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
-					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
-					if (MyVariable.distanceOfMostFarTank < distance) {
-						MyVariable.distanceOfMostFarTank = distance;
+					if (unit.getType() == UnitType.Terran_Bunker) {
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						if (MyVariable.distanceOfMostCloseBunker > distance) {
+							MyVariable.distanceOfMostCloseBunker = distance;
 
-						MyVariable.mostFarTank = unit;
+							MyVariable.mostCloseBunker = unit;
+						}
+
 					}
-
-				}
-
-				if (unit.getType() == UnitType.Terran_Bunker) {
-					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
-					if (MyVariable.distanceOfMostCloseBunker > distance) {
-						MyVariable.distanceOfMostCloseBunker = distance;
-
-						MyVariable.mostCloseBunker = unit;
-					}
-
 				}
 			}
 
@@ -122,4 +124,23 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 		return result;
 	}
 
+	// 방어 유닛 구성
+	boolean setUnitAsPatrol(Unit unit) {
+		boolean result = false;
+		if (MyVariable.attackUnit.size() > 30) {
+			if (MyVariable.patrolUnitCountTotal.containsKey(unit.getType())) {
+				if (!MyVariable.patrolUnitCount.containsKey(unit.getType())) {
+					MyVariable.patrolUnitCount.put(unit.getType(), 0);
+				}
+				int total = MyVariable.patrolUnitCountTotal.get(unit.getType());
+				int now = MyVariable.patrolUnitCount.get(unit.getType());
+				if (total > now) {
+					MyVariable.patrolUnit.add(unit);
+					MyVariable.patrolUnitCount.put(unit.getType(), now + 1);
+					result = true;
+				}
+			}
+		}
+		return result;
+	}
 }

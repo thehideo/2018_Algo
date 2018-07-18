@@ -154,18 +154,9 @@ public class ScoutManager {
 					commandUtil.move(currentScoutUnit, currentScoutTargetPosition);
 
 				} else {
-					if (MyVariable.getEnemyUnit(UnitType.Protoss_Probe).size() > 0 && MyBotModule.Broodwar.enemy().getRace() == Race.Protoss) {
-						currentScoutUnit.attack(MyVariable.getEnemyUnit(UnitType.Protoss_Probe).get(0));
-					} else if (MyVariable.getEnemyUnit(UnitType.Zerg_Drone).size() > 0 && MyBotModule.Broodwar.enemy().getRace() == Race.Zerg) {
-						currentScoutUnit.attack(MyVariable.getEnemyUnit(UnitType.Zerg_Drone).get(0));
-					} else if (MyVariable.getEnemyUnit(UnitType.Terran_SCV).size() > 0 && MyBotModule.Broodwar.enemy().getRace() == Race.Protoss) {
-						currentScoutUnit.attack(MyVariable.getEnemyUnit(UnitType.Terran_SCV).get(0));
-					} else {
-						WorkerManager.Instance().setIdleWorker(currentScoutUnit);
-						currentScoutStatus = ScoutStatus.NoScout.ordinal();
-						currentScoutTargetPosition = myBaseLocation.getPosition();
-					}
-
+					WorkerManager.Instance().setIdleWorker(currentScoutUnit);
+					currentScoutStatus = ScoutStatus.NoScout.ordinal();
+					currentScoutTargetPosition = myBaseLocation.getPosition();
 				}
 			}
 		}

@@ -44,8 +44,8 @@ public class StrategyManager {
 		ActionManager.Instance().addAction(new ActionUseScanner(), 14);
 		ActionManager.Instance().addAction(new ActionControlTank(), 15);
 		ActionManager.Instance().addAction(new ActionControlDefenceUnit(), 16);
-
 		ActionManager.Instance().addAction(new ActionControlVulture(), 17);
+		ActionManager.Instance().addAction(new ActionPatrolBaseLocation(), 18);
 
 	}
 
