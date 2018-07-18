@@ -104,7 +104,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 					}
 
 					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
-					if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank) {
+					if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank + 3) {
 						commandUtil.attackMove(unit, myStartLocation.toPosition());
 					} else
 
