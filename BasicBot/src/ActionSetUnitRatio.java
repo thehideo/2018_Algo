@@ -25,17 +25,14 @@ public class ActionSetUnitRatio implements ActionInterface {
 			if (MyVariable.findCarrier == true) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 3);
 			} else {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 2);
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 3);
 			}
-			if (MyVariable.StopMarinProtossTerran == false) {
-				if (MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size() <= 10) {
-					MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 3);
-					if (MyVariable.getSelfUnit(UnitType.Terran_Medic).size() <= 3) {
-						MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
-					}
-				}
+
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
+			if (MyVariable.getSelfUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfUnit(UnitType.Terran_Marine).size()) {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
 			}
+
 		} else {
 			if (MyVariable.isFullScaleAttackStarted) {
 				// 방어 유닛 구성

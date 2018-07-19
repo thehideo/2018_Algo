@@ -12,9 +12,17 @@ public class ActionCreateBuilding implements ActionInterface {
 
 	@Override
 	public void action() {
+
+		// 무탈이 보이면 터렛 건설
+		if (MyVariable.findMutal) {
+			if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 5) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1)
+				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		}
+
 		if (MyVariable.isInitialBuildOrderFinished == false || MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			return;
 		}
+
 		// 베슬이 필요하면 바로 건설
 		if (MyVariable.needTerran_Science_Vessel) {
 			if (checkNeedToBuild(UnitType.Terran_Factory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Barracks).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1)
@@ -32,11 +40,6 @@ public class ActionCreateBuilding implements ActionInterface {
 
 			if (checkNeedToBuild(UnitType.Terran_Science_Vessel, 1) && MyVariable.getSelfUnit(UnitType.Terran_Physics_Lab).size() >= 1)
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-		}
-
-		if (MyVariable.findLucker || MyVariable.findMutal) {
-			if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2))
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
 		if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
@@ -100,7 +103,7 @@ public class ActionCreateBuilding implements ActionInterface {
 						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BunkerDonthaveTurretPosition.toTilePosition(), false);
 					}
 				}
-				if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2) {
+				if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2) {
 					Position BunkerDonthaveTurretPosition = MyUtil.GetMyBunkerDonthaveTurretPosition();
 					if (BunkerDonthaveTurretPosition == null) {
 						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
@@ -109,7 +112,7 @@ public class ActionCreateBuilding implements ActionInterface {
 					}
 				}
 
-				if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 3) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 3) {
+				if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 3) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 3) {
 					Position BunkerDonthaveTurretPosition = MyUtil.GetMyBunkerDonthaveTurretPosition();
 					if (BunkerDonthaveTurretPosition == null) {
 						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);

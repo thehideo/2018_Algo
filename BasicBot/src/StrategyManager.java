@@ -155,7 +155,7 @@ public class StrategyManager {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getBasicSupplyProviderUnitType(), BuildOrderItem.SeedPositionStrategy.SupplyDepotLocation, true);
 
 			// Bunker 건설
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 
 			// Marine 생산
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Marine, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
@@ -167,7 +167,7 @@ public class StrategyManager {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Marine, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 
 			// Bunker 건설
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.FirstChokePoint, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 			// Marine 생산
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Marine, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 			// Marine 생산

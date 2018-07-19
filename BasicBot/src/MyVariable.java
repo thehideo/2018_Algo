@@ -19,7 +19,7 @@ public class MyVariable {
 
 	public static boolean isInitialBuildOrderFinished = false;
 
-	public static boolean StopMarinProtossTerran = false;
+	//public static boolean StopMarinProtossTerran = false;
 
 	// 싸이언스 베슬이 필요한지
 	public static boolean needTerran_Science_Vessel = false;

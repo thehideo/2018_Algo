@@ -96,7 +96,7 @@ public class ActionMicroControl implements ActionInterface {
 						enemyUnit = null;
 						minDistance = Double.MAX_VALUE;
 						for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
-							if (unit2.getType() != UnitType.Terran_SCV && unit2.getType() != UnitType.Protoss_Probe && unit2.getType() != UnitType.Zerg_Drone) {
+							if (unit2.isFlying() == false && unit2.getType() != UnitType.Terran_SCV && unit2.getType() != UnitType.Protoss_Probe && unit2.getType() != UnitType.Zerg_Drone) {
 								double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
 								if (minDistance > distance) {
 									minDistance = distance;

@@ -337,6 +337,12 @@ public class ConstructionPlaceFinder {
 		// 경우 불필요한 탐색이 된다
 		// maxRange 는 16 ~ 64가 적당하다
 		int maxRange = 32; // maxRange = BWAPI::Broodwar->mapWidth()/4;
+
+		// Command Center는 정확한 위치에 지어야 한다.
+		if (buildingType == UnitType.Terran_Command_Center) {
+			maxRange = 1;
+		}
+
 		boolean isPossiblePlace = false;
 
 		if (constructionPlaceSearchMethod == ConstructionPlaceSearchMethod.SpiralMethod.ordinal()) {

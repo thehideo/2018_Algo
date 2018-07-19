@@ -36,13 +36,13 @@ public class ActionControlAttackUnit implements ActionInterface {
 			}
 			if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
 				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-					if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 4) {
+					if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 2) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
 				// 확장 기지가 2개 라면
 				else {
-					if (MyVariable.attackUnit.size() > 50 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 6) {
+					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 3) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
@@ -54,14 +54,10 @@ public class ActionControlAttackUnit implements ActionInterface {
 				}
 				// 확장 기지가 2개 라면
 				else {
-					if (MyVariable.attackUnit.size() > 50 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 4) {
+					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 3) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
-			}
-
-			if (MyVariable.isFullScaleAttackStarted == true) {
-				MyVariable.StopMarinProtossTerran = true;
 			}
 		}
 		// 공격 모드가 되면, 모든 전투유닛들을 적군 Main BaseLocation 로 공격 가도록 합니다
@@ -104,7 +100,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 					}
 
 					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
-					if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank + 3) {
+					if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank) {
 						commandUtil.attackMove(unit, myStartLocation.toPosition());
 					} else
 
