@@ -12,9 +12,9 @@ public class ActionUpgrade implements ActionInterface {
 	public void action() {
 		if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
 			// 시즈 모드
-			if (MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() > 0) {
+			if (MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() > 0 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() > 0) {
 				if (checkNeedResearchTechType(TechType.Tank_Siege_Mode)) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, true);
 				}
 			}
 			// 골리앗 사거리
