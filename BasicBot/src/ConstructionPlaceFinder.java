@@ -340,7 +340,7 @@ public class ConstructionPlaceFinder {
 
 		// Command Center는 정확한 위치에 지어야 한다.
 		if (buildingType == UnitType.Terran_Command_Center) {
-			maxRange = 1;
+			maxRange = 2;
 		}
 
 		boolean isPossiblePlace = false;

@@ -32,7 +32,9 @@ public class GameCommander {
 			}
 		}
 
-		//
+		for (TilePosition tp : BWTA.getShortestPath(MyVariable.myStartLocation, MyVariable.myFirstchokePoint)) {
+			MyVariable.addonPlace.add(tp);
+		}
 
 		StrategyManager.Instance().onStart();
 

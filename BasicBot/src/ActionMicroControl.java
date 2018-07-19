@@ -72,7 +72,11 @@ public class ActionMicroControl implements ActionInterface {
 
 			// 가장 가까운 유닛은 도망간다.
 			if (minUnit != null) {
-				commandUtil.attackMove(minUnit, MyVariable.myFirstchokePoint.getPoint().toPosition());
+				if (MyUtil.distanceTilePosition(minUnit.getTilePosition(), myStartLocation) < 3) {
+					commandUtil.attackMove(minUnit, MyVariable.myStartLocation.toPosition());
+				} else {
+					commandUtil.move(minUnit, MyVariable.myStartLocation.toPosition());
+				}
 			}
 
 			// 적의 숫자가 많으면 SCV를 동원한다.
