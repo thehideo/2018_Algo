@@ -29,6 +29,20 @@ public class ActionUpgrade implements ActionInterface {
 						}
 					}
 				}
+
+			// 바이오닉 공격력, 방어력 업그레이드
+			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 20) {
+				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay)) {
+					if (unit.canUpgrade(UpgradeType.Terran_Infantry_Armor) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Armor) == 0) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Armor, false);
+						break;
+					}
+					if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Weapons, false);
+					}
+				}
+			}
+
 			// 메카닉 업그레이드
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Armory)) {
 				if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Weapons)) {
@@ -62,7 +76,7 @@ public class ActionUpgrade implements ActionInterface {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
 			}
 		} else {
-			// 바이오닐 공격력, 방어력 업그레이드
+			// 바이오닉 공격력, 방어력 업그레이드
 			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 10) {
 				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay)) {
 					if (unit.canUpgrade(UpgradeType.Terran_Infantry_Armor) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Armor) == 0) {
@@ -70,9 +84,7 @@ public class ActionUpgrade implements ActionInterface {
 						break;
 					}
 					if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 20) {
-						if (MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).get(0).canUpgrade(UpgradeType.Terran_Infantry_Weapons)) {
-							MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).get(0).upgrade(UpgradeType.Terran_Infantry_Weapons);
-						}
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Weapons, false);
 					}
 				}
 			}
