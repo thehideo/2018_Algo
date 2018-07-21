@@ -8,23 +8,25 @@ public class ActionSetUnitRatio implements ActionInterface {
 	public void action() {
 		MyVariable.clearUnitRaio();
 		if (InformationManager.Instance().enemyRace == Race.Protoss) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
+			}
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Firebat).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Firebat, 1);
+			}
 			if (MyVariable.findCarrier == true) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 3);
 			} else {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 			}
-			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfUnit(UnitType.Terran_Marine).size()) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
-			}
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Firebat).size() * 4 <= MyVariable.getSelfUnit(UnitType.Terran_Marine).size()) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Firebat, 1);
-			}
 		}
-		if (InformationManager.Instance().enemyRace == Race.Terran) {
+		// 프로토스 이면
+		else if (InformationManager.Instance().enemyRace == Race.Terran) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfUnit(UnitType.Terran_Marine).size()) {
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
 			}
 		}
