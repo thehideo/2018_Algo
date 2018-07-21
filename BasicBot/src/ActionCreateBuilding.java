@@ -12,14 +12,7 @@ public class ActionCreateBuilding implements ActionInterface {
 
 	@Override
 	public void action() {
-
-		// 무탈이 보이면 터렛 건설
-		if (MyVariable.findMutal) {
-			if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 5) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1)
-				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-		}
-
-		if (MyVariable.isInitialBuildOrderFinished == false || MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
+		if (MyVariable.isInitialBuildOrderFinished == false) {
 			return;
 		}
 
@@ -137,20 +130,6 @@ public class ActionCreateBuilding implements ActionInterface {
 			if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() >= 4) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			}
-
-			/*
-			 * if (MyVariable.getSelfAttackUnit(UnitType.Terran_Machine_Shop).size() > 0) {
-			 * BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.
-			 * Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation,
-			 * false); }
-			 * 
-			 * if (MyVariable.getSelfAttackUnit(UnitType.Terran_Engineering_Bay).size() > 0)
-			 * { if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2)) {
-			 * BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.
-			 * Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.SecondChokePoint,
-			 * false); } }
-			 */
-
 		}
 		// 저그이면
 		else {
@@ -163,6 +142,24 @@ public class ActionCreateBuilding implements ActionInterface {
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, true);
 				}
 				// MyVariable.needTerran_Science_Vessel = true;
+			}
+
+			// 무탈이 보이면 터렛 건설
+			if (MyVariable.findMutal) {
+				if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 5) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			}
+			// 러커가 보이면 터렛 건설
+			if (MyVariable.findLucker) {
+				if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 1) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1) {
+					Position BunkerDonthaveTurretPosition = MyUtil.GetMyBunkerDonthaveTurretPosition();
+					if (BunkerDonthaveTurretPosition == null) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+					} else {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, BunkerDonthaveTurretPosition.toTilePosition(), false);
+					}
+				}
+				MyVariable.needTerran_Science_Vessel = true;
 			}
 
 			if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2)
@@ -204,19 +201,6 @@ public class ActionCreateBuilding implements ActionInterface {
 			if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() >= 4) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			}
-
-			/*
-			 * if (MyVariable.getSelfAttackUnit(UnitType.Terran_Machine_Shop).size() > 0) {
-			 * BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.
-			 * Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation,
-			 * false); }
-			 * 
-			 * if (MyVariable.getSelfAttackUnit(UnitType.Terran_Engineering_Bay).size() > 0)
-			 * { if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2)) {
-			 * BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.
-			 * Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.SecondChokePoint,
-			 * false); } }
-			 */
 		}
 	}
 

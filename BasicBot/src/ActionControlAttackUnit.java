@@ -1,4 +1,7 @@
+import java.util.ArrayList;
+
 import bwapi.Race;
+import bwapi.TechType;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -26,8 +29,22 @@ public class ActionControlAttackUnit implements ActionInterface {
 	public void action() {
 		TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
 
+		boolean needToWait = false;
+
+		// scanner가 모두 소진되었지만 베슬이 없으면 대기해야함
+		boolean canUseScan = false;
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
+			if (unit.canUseTech(TechType.Scanner_Sweep)) {
+				canUseScan = true;
+			}
+		}
+		if (canUseScan == false && MyVariable.getSelfUnit(UnitType.Terran_Science_Vessel).size() == 0) {
+			needToWait = true;
+			MyVariable.isFullScaleAttackStarted = false;
+		}
+
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
-		if (MyVariable.isFullScaleAttackStarted == false) {
+		if (MyVariable.isFullScaleAttackStarted == false || needToWait == true) {
 			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
 			for (Unit unit : MyVariable.attackUnit) {
 				if (unit.isIdle()) {
@@ -58,6 +75,9 @@ public class ActionControlAttackUnit implements ActionInterface {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
+			}
+			if (needToWait == true) {
+				MyVariable.isFullScaleAttackStarted = false;
 			}
 		}
 		// 공격 모드가 되면, 모든 전투유닛들을 적군 Main BaseLocation 로 공격 가도록 합니다

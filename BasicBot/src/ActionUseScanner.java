@@ -48,7 +48,6 @@ public class ActionUseScanner implements ActionInterface {
 
 	// 스캐너 사용이 가능한지 확인
 	void canUseScanner_Sweep(Unit unit) {
-
 		ArrayList<Unit> units = MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station);
 		for (int i = 0; i < units.size(); i++) {
 			if (units.get(i).canUseTech(TechType.Scanner_Sweep, unit)) {
@@ -61,6 +60,5 @@ public class ActionUseScanner implements ActionInterface {
 				MyVariable.needTerran_Science_Vessel = true;
 			}
 		}
-
 	}
 }
