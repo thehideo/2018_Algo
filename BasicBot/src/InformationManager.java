@@ -27,8 +27,8 @@ public class InformationManager {
 	private static InformationManager instance = new InformationManager();
 
 	public Player selfPlayer;		///< 아군 Player		
-	public Player enemyPlayer;		///< 아군 Player의 종족		
-	public Race selfRace;			///< 적군 Player		
+	public Player enemyPlayer;		///< 적군 Player		
+	public Race selfRace;			///< 아군 Player의 종족		
 	public Race enemyRace;			///< 적군 Player의 종족  
 
 	/// 해당 Player의 주요 건물들이 있는 BaseLocation. <br>
@@ -97,7 +97,6 @@ public class InformationManager {
 		secondChokePoint.put(enemyPlayer, null);
 
 		updateChokePointAndExpansionLocation();
-		
 	}
 
 	/// Unit 및 BaseLocation, ChokePoint 등에 대한 정보를 업데이트합니다
@@ -265,6 +264,7 @@ public class InformationManager {
 			}
 
 			// if we've explored every start location except one, it's the enemy
+			// enemy base 를 못찾은 상태에서 한 곳 빼고 다 정찰을 했다면 마지막 한 곳이 enemy base 이다.
 			if (!enemyStartLocationFound && exploredStartLocations == ((int) BWTA.getStartLocations().size() - 1)) {
 				enemyStartLocationFound = true;
 				mainBaseLocations.put(enemyPlayer, unexplored);
