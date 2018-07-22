@@ -31,6 +31,9 @@ public class MyVariable {
 	public static boolean findLucker = false;
 
 	public static boolean findCarrier = false;
+	
+	// 초당(1000ms) 프레임수(game speed 에 따라 다름)s
+	public static int nFrameCntPerMin = Math.round(1000/Config.SetLocalSpeed);   
 
 	/////////////////////////////////////////////
 	// 내 유닛 정보
