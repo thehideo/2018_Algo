@@ -260,7 +260,7 @@ public class WorkerManager {
 		// BasicBot 1.1 Patch End //////////////////////////////////////////////////
 
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
-			if (unit.isCompleted() && unit.getHitPoints() > 0 && unit.exists() && unit.getType().isWorker() && WorkerManager.Instance().isMineralWorker(unit)) {
+			if (unit.isCompleted() && unit.getHitPoints() > 0 && unit.exists() && unit.getType().isWorker() && WorkerManager.Instance().isMineralWorker(unit) && unit.isCarryingMinerals() == false) {
 				double dist = unit.getDistance(target);
 				if (closestUnit == null || dist < closestDist) {
 					closestUnit = unit;
