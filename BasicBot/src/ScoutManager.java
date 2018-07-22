@@ -199,18 +199,57 @@ public class ScoutManager {
 					// 적 기지를 발견한 이후 적 기지 경계선을 따라 돈다. 
 					if(currentScoutStatus == ScoutManager.ScoutStatus.MoveAroundEnemyBaseLocation.ordinal()) {
 //						currentScoutStatus = ScoutStatus.MoveAroundEnemyBaseLocation.ordinal();
-						currentScoutTargetPosition = getScoutFleePositionFromEnemyRegionVertices();
-						commandUtil.move(currentScoutUnit, currentScoutTargetPosition);			
+						
+						// 돌다가 적 SVC가 건물을 건설하고 있으면 공격한다.(적이 테란인 경우만 수행)
+						Unit targetUnit = null;
+						boolean bAttackFlg = false; 
+						
+						if(InformationManager.Instance().enemyRace == Race.Terran) {
+							double dist;
+							
+							for (Unit unit : MyBotModule.Broodwar.enemy().getUnits()) {
+								if(unit.getType() == UnitType.Terran_SCV || unit.getType() == UnitType.Terran_Marine) {
+									dist = unit.getDistance(currentScoutUnit);
+									
+									if ((dist < 400)) {
+										// 마린이 있으면 공격하지 않는다
+										if(unit.getType() == UnitType.Terran_Marine) {
+											bAttackFlg = false;
+											break;
+										}
+										
+										// 건설 중인 적 SCV는 대상으로 선정
+										if(unit.getType() == UnitType.Terran_SCV && unit.isConstructing()) {
+											targetUnit = unit;
+											bAttackFlg = true;
+										}
+									}
+								}
+							}
+						}
+						
+						if(targetUnit != null && bAttackFlg) {
+							commandUtil.attackUnit(currentScoutUnit, targetUnit);
+						} else {
+							// 적이 테란이지만 건설중인 SCV가 없는 경우나
+							// 적이 프로토스나 저그인 경우는 그냥 move
+							currentScoutTargetPosition = getScoutFleePositionFromEnemyRegionVertices();
+							commandUtil.move(currentScoutUnit, currentScoutTargetPosition);	
+						}
 					} else if(currentScoutStatus == ScoutManager.ScoutStatus.MoveAroundEnemyExpansionLocation.ordinal()) {
+						
 						// 두 번째 일꾼은 적의 확장기지로 이동
 						currentScoutTargetPosition = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy()).getPosition();
 //						if(currentScoutUnit.getDistance(currentScoutTargetPosition) >= 5 ) { // 도착했으면 move 하지 않도록 hold 처리
 							commandUtil.move(currentScoutUnit, currentScoutTargetPosition);	
+					
+						// 복귀하는 case
+//						WorkerManager.Instance().setIdleWorker(currentScoutUnit);
+//						currentScoutStatus = ScoutStatus.NoScout.ordinal();
+//						currentScoutTargetPosition = myBaseLocation.getPosition();
+							
 					}
 					
-//					WorkerManager.Instance().setIdleWorker(currentScoutUnit);
-//					currentScoutStatus = ScoutStatus.NoScout.ordinal();
-//					currentScoutTargetPosition = myBaseLocation.getPosition();
 				}
 			}
 		}
