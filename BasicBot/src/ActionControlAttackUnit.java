@@ -45,25 +45,42 @@ public class ActionControlAttackUnit implements ActionInterface {
 					commandUtil.attackMove(unit, saveChokePoint.getCenter());
 				}
 			}
-			if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
+			// 프로토스 공격 조건
+			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
 					if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 2) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
-				// 확장 기지가 2개 라면
+				// 확장 기지가 있다면
 				else {
 					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 3) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
-			} else {
+			}
+			// 테란 공격 조건
+			else if (InformationManager.Instance().enemyRace == Race.Terran) {
+				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
+					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 6) {
+						MyVariable.isFullScaleAttackStarted = true;
+					}
+				}
+				// 확장 기지가 있다면
+				else {
+					if (MyVariable.attackUnit.size() > 50 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 6) {
+						MyVariable.isFullScaleAttackStarted = true;
+					}
+				}
+			}
+			// 저그 공격 조건
+			else {
 				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
 					if (MyVariable.attackUnit.size() > 30) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
-				// 확장 기지가 2개 라면
+				// 확장 기지가 있다면
 				else {
 					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 3) {
 						MyVariable.isFullScaleAttackStarted = true;
@@ -92,7 +109,9 @@ public class ActionControlAttackUnit implements ActionInterface {
 				MyVariable.isFullScaleAttackStarted = false;
 			}
 
-			int tank_cnt = MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size();
+			// int tank_cnt =
+			// MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() +
+			// MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size();
 
 			for (Unit unit : MyVariable.attackUnit) {
 				// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
@@ -114,11 +133,16 @@ public class ActionControlAttackUnit implements ActionInterface {
 					}
 
 					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
-					if (unit == MyVariable.mostFarAttackUnit && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode) {
+					// 가장 멀리 있는 유닛은 뒤로 간다. 모아서 가기위해서
+					if (unit == MyVariable.mostFarAttackUnit) {
 						commandUtil.attackMove(unit, myStartLocation.toPosition());
-					} else if (MyVariable.enemyAttactUnit.size() > 0 && MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank) {
+					}
+					// 탱크보다 앞서 있는 유닛은 모두 돌아온다.
+					else if (MyVariable.enemyAttactUnit.size() > 0 && MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance + 2 > MyVariable.distanceOfMostFarTank) {
 						commandUtil.attackMove(unit, myStartLocation.toPosition());
-					} else {
+					}
+					// 발견된 적의 위치로 GoGo
+					else {
 						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 							commandUtil.attackMove(unit, tilePosition.toPosition());
 							break;
