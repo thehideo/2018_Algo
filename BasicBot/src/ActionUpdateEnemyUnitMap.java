@@ -59,6 +59,9 @@ public class ActionUpdateEnemyUnitMap implements ActionInterface {
 		if (MyVariable.getEnemyUnit(UnitType.Zerg_Lurker).size() > 0) {
 			MyVariable.findLucker = true;
 		}
+		if (MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0) {
+			MyVariable.findDarkTempler = true;
+		}
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
 			MyVariable.findCarrier = true;
 		}

@@ -76,6 +76,14 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 						}
 
 						MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
+
+						// 가장 멀리있는 공격 유닛 확인
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						if (MyVariable.distanceOfMostFarAttackUnit < distance) {
+							MyVariable.distanceOfMostFarAttackUnit = distance;
+							MyVariable.mostFarAttackUnit = unit;
+						}
+
 					}
 					if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
 						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
@@ -85,6 +93,14 @@ public class ActionUpdateSelfUnitMap implements ActionInterface {
 							MyVariable.mostFarTank = unit;
 						}
 
+					}
+
+					if (unit.getType() == UnitType.Terran_Missile_Turret) {
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						if (MyVariable.distanceOfMostFarTurret < distance) {
+							MyVariable.distanceOfMostFarTurret = distance;
+							MyVariable.mostFarTurret = unit;
+						}
 					}
 
 					if (unit.getType() == UnitType.Terran_Bunker) {

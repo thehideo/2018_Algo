@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.Random;
 
 import bwapi.Position;
+import bwapi.TechType;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -13,6 +14,12 @@ public class MyUtil {
 	static Random random = new Random();
 
 	static double distanceTilePosition(TilePosition a, TilePosition b) {
+		return Math.sqrt((a.getX() - b.getX()) * (a.getX() - b.getX()) + (a.getY() - b.getY()) * (a.getY() - b.getY()));
+	}
+
+	static double distanceTilePosition(Unit a_u, Unit b_u) {
+		TilePosition a = a_u.getTilePosition();
+		TilePosition b = b_u.getTilePosition();
 		return Math.sqrt((a.getX() - b.getX()) * (a.getX() - b.getX()) + (a.getY() - b.getY()) * (a.getY() - b.getY()));
 	}
 
@@ -63,8 +70,8 @@ public class MyUtil {
 	}
 
 	// 방어할 ChokePoint를 구한다.
+	// 기본은 첫번째 초크 포인트
 	public static Chokepoint getSaveChokePoint() {
-		// 기본은 첫번째 초크 포인트
 		Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
 
 		// 확장했으면 확장부분을 지킨다.
@@ -73,6 +80,16 @@ public class MyUtil {
 		}
 
 		return chokePoint;
+	}
+
+	public static boolean canUseScan() {
+		boolean canUseScan = false;
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
+			if (unit.canUseTechPosition(TechType.Scanner_Sweep)) {
+				canUseScan = true;
+			}
+		}
+		return canUseScan;
 	}
 
 }

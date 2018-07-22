@@ -29,22 +29,16 @@ public class ActionControlAttackUnit implements ActionInterface {
 	public void action() {
 		TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
 
-		boolean needToWait = false;
+		boolean needToWaitVessel = false;
 
 		// scanner가 모두 소진되었지만 베슬이 없으면 대기해야함
-		boolean canUseScan = false;
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
-			if (unit.canUseTechPosition(TechType.Scanner_Sweep)) {
-				canUseScan = true;
-			}
-		}
-		if (canUseScan == false && MyVariable.getSelfUnit(UnitType.Terran_Science_Vessel).size() == 0) {
-			needToWait = true;
+		if (MyUtil.canUseScan() == false && MyVariable.getSelfUnit(UnitType.Terran_Science_Vessel).size() == 0) {
+			needToWaitVessel = true;
 			MyVariable.isFullScaleAttackStarted = false;
 		}
 
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
-		if (MyVariable.isFullScaleAttackStarted == false || needToWait == true) {
+		if (MyVariable.isFullScaleAttackStarted == false || needToWaitVessel == true) {
 			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
 			for (Unit unit : MyVariable.attackUnit) {
 				if (unit.isIdle()) {
@@ -76,7 +70,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 					}
 				}
 			}
-			if (needToWait == true) {
+			if (needToWaitVessel == true) {
 				MyVariable.isFullScaleAttackStarted = false;
 			}
 		}
@@ -120,13 +114,16 @@ public class ActionControlAttackUnit implements ActionInterface {
 					}
 
 					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
-					if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank) {
+					if (unit == MyVariable.mostFarAttackUnit && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode) {
 						commandUtil.attackMove(unit, myStartLocation.toPosition());
-					} else
+					} else if (MyVariable.enemyAttactUnit.size() > 0 && MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank) {
+						commandUtil.attackMove(unit, myStartLocation.toPosition());
+					} else {
 						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 							commandUtil.attackMove(unit, tilePosition.toPosition());
 							break;
 						}
+					}
 				}
 			}
 		}

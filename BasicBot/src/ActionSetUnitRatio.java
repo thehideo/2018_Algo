@@ -43,7 +43,5 @@ public class ActionSetUnitRatio implements ActionInterface {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 			}
 		}
-		MyVariable.patrolUnitCountTotal.put(UnitType.Terran_Marine, 1);
-
 	}
 }

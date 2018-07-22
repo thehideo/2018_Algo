@@ -19,7 +19,7 @@ public class MyVariable {
 
 	public static boolean isInitialBuildOrderFinished = false;
 
-	//public static boolean StopMarinProtossTerran = false;
+	// public static boolean StopMarinProtossTerran = false;
 
 	// 싸이언스 베슬이 필요한지
 	public static boolean needTerran_Science_Vessel = false;
@@ -29,6 +29,9 @@ public class MyVariable {
 
 	// 뮤탈리스트를 찾았는지
 	public static boolean findLucker = false;
+
+	// 다크템플러를 찾았는지
+	public static boolean findDarkTempler = false;
 
 	public static boolean findCarrier = false;
 
@@ -42,6 +45,12 @@ public class MyVariable {
 
 	public static double distanceOfMostFarTank = 0;
 	public static Unit mostFarTank = null;
+
+	public static double distanceOfMostFarAttackUnit = 0;
+	public static Unit mostFarAttackUnit = null;
+
+	public static double distanceOfMostFarTurret = 0;
+	public static Unit mostFarTurret = null;
 
 	public static double distanceOfMostCloseBunker = Double.MAX_VALUE;
 	public static Unit mostCloseBunker = null;
@@ -109,9 +118,15 @@ public class MyVariable {
 
 		distanceOfMostFarTank = 0;
 		mostFarTank = null;
-		
+
+		distanceOfMostFarTurret = 0;
+		mostFarTurret = null;
+
+		distanceOfMostFarAttackUnit = 0;
+		mostFarAttackUnit = null;
+
 		distanceOfMostCloseBunker = Double.MAX_VALUE;
-		mostCloseBunker = null;		
+		mostCloseBunker = null;
 
 	}
 
@@ -174,7 +189,7 @@ public class MyVariable {
 		MyVariable.enemyAttactingUnit.clear();
 		MyVariable.enemyGroundUnit.clear();
 		MyVariable.enemyUnitAroundMyStartPoint.clear();
-		
+
 		distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
 		mostCloseEnemyUnit = null;
 	}

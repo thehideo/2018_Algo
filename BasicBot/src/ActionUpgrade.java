@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 import bwapi.Race;
 import bwapi.TechType;
@@ -12,9 +11,12 @@ public class ActionUpgrade implements ActionInterface {
 	public void action() {
 		if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
 			// 시즈 모드
-			if (MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() > 0 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() > 0) {
-				if (checkNeedResearchTechType(TechType.Tank_Siege_Mode)) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, true);
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
+				if (unit.canResearch(TechType.Tank_Siege_Mode)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Tank_Siege_Mode) == 0) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+						break;
+					}
 				}
 			}
 			// 골리앗 사거리
@@ -62,7 +64,7 @@ public class ActionUpgrade implements ActionInterface {
 					}
 				}
 			}
-			// Marine 사거리 업그레이드
+			// Marine 사거리/스팀팩 업그레이드
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Academy)) {
 				if (unit.canUpgrade(UpgradeType.U_238_Shells)) {
 					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.U_238_Shells) == 0) {
@@ -70,10 +72,12 @@ public class ActionUpgrade implements ActionInterface {
 						break;
 					}
 				}
-			}
-			// Stim_Packs 업그레이드
-			if (MyVariable.getSelfUnit(UnitType.Terran_Academy).size() > 0 && checkNeedResearchTechType(TechType.Stim_Packs)) {
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
+				if (unit.canResearch(TechType.Stim_Packs)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Stim_Packs) == 0) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
+						break;
+					}
+				}
 			}
 		} else {
 			// 바이오닉 공격력, 방어력 업그레이드
@@ -88,7 +92,7 @@ public class ActionUpgrade implements ActionInterface {
 					}
 				}
 			}
-			// Marine 사거리 업그레이드
+			// Marine 사거리/스팀팩 업그레이드
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Academy)) {
 				if (unit.canUpgrade(UpgradeType.U_238_Shells)) {
 					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.U_238_Shells) == 0) {
@@ -96,22 +100,21 @@ public class ActionUpgrade implements ActionInterface {
 						break;
 					}
 				}
+				if (unit.canResearch(TechType.Stim_Packs)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Stim_Packs) == 0) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
+						break;
+					}
+				}
 			}
-			// Stim_Packs 업그레이드
-			if (MyVariable.getSelfUnit(UnitType.Terran_Academy).size() > 0 && checkNeedResearchTechType(TechType.Stim_Packs)) {
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
-			}
-			if (MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() > 0 && checkNeedResearchTechType(TechType.Tank_Siege_Mode)) {
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
+				if (unit.canResearch(TechType.Tank_Siege_Mode)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Tank_Siege_Mode) == 0) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+						break;
+					}
+				}
 			}
 		}
-	}
-
-	boolean checkNeedResearchTechType(TechType techType) {
-		boolean result = false;
-		if (MyBotModule.Broodwar.self().isResearchAvailable(techType) && !MyBotModule.Broodwar.self().isResearching(techType) && !MyBotModule.Broodwar.self().hasResearched(techType) && BuildManager.Instance().getBuildQueue().getItemCount(techType) == 0) {
-			result = true;
-		}
-		return result;
 	}
 }

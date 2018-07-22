@@ -11,11 +11,8 @@ public class ActionCreateUnit implements ActionInterface {
 		if (MyVariable.isInitialBuildOrderFinished == false) {
 			return;
 		}
-
 		if (MyVariable.attackUnit.size() < 4 || MyBotModule.Broodwar.self().minerals() >= 200) {
-
 			HashMap<UnitType, Double> tmp = new HashMap<UnitType, Double>();
-
 			for (UnitType unitType : MyVariable.attackUnitRatio.keySet()) {
 				// 0은 계산 불가
 				if (MyVariable.attackUnitRatio.get(unitType) == 0 && MyBotModule.Broodwar.canMake(unitType) == false) {
@@ -30,11 +27,9 @@ public class ActionCreateUnit implements ActionInterface {
 					tmp.put(unitType, (double) (1.0 * count / MyVariable.attackUnitRatio.get(unitType)) - 0.0000001 * MyVariable.attackUnitRatio.get(unitType));
 				}
 			}
-
 			ArrayList<Double> tmp2 = new ArrayList<Double>();
 			tmp2.addAll(tmp.values());
 			Collections.sort(tmp2);
-
 			/// 여기 까지 정렬 완료
 			for (int i = 0; i < tmp2.size(); i++) {
 				for (UnitType unitType : MyVariable.attackUnitRatio.keySet()) {
@@ -47,7 +42,6 @@ public class ActionCreateUnit implements ActionInterface {
 						}
 					}
 				}
-
 			}
 		}
 	}
