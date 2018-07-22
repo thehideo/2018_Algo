@@ -68,7 +68,7 @@ public class MyUtil {
 		Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
 
 		// 확장했으면 확장부분을 지킨다.
-		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1) {
+		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() > 1 || MyVariable.attackUnit.size() > 30) {
 			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
 		}
 

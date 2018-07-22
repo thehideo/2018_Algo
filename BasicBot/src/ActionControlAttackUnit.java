@@ -34,7 +34,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 		// scanner가 모두 소진되었지만 베슬이 없으면 대기해야함
 		boolean canUseScan = false;
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
-			if (unit.canUseTech(TechType.Scanner_Sweep)) {
+			if (unit.canUseTechPosition(TechType.Scanner_Sweep)) {
 				canUseScan = true;
 			}
 		}
@@ -123,7 +123,6 @@ public class ActionControlAttackUnit implements ActionInterface {
 					if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance > MyVariable.distanceOfMostFarTank) {
 						commandUtil.attackMove(unit, myStartLocation.toPosition());
 					} else
-
 						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 							commandUtil.attackMove(unit, tilePosition.toPosition());
 							break;

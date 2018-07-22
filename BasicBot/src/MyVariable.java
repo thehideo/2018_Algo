@@ -108,12 +108,10 @@ public class MyVariable {
 		MyVariable.patrolUnitCount.clear();
 
 		distanceOfMostFarTank = 0;
-
+		mostFarTank = null;
+		
 		distanceOfMostCloseBunker = Double.MAX_VALUE;
-		mostCloseBunker = null;
-
-		// 미네랄
-		// MyVariable.minerals.clear();
+		mostCloseBunker = null;		
 
 	}
 
@@ -176,7 +174,9 @@ public class MyVariable {
 		MyVariable.enemyAttactingUnit.clear();
 		MyVariable.enemyGroundUnit.clear();
 		MyVariable.enemyUnitAroundMyStartPoint.clear();
-		mostFarTank = null;
+		
+		distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
+		mostCloseEnemyUnit = null;
 	}
 
 }
