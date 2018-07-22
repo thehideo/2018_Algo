@@ -30,12 +30,12 @@ public class StrategyManager {
 		ActionManager.Instance().addAction(new ActionUpgrade(), 2);
 		ActionManager.Instance().addAction(new ActionControlMarin(), 3);
 		ActionManager.Instance().addAction(new ActionCheckBunker(), 4);
-		ActionManager.Instance().addAction(new ActionUpdateEnemyUnitMap(), 5);
+//		ActionManager.Instance().addAction(new ActionUpdateEnemyUnitMap(), 5);   // InformationManager 로 기능 이전
 		ActionManager.Instance().addAction(new ActionEventAttackedByEnemyUnitInSelfRegion(), 6);
 		ActionManager.Instance().addAction(new ActionControlScanUnit(), 7);
 		ActionManager.Instance().addAction(new ActionCreateBuilding(), 9);
 		ActionManager.Instance().addAction(new ActionSetUnitRatio(), 10);
-		ActionManager.Instance().addAction(new ActionUpdateSelfUnitMap(), 11);
+//		ActionManager.Instance().addAction(new ActionUpdateSelfUnitMap(), 11);    // InformationManager 로 기능 이전
 		ActionManager.Instance().addAction(new ActionControlAttackUnit(), 12);
 		ActionManager.Instance().addAction(new ActionSupplyManagement(), 13);
 

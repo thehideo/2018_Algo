@@ -57,6 +57,11 @@ public class InformationManager {
 
 	/// Player - UnitData(각 Unit 과 그 Unit의 UnitInfo 를 Map 형태로 저장하는 자료구조) 를 저장하는 자료구조 객체
 	private Map<Player, UnitData> unitData = new HashMap<Player, UnitData>();
+	
+	// 내 본진 위치 저장
+	private TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
+	private int refreshIndex = 0;
+	static boolean findMineral = false;
 
 	/// static singleton 객체를 리턴합니다
 	public static InformationManager Instance() {
@@ -111,12 +116,15 @@ public class InformationManager {
 	/// 전체 unit 의 정보를 업데이트 합니다 (UnitType, lastPosition, HitPoint 등)
 	public void updateUnitsInfo() {
 		// update our units info
-		for (Unit unit : MyBotModule.Broodwar.enemy().getUnits()) {
-			updateUnitInfo(unit);
-		}
-		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
-			updateUnitInfo(unit);
-		}
+//		for (Unit unit : MyBotModule.Broodwar.enemy().getUnits()) {
+//			updateUnitInfo(unit);
+//		}
+		updateEnemyUnitMap();
+//		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
+//			updateUnitInfo(unit);
+//			
+//		}
+		updateSelfUnitMap();
 
 		// remove bad enemy units
 		if (unitData.get(enemyPlayer) != null) {
@@ -125,6 +133,209 @@ public class InformationManager {
 		if (unitData.get(selfPlayer) != null) {
 			unitData.get(selfPlayer).removeBadUnits();
 		}
+	}
+
+	private void updateSelfUnitMap() {
+		MyVariable.clearSelfUnit();
+
+		if (findMineral == false) {
+			findMineral = true;
+			for (Unit unit : MyBotModule.Broodwar.getAllUnits()) {
+				if (unit.getType() == UnitType.Resource_Mineral_Field) {
+					MyVariable.minerals.add(unit);
+				}
+			}
+		}
+
+		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
+			// UnitData 정보  update(기본 제공된 소스 데이터)
+			updateUnitInfo(unit);
+			
+			// 벙커 안에 있는 것은 스킵
+			if (unit.getType() == UnitType.Terran_Vulture_Spider_Mine) {
+				if (!MyVariable.spinderMinePosition.contains(unit.getPosition())) {
+					MyVariable.spinderMinePosition.add(unit.getPosition());
+				}
+			}
+
+			// 발견되지 않는 Type 추가
+			MyVariable.getSelfUnit(unit.getType()).add(unit);
+
+			// defenceUnit에 할당
+			if (!setUnitAsDefence(unit)) {
+				if (!setUnitAsPatrol(unit)) {
+					// scanUnit에 할당
+					if (unit.getType() == UnitType.Terran_Science_Vessel) {
+						MyVariable.scanUnit.add(unit);
+					}
+					// 본진 밖을 벗어난 SCV는 다시 본진으로 위치 시킨다
+					else if (unit.getType() == UnitType.Terran_SCV) {
+						if (unit.isAttackFrame() == true) {
+							double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+							if (distance > 20) {
+								unit.move(myStartLocation.toPosition());
+							}
+						}
+					}
+					// 공격 유닛
+					// else if (unit.isLoaded() == false && (unit.canAttack() || unit.getType() ==
+					// UnitType.Terran_Medic)) {
+					else if (unit.isLoaded() == false && unit.getType().isBuilding() == false) {
+						MyVariable.attackUnit.add(unit);
+						MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
+						// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
+						refreshIndex++;
+						if (refreshIndex % 3 == 0) {
+							int x = unit.getTilePosition().getX();
+							int y = unit.getTilePosition().getY();
+
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 1));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 0));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
+
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y - 1));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y + 1));
+
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 1));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));
+							MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y + 1));
+						}
+
+						MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
+					}
+					if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						if (MyVariable.distanceOfMostFarTank < distance) {
+							MyVariable.distanceOfMostFarTank = distance;
+
+							MyVariable.mostFarTank = unit;
+						}
+
+					}
+
+					if (unit.getType() == UnitType.Terran_Bunker) {
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						if (MyVariable.distanceOfMostCloseBunker > distance) {
+							MyVariable.distanceOfMostCloseBunker = distance;
+
+							MyVariable.mostCloseBunker = unit;
+						}
+
+					}
+				}
+			}
+
+			// 공격당하고 있는 유닛
+			if (unit.isUnderAttack()) {
+				MyVariable.attackedUnit.add(unit);
+			}
+		}
+	}
+	
+	// 방어 유닛 구성
+	private boolean setUnitAsDefence(Unit unit) {
+		boolean result = false;
+		if (MyVariable.defenceUnitCountTotal.containsKey(unit.getType())) {
+			if (!MyVariable.defenceUnitCount.containsKey(unit.getType())) {
+				MyVariable.defenceUnitCount.put(unit.getType(), 0);
+			}
+			int total = MyVariable.defenceUnitCountTotal.get(unit.getType());
+			int now = MyVariable.defenceUnitCount.get(unit.getType());
+			if (total > now) {
+				MyVariable.defenceUnit.add(unit);
+				MyVariable.defenceUnitCount.put(unit.getType(), now + 1);
+				result = true;
+			}
+		}
+		return result;
+	}
+
+	// 방어 유닛 구성
+	private boolean setUnitAsPatrol(Unit unit) {
+		boolean result = false;
+		if (MyVariable.attackUnit.size() > 30) {
+			if (MyVariable.patrolUnitCountTotal.containsKey(unit.getType())) {
+				if (!MyVariable.patrolUnitCount.containsKey(unit.getType())) {
+					MyVariable.patrolUnitCount.put(unit.getType(), 0);
+				}
+				int total = MyVariable.patrolUnitCountTotal.get(unit.getType());
+				int now = MyVariable.patrolUnitCount.get(unit.getType());
+				if (total > now) {
+					MyVariable.patrolUnit.add(unit);
+					MyVariable.patrolUnitCount.put(unit.getType(), now + 1);
+					result = true;
+				}
+			}
+		}
+		return result;
+	}
+	
+	// 적 Unit 정보 Update -> UnitData 와 MyVariable 에 저장
+	private void updateEnemyUnitMap() {
+		// TODO Auto-generated method stub
+		MyVariable.clearEnemyUnit();
+
+//		TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
+
+		for (Unit unit : MyBotModule.Broodwar.enemy().getUnits()) {
+			// UnitData 정보  update(기본 제공된 소스 데이터)
+			updateUnitInfo(unit);
+
+			// 정상 유닛이면
+			if (unit.exists() && unit.getType() != UnitType.Unknown && unit.getPosition().isValid()) {
+
+				if (unit.getType() == UnitType.Protoss_Interceptor) {
+					continue;
+				}
+
+				MyVariable.getEnemyUnit(unit.getType()).add(unit);
+
+				// 건물
+				if (unit.getType().isBuilding()) {
+					if (!unit.getType().isRefinery()) {
+						MyVariable.enemyBuildingUnit.add(unit.getTilePosition());
+					}
+				}
+				// 일반 공격
+				else {
+					MyVariable.enemyAttactUnit.add(unit);
+				}
+				// 지상
+				if (unit.isFlying() == false) {
+					MyVariable.enemyGroundUnit.add(unit);
+				}
+
+				if (unit.isAttacking()) {
+					MyVariable.enemyAttactingUnit.add(unit);
+				}
+
+				// if (unit.getType() != UnitType.Terran_SCV && unit.getType() !=
+				// UnitType.Protoss_Probe && unit.getType() != UnitType.Zerg_Drone)
+				{
+					// 내 본진 근처 적유닛
+					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+					if (distance < 40) {
+						MyVariable.enemyUnitAroundMyStartPoint.add(unit);
+					}
+
+					if (MyVariable.distanceOfMostCloseEnemyUnit > distance) {
+						MyVariable.distanceOfMostCloseEnemyUnit = distance;
+						MyVariable.mostCloseEnemyUnit = unit;
+					}
+				}
+			}
+		}
+
+		if (MyVariable.getEnemyUnit(UnitType.Zerg_Mutalisk).size() > 0) {
+			MyVariable.findMutal = true;
+		}
+		if (MyVariable.getEnemyUnit(UnitType.Zerg_Lurker).size() > 0) {
+			MyVariable.findLucker = true;
+		}
+		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
+			MyVariable.findCarrier = true;
+		}
+		
 	}
 
 	/// 해당 unit 의 정보를 업데이트 합니다 (UnitType, lastPosition, HitPoint 등)

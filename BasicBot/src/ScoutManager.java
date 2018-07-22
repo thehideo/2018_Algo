@@ -18,13 +18,14 @@ public class ScoutManager {
 
 	private Unit currentScoutUnit;
 	private int currentScoutStatus;
-
+	
 	public enum ScoutStatus {
 		NoScout, /// < 정찰 유닛을 미지정한 상태
 		MovingToAnotherBaseLocation, /// < 적군의 BaseLocation 이 미발견된 상태에서 정찰 유닛을 이동시키고 있는 상태
-		MoveAroundEnemyBaseLocation /// < 적군의 BaseLocation 이 발견된 상태에서 정찰 유닛을 이동시키고 있는 상태
+		MoveAroundEnemyBaseLocation, /// < 적군의 BaseLocation 이 발견된 상태에서 정찰 유닛을 이동시키고 있는 상태
+		MoveAroundEnemyExpansionLocation /// < 적군의 BaseLocation 이 발견된 상태에서 정찰 유닛을 ExpansionLocation으로 이동시키고 있는 상태
 	};
-
+	
 	private BaseLocation currentScoutTargetBaseLocation = null;
 	private Vector<Position> enemyBaseRegionVertices = new Vector<Position>();
 	private int currentScoutFreeToVertexIndex = -1;
@@ -49,6 +50,7 @@ public class ScoutManager {
 		assignScoutIfNeeded();
 		moveScoutUnit();
 
+//		System.out.println("CurrentScoutStatus:"+ currentScoutStatus);
 		// 참고로, scoutUnit 의 이동에 의해 발견된 정보를 처리하는 것은 InformationManager.update() 에서 수행함
 	}
 
@@ -82,11 +84,48 @@ public class ScoutManager {
 						// set unit as scout unit
 						currentScoutUnit = unit;
 						WorkerManager.Instance().setScoutWorker(currentScoutUnit);
+						currentScoutStatus = ScoutStatus.MovingToAnotherBaseLocation.ordinal();
 
 						// 참고로, 일꾼의 정찰 임무를 해제하려면, 다음과 같이 하면 된다
 						// WorkerManager::Instance().setIdleWorker(currentScoutUnit);
 					}
 				}
+			}
+		} else {
+			// 적의 기지를 발견한 이후 정찰정책 추가(yh.kim)
+			// 첫 번째 정찰일꾼이 죽으면 다른 일꾼을 선정하여 정찰임무를 수행한다. (초기정찰은 2마리 일꾼까지만 수행후 else 아래 후반 정찰임무수행으로 넘어감)
+			// 두 번째 정찰일꾼은 적의 첫번째 확장기지로 이동하여 확장타이밍을 체크한다. 
+			if(currentScoutStatus == ScoutStatus.MovingToAnotherBaseLocation.ordinal()
+					|| currentScoutStatus == ScoutStatus.MoveAroundEnemyBaseLocation.ordinal()) {
+				
+				if(WorkerManager.Instance().getScoutWorker() != null) {
+					// 1) 첫 번째 정찰일꾼이 적기지를 찾은 후 적 기지 주변을 도는 모드로 변경
+					if(currentScoutStatus == ScoutStatus.MovingToAnotherBaseLocation.ordinal())
+						currentScoutStatus = ScoutStatus.MoveAroundEnemyBaseLocation.ordinal();
+				} else {
+					// 2) 첫 번째 정찰일꾼이 죽은 후 두 번째 정찰일꾼 새로 할당 후 적의 첫번째 확장기지로 이동.
+					// firstChoke point 에서 가장 가까운 곳의 일꾼선정
+					Unit unit = WorkerManager.Instance().getClosestMineralWorkerTo(InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.self()).getCenter());
+					
+					if (unit != null) {
+						// set unit as scout unit
+						currentScoutUnit = unit;
+						WorkerManager.Instance().setScoutWorker(currentScoutUnit);
+						currentScoutStatus = ScoutManager.ScoutStatus.MoveAroundEnemyExpansionLocation.ordinal();
+					}
+				}
+			} else {
+				// 초기 정찰 이후의 정찰 임무 수행
+				// 스캐너가 200이 꽉찬 상태면 스캔을 한 번 뿌려준다.(구현 필요)
+//				if(MyBotModule.Broodwar.getFrameCount() - beforeTime > MyVariable.nFrameCntPerMin * 3)
+//				ArrayList<Unit> units = MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station);
+//				for (int i = 0; i < units.size(); i++) {
+//					if (units.get(i).canUseTech(TechType.Scanner_Sweep, unit)) {
+//						units.get(i).useTech(TechType.Scanner_Sweep, unit);
+//						beforeTime = MyBotModule.Broodwar.getFrameCount();
+//						break;
+//					}
+//				}
 			}
 		}
 	}
@@ -105,10 +144,13 @@ public class ScoutManager {
 
 		BaseLocation enemyBaseLocation = InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().enemyPlayer);
 		BaseLocation myBaseLocation = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self());
+		
+		// 정찰유닛이 정해져있고, 타겟이 정해져있고 아직 정찰하지 않은 BaseLocation 이라면 계속 Move 한다.
 		if (currentScoutUnit != null && currentScoutTargetBaseLocation != null && MyBotModule.Broodwar.isExplored(currentScoutTargetBaseLocation.getTilePosition()) == false) {
 			commandUtil.move(currentScoutUnit, currentScoutTargetBaseLocation.getPoint());
 		}
 
+		// 적의 기지를 아직 발견하지 못한 상태
 		if (enemyBaseLocation == null) {
 			// currentScoutTargetBaseLocation 가 null 이거나 정찰 유닛이
 			// currentScoutTargetBaseLocation 에 도착했으면
@@ -148,15 +190,66 @@ public class ScoutManager {
 				currentScoutTargetBaseLocation = enemyBaseLocation;
 
 				if (MyBotModule.Broodwar.isExplored(currentScoutTargetBaseLocation.getTilePosition()) == false) {
-
+					// 이 case 로 들어오는 경우는 어떤 경우인지? 
 					currentScoutStatus = ScoutStatus.MovingToAnotherBaseLocation.ordinal();
 					currentScoutTargetPosition = currentScoutTargetBaseLocation.getPosition();
 					commandUtil.move(currentScoutUnit, currentScoutTargetPosition);
 
 				} else {
-					WorkerManager.Instance().setIdleWorker(currentScoutUnit);
-					currentScoutStatus = ScoutStatus.NoScout.ordinal();
-					currentScoutTargetPosition = myBaseLocation.getPosition();
+					// 적 기지를 발견한 이후 적 기지 경계선을 따라 돈다. 
+					if(currentScoutStatus == ScoutManager.ScoutStatus.MoveAroundEnemyBaseLocation.ordinal()) {
+//						currentScoutStatus = ScoutStatus.MoveAroundEnemyBaseLocation.ordinal();
+						
+						// 돌다가 적 SVC가 건물을 건설하고 있으면 공격한다.(적이 테란인 경우만 수행)
+						Unit targetUnit = null;
+						boolean bAttackFlg = false; 
+						
+						if(InformationManager.Instance().enemyRace == Race.Terran) {
+							double dist;
+							
+							for (Unit unit : MyBotModule.Broodwar.enemy().getUnits()) {
+								if(unit.getType() == UnitType.Terran_SCV || unit.getType() == UnitType.Terran_Marine) {
+									dist = unit.getDistance(currentScoutUnit);
+									
+									if ((dist < 400)) {
+										// 마린이 있으면 공격하지 않는다
+										if(unit.getType() == UnitType.Terran_Marine) {
+											bAttackFlg = false;
+											break;
+										}
+										
+										// 건설 중인 적 SCV는 대상으로 선정
+										if(unit.getType() == UnitType.Terran_SCV && unit.isConstructing()) {
+											targetUnit = unit;
+											bAttackFlg = true;
+										}
+									}
+								}
+							}
+						}
+						
+						if(targetUnit != null && bAttackFlg) {
+							commandUtil.attackUnit(currentScoutUnit, targetUnit);
+						} else {
+							// 적이 테란이지만 건설중인 SCV가 없는 경우나
+							// 적이 프로토스나 저그인 경우는 그냥 move
+							currentScoutTargetPosition = getScoutFleePositionFromEnemyRegionVertices();
+							commandUtil.move(currentScoutUnit, currentScoutTargetPosition);	
+						}
+					} else if(currentScoutStatus == ScoutManager.ScoutStatus.MoveAroundEnemyExpansionLocation.ordinal()) {
+						
+						// 두 번째 일꾼은 적의 확장기지로 이동
+						currentScoutTargetPosition = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy()).getPosition();
+//						if(currentScoutUnit.getDistance(currentScoutTargetPosition) >= 5 ) { // 도착했으면 move 하지 않도록 hold 처리
+							commandUtil.move(currentScoutUnit, currentScoutTargetPosition);	
+					
+						// 복귀하는 case
+//						WorkerManager.Instance().setIdleWorker(currentScoutUnit);
+//						currentScoutStatus = ScoutStatus.NoScout.ordinal();
+//						currentScoutTargetPosition = myBaseLocation.getPosition();
+							
+					}
+					
 				}
 			}
 		}
