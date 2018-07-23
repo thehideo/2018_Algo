@@ -42,6 +42,13 @@ public class ActionSetUnitRatio implements ActionInterface {
 			} else {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 			}
+
+			// 방어 유닛 비율
+			if (MyVariable.findMutal) {
+				MyVariable.defenceUnitCountTotal.put(UnitType.Terran_Goliath, 4);
+				MyVariable.defenceUnitCountTotal.put(UnitType.Terran_Marine, 8);
+				MyVariable.defenceUnitCountTotal.put(UnitType.Terran_Medic, 2);
+			}
 		}
 	}
 }

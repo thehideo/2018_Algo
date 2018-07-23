@@ -1,11 +1,7 @@
-import java.util.ArrayList;
-
 import bwapi.Race;
-import bwapi.TechType;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
-import bwta.BWTA;
 import bwta.Chokepoint;
 
 public class ActionControlAttackUnit implements ActionInterface {
@@ -37,8 +33,18 @@ public class ActionControlAttackUnit implements ActionInterface {
 			MyVariable.isFullScaleAttackStarted = false;
 		}
 
+		// 본진에 적이 있으면 공격
+		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
+			for (Unit unit : MyVariable.attackUnit) {
+				if (MyVariable.mostCloseEnemyUnit != null) {
+					commandUtil.attackMove(unit, MyVariable.mostCloseEnemyUnit.getPoint());
+				} else {
+					commandUtil.attackMove(unit, MyVariable.enemyUnitAroundMyStartPoint.get(0).getPoint());
+				}
+			}
+		}
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
-		if (MyVariable.isFullScaleAttackStarted == false || needToWaitVessel == true) {
+		else if (MyVariable.isFullScaleAttackStarted == false || needToWaitVessel == true) {
 			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
 			for (Unit unit : MyVariable.attackUnit) {
 				if (unit.isIdle()) {

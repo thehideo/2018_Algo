@@ -20,7 +20,6 @@ public class ActionControlTank implements ActionInterface {
 		}
 
 		int cnt = Terran_Siege_Tank_Siege_Mode.size();
-		//if(MyVariable.enemyAttactUnit.size()>3)
 		for (Unit unit : Terran_Siege_Tank_Tank_Mode) {
 			if (cnt < 5 && needSiege(unit) == true) {
 				cnt++;

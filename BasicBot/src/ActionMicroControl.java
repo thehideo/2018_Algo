@@ -3,7 +3,7 @@ import bwapi.Unit;
 import bwapi.UnitType;
 
 public class ActionMicroControl implements ActionInterface {
-	CommandUtil commandUtil = new CommandUtil();
+	//CommandUtil commandUtil = new CommandUtil();
 
 	@Override
 	public void action() {
@@ -16,10 +16,10 @@ public class ActionMicroControl implements ActionInterface {
 			for (Unit enemyUnit : MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar)) {
 				if (enemyUnit.isCloaked() == false) {
 					for (Unit selfUnit : MyVariable.attackUnit) {
-						commandUtil.attackUnit(selfUnit, enemyUnit);
+						CommandUtil.attackUnit(selfUnit, enemyUnit);
 					}
 					for (Unit selfUnit : MyVariable.defenceUnit) {
-						commandUtil.attackUnit(selfUnit, enemyUnit);
+						CommandUtil.attackUnit(selfUnit, enemyUnit);
 					}
 					return;
 				}
@@ -30,7 +30,7 @@ public class ActionMicroControl implements ActionInterface {
 		if ((MyVariable.findLucker == true || MyVariable.findDarkTempler) && MyUtil.canUseScan() == false && MyVariable.getSelfUnit(UnitType.Terran_Science_Vessel).size() == 0) {
 			if (MyVariable.mostFarTurret != null) {
 				for (Unit unit : MyVariable.attackUnit) {
-					commandUtil.attackMove(unit, MyVariable.mostFarTurret.getPosition());
+					CommandUtil.attackMove(unit, MyVariable.mostFarTurret.getPosition());
 				}
 			}
 			return;
@@ -38,7 +38,7 @@ public class ActionMicroControl implements ActionInterface {
 
 		// 탱크보다 멀리있는 유닛은 뒤로 보냄
 		if (MyVariable.mostFarAttackUnit != null && MyVariable.mostFarTank != null && MyVariable.distanceOfMostFarTank < MyVariable.distanceOfMostFarAttackUnit) {
-			commandUtil.attackMove(MyVariable.mostFarAttackUnit, myStartLocation.toPosition());
+			CommandUtil.attackMove(MyVariable.mostFarAttackUnit, myStartLocation.toPosition());
 		}
 
 		// 적의 숫자가 많으면 SCV를 동원한다. (초반에만 동작)
@@ -53,7 +53,7 @@ public class ActionMicroControl implements ActionInterface {
 				double distance2 = MyUtil.distanceTilePosition(myStartLocation.getPoint(), unit.getPoint().toTilePosition());
 
 				if (distance1 <= distance2) {
-					commandUtil.attackMove(unit, myStartLocation.getPoint().toPosition());
+					CommandUtil.attackMove(unit, myStartLocation.getPoint().toPosition());
 				} else {
 					cnt++;
 					if (cnt > 10) {
@@ -72,7 +72,7 @@ public class ActionMicroControl implements ActionInterface {
 					}
 
 					if (enemyUnit != null) {
-						commandUtil.attackUnit(unit, enemyUnit);
+						CommandUtil.attackUnit(unit, enemyUnit);
 					}
 				}
 			}
