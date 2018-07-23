@@ -5,8 +5,6 @@ import bwapi.UnitType;
 import bwta.Chokepoint;
 
 public class ActionControlAttackUnit implements ActionInterface {
-	CommandUtil commandUtil = new CommandUtil();
-
 	int minPointX = Integer.MAX_VALUE;
 	int maxPointX = Integer.MIN_VALUE;
 	int minPointY = Integer.MAX_VALUE;
@@ -37,9 +35,9 @@ public class ActionControlAttackUnit implements ActionInterface {
 		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			for (Unit unit : MyVariable.attackUnit) {
 				if (MyVariable.mostCloseEnemyUnit != null) {
-					commandUtil.attackMove(unit, MyVariable.mostCloseEnemyUnit.getPoint());
+					CommandUtil.attackMove(unit, MyVariable.mostCloseEnemyUnit.getPoint());
 				} else {
-					commandUtil.attackMove(unit, MyVariable.enemyUnitAroundMyStartPoint.get(0).getPoint());
+					CommandUtil.attackMove(unit, MyVariable.enemyUnitAroundMyStartPoint.get(0).getPoint());
 				}
 			}
 		}
@@ -48,7 +46,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
 			for (Unit unit : MyVariable.attackUnit) {
 				if (unit.isIdle()) {
-					commandUtil.attackMove(unit, saveChokePoint.getCenter());
+					CommandUtil.attackMove(unit, saveChokePoint.getCenter());
 				}
 			}
 			// 프로토스 공격 조건
@@ -126,7 +124,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 						int xValue = minPointX + MyUtil.random.nextInt(maxPointX - minPointX);
 						int yValue = minPointY + MyUtil.random.nextInt(maxPointY - minPointY);
 						TilePosition position = new TilePosition(xValue, yValue);
-						commandUtil.attackMove(unit, position.toPosition());
+						CommandUtil.attackMove(unit, position.toPosition());
 					}
 				}
 				// 발견한 건물이 있다면 그쪽으로 이동
@@ -134,23 +132,23 @@ public class ActionControlAttackUnit implements ActionInterface {
 					// 메딕은 치료할 곳으로 이동한다.
 					if (unit.getType() == UnitType.Terran_Medic) {
 						if (MyVariable.attackedUnit.size() > 0) {
-							commandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
+							CommandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
 						}
 					}
 
 					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
 					// 가장 멀리 있는 유닛은 뒤로 간다. 모아서 가기위해서
 					if (unit == MyVariable.mostFarAttackUnit) {
-						commandUtil.attackMove(unit, myStartLocation.toPosition());
+						CommandUtil.attackMove(unit, myStartLocation.toPosition());
 					}
 					// 탱크보다 앞서 있는 유닛은 모두 돌아온다.
 					else if (MyVariable.enemyAttactUnit.size() > 0 && MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance + 2 > MyVariable.distanceOfMostFarTank) {
-						commandUtil.attackMove(unit, myStartLocation.toPosition());
+						CommandUtil.attackMove(unit, myStartLocation.toPosition());
 					}
 					// 발견된 적의 위치로 GoGo
 					else {
 						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
-							commandUtil.attackMove(unit, tilePosition.toPosition());
+							CommandUtil.attackMove(unit, tilePosition.toPosition());
 							break;
 						}
 					}

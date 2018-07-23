@@ -3,8 +3,6 @@ import bwapi.Unit;
 import bwapi.UnitType;
 
 public class ActionMicroControl implements ActionInterface {
-	//CommandUtil commandUtil = new CommandUtil();
-
 	@Override
 	public void action() {
 		TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();

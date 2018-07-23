@@ -48,8 +48,6 @@ public class WorkerData {
 	private Map<Integer, Unit> workerRefineryMap = new HashMap<Integer, Unit>();
 	private Map<Integer, Unit> workerRepairMap = new HashMap<Integer, Unit>();
 	
-	private CommandUtil commandUtil = new CommandUtil();
-	
 	public WorkerData() 
 	{
 		// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
@@ -275,7 +273,7 @@ public class WorkerData {
 	        addToMineralPatch(mineralToMine, 1);
 
 			// right click the mineral to start mining
-	        commandUtil.rightClick(unit, mineralToMine);
+	        CommandUtil.rightClick(unit, mineralToMine);
 		}
 		else if (job == WorkerJob.Gas)
 		{
@@ -293,7 +291,7 @@ public class WorkerData {
 			workerRefineryMap.put(unit.getID(), jobUnit);
 
 			// right click the refinery to start harvesting
-			commandUtil.rightClick(unit, jobUnit);
+			CommandUtil.rightClick(unit, jobUnit);
 		}
 	    else if (job == WorkerJob.Repair)
 	    {
@@ -307,7 +305,7 @@ public class WorkerData {
 				// 기존이 이미 수리를 하고 있으면 계속 기존 것을 수리한다
 				if (!unit.isRepairing())
 				{
-					commandUtil.repair(unit, jobUnit);
+					CommandUtil.repair(unit, jobUnit);
 				}
 			}
 	    }

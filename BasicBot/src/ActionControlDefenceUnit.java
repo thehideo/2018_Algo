@@ -3,8 +3,6 @@ import bwapi.TilePosition;
 import bwapi.Unit;
 
 public class ActionControlDefenceUnit implements ActionInterface {
-	CommandUtil commandUtil = new CommandUtil();
-
 	@Override
 	public void action() {
 		Position position = MyUtil.GetMyBunkerPosition();
@@ -13,7 +11,7 @@ public class ActionControlDefenceUnit implements ActionInterface {
 		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
 				for (Unit unit : MyVariable.defenceUnit) {
-					commandUtil.attackMove(unit, enemyUnit.getPosition());
+					CommandUtil.attackMove(unit, enemyUnit.getPosition());
 					break;
 				}
 			}
@@ -21,9 +19,9 @@ public class ActionControlDefenceUnit implements ActionInterface {
 			for (Unit unit : MyVariable.defenceUnit) {
 				if (unit.isIdle() == true) {
 					if (MyVariable.isFullScaleAttackStarted == true || position == null) {
-						commandUtil.attackMove(unit, myStartLocation.toPosition());
+						CommandUtil.attackMove(unit, myStartLocation.toPosition());
 					} else {
-						commandUtil.attackMove(unit, MyUtil.getSaveChokePoint().getPoint());
+						CommandUtil.attackMove(unit, MyUtil.getSaveChokePoint().getPoint());
 					}
 				}
 			}

@@ -6,8 +6,6 @@ import bwta.BWTA;
 import bwta.BaseLocation;
 
 public class ActionPatrolBaseLocation implements ActionInterface {
-	CommandUtil commandUnit = new CommandUtil();
-
 	ArrayList<TilePosition> tlList = new ArrayList<TilePosition>();
 
 	@Override
@@ -24,7 +22,7 @@ public class ActionPatrolBaseLocation implements ActionInterface {
 
 		if (tlList.size() > 0) {
 			for (Unit unit : MyVariable.patrolUnit) {
-				commandUnit.attackMove(unit, tlList.get(0).toPosition());
+				CommandUtil.attackMove(unit, tlList.get(0).toPosition());
 				if (MyUtil.distanceTilePosition(unit.getTilePosition(), tlList.get(0)) < 2) {
 					tlList.remove(0);
 				}

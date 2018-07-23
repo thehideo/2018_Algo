@@ -19,8 +19,6 @@ public class ConstructionManager {
 	/// Construction Task 들의 목록을 constructionQueue 로 유지합니다
 	private Vector<ConstructionTask> constructionQueue = new Vector<ConstructionTask>();
 
-	CommandUtil commandUtil = new CommandUtil();
-
 	/// < minerals reserved for planned buildings
 	private int reservedMinerals = 0;
 
@@ -249,7 +247,7 @@ public class ConstructionManager {
 				// if we haven't explored the build position, first we mush go there
 				// 한번도 안가본 곳에는 build 커맨드 자체를 지시할 수 없으므로, 일단 그곳으로 이동하게 합니다
 				if (!isBuildingPositionExplored(b)) {
-					commandUtil.move(b.getConstructionWorker(), b.getFinalPosition().toPosition());
+					CommandUtil.move(b.getConstructionWorker(), b.getFinalPosition().toPosition());
 				} else if (b.isBuildCommandGiven() == false) {
 					// System.out.println(b.getType() + " build commanded to " +
 					// b.getConstructionWorker().getID() + ", buildCommandGiven true " );
@@ -387,7 +385,7 @@ public class ConstructionManager {
 							// System.out.println("set ConstuctionWorker " + workerToAssign.getID());
 
 							b.setConstructionWorker(workerToAssign);
-							commandUtil.rightClick(b.getConstructionWorker(), b.getBuildingUnit());
+							CommandUtil.rightClick(b.getConstructionWorker(), b.getBuildingUnit());
 							b.setBuildCommandGiven(true);
 							b.setLastBuildCommandGivenFrame(MyBotModule.Broodwar.getFrameCount());
 							b.setLastConstructionWorkerID(b.getConstructionWorker().getID());

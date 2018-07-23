@@ -4,7 +4,7 @@ import bwapi.Unit;
 import bwapi.UnitType;
 
 public class ActionControlMarin implements ActionInterface {
-	CommandUtil commandUtil = new CommandUtil();
+	//CommandUtil commandUtil = new CommandUtil();
 
 	@Override
 	public void action() {
