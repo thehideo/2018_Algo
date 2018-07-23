@@ -142,9 +142,9 @@ public class ActionControlAttackUnit implements ActionInterface {
 						CommandUtil.attackMove(unit, myStartLocation.toPosition());
 					}
 					// 탱크보다 앞서 있는 유닛은 모두 돌아온다.
-					else if (MyVariable.enemyAttactUnit.size() > 0 && MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance + 2 > MyVariable.distanceOfMostFarTank) {
-						CommandUtil.attackMove(unit, myStartLocation.toPosition());
-					}
+					//else if (MyVariable.enemyAttactUnit.size() > 0 && MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && (MyVariable.distanceOfMostFarTank > 40 || MyVariable.enemyAttactingUnit.size() > 0) && distance + 2 > MyVariable.distanceOfMostFarTank) {
+					//	CommandUtil.attackMove(unit, myStartLocation.toPosition());
+					//}
 					// 발견된 적의 위치로 GoGo
 					else {
 						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {

@@ -402,7 +402,6 @@ public class WorkerManager {
 		// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
 		// 변수 기본값 수정
 
-		double closestMovingWorkerDistance = 1000000000;
 		double closestMiningWorkerDistance = 1000000000;
 
 		// BasicBot 1.1 Patch End //////////////////////////////////////////////////
@@ -416,7 +415,7 @@ public class WorkerManager {
 			if (workerData.getWorkers().size() >= 2 && avoidWorkerID != 0 && unit.getID() == avoidWorkerID)
 				continue;
 
-			// jyh
+			// 움직이는 워커 중에서 선택하면, 계속 선택을 못하는 경우가 발생하여 제거하였음
 			/*
 			 * // Move / Idle Worker if (unit.isCompleted() &&
 			 * (workerData.getWorkerJob(unit) == WorkerData.WorkerJob.Move ||
