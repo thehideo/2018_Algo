@@ -31,7 +31,6 @@ public class ActionManager {
 		try {
 			// 매 프레임마다 유닛 중복 명령을 방지하는 hash초기화 한다.
 			CommandUtil.clearCommandHash();
-
 			// Action Micro Control이 모든 명령에 우선이다.
 			actionMicroControl.action();
 			int frame = MyBotModule.Broodwar.getFrameCount() % 24;

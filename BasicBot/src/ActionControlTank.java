@@ -15,7 +15,7 @@ public class ActionControlTank implements ActionInterface {
 
 		for (Unit unit : Terran_Siege_Tank_Siege_Mode) {
 			if (needSiege(unit) == false) {
-				unit.unsiege();
+				CommandUtil.unsiege(unit);
 			}
 		}
 
@@ -23,7 +23,7 @@ public class ActionControlTank implements ActionInterface {
 		for (Unit unit : Terran_Siege_Tank_Tank_Mode) {
 			if (cnt < 5 && needSiege(unit) == true) {
 				cnt++;
-				unit.siege();
+				CommandUtil.siege(unit);
 			}
 		}
 	}

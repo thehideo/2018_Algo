@@ -1,6 +1,7 @@
 import java.util.HashSet;
 
 import bwapi.Position;
+import bwapi.TechType;
 import bwapi.Unit;
 import bwapi.UnitCommand;
 import bwapi.UnitCommandType;
@@ -12,6 +13,33 @@ public class CommandUtil {
 	// 매 프레임 마다 초기화 한다.
 	static public void clearCommandHash() {
 		commandHash.clear();
+	}
+
+	static public void useStim_Packs(Unit unit) {
+		if (commandHash.contains(unit)) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+		unit.useTech(TechType.Stim_Packs);
+	}
+
+	static public void siege(Unit unit) {
+		if (commandHash.contains(unit)) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+		unit.siege();
+	}
+
+	static public void unsiege(Unit unit) {
+		if (commandHash.contains(unit)) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+		unit.unsiege();
 	}
 
 	static public void attackUnit(Unit attacker, Unit target) {

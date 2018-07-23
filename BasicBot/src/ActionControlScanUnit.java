@@ -10,10 +10,8 @@ public class ActionControlScanUnit implements ActionInterface {
 			double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
 			if (MyVariable.mostFarTank != null && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && MyVariable.distanceOfMostFarTank > 50 && distance > MyVariable.distanceOfMostFarTank) {
 				CommandUtil.move(unit, MyVariable.mostFarTank.getPosition());
-			} else
-			
-			if (unit.isIdle() == true && MyVariable.attackedUnit.size() > 0) {
-				unit.move(MyVariable.attackedUnit.get(0).getPosition());
+			} else if (unit.isIdle() == true && MyVariable.attackedUnit.size() > 0) {
+				CommandUtil.move(unit, MyVariable.attackedUnit.get(0).getPosition());
 			}
 		}
 	}
