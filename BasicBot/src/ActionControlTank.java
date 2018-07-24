@@ -30,10 +30,18 @@ public class ActionControlTank implements ActionInterface {
 
 	boolean needSiege(Unit unit) {
 		boolean result = false;
-		for (Unit enemyUnit : MyVariable.enemyGroundUnit) {
-			int distance = unit.getDistance(enemyUnit);
-			if (distance > SIEGE_MODE_MIN_RANGE && distance < SIEGE_MODE_MAX_RANGE) {
+		if (MyVariable.isFullScaleAttackStarted == false) {
+			if (MyUtil.distanceTilePosition(MyUtil.getSaveChokePoint().getPoint().toTilePosition(), unit.getTilePosition()) < 5) {
 				result = true;
+			}
+		}
+		if (result == false) {
+			for (Unit enemyUnit : MyVariable.enemyGroundUnit) {
+				int distance = unit.getDistance(enemyUnit);
+				if (distance > SIEGE_MODE_MIN_RANGE && distance < SIEGE_MODE_MAX_RANGE) {
+					result = true;
+					break;
+				}
 			}
 		}
 		return result;
