@@ -33,10 +33,13 @@ public class MyVariable {
 	// 다크템플러를 찾았는지
 	public static boolean findDarkTempler = false;
 
+	// 하이템플러를 찾았는지
+	public static boolean findHighTempler = false;
+
 	public static boolean findCarrier = false;
-	
+
 	// 초당(1000ms) 프레임수(game speed 에 따라 다름)s
-	public static int nFrameCntPerMin = Math.round(1000/Config.SetLocalSpeed);   
+	public static int nFrameCntPerMin = Math.round(1000 / Config.SetLocalSpeed);
 
 	/////////////////////////////////////////////
 	// 내 유닛 정보
@@ -86,6 +89,9 @@ public class MyVariable {
 	// 공격 당하는 유닛
 	public static ArrayList<Unit> attackedUnit = new ArrayList<Unit>();
 
+	// 스톰에 맞은 유닛
+	public static ArrayList<Unit> underStormUnit = new ArrayList<Unit>();
+
 	// 방어 유닛
 	public static ArrayList<Unit> defenceUnit = new ArrayList<Unit>();
 
@@ -113,6 +119,8 @@ public class MyVariable {
 		MyVariable.patrolUnit.clear();
 		MyVariable.scanUnit.clear();
 		MyVariable.bunkerUnit.clear();
+
+		underStormUnit.clear();
 
 		// 방어할 유닛 개수 초기화
 		MyVariable.defenceUnitCount.clear();

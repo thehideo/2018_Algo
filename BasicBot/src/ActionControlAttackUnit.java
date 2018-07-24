@@ -31,11 +31,20 @@ public class ActionControlAttackUnit implements ActionInterface {
 
 		// 본진에 적이 있으면 공격
 		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
-			for (Unit unit : MyVariable.attackUnit) {
-				if (MyVariable.mostCloseEnemyUnit != null) {
-					CommandUtil.attackMove(unit, MyVariable.mostCloseEnemyUnit.getPoint());
-				} else {
-					CommandUtil.attackMove(unit, MyVariable.enemyUnitAroundMyStartPoint.get(0).getPoint());
+			// 적이 나보다 많으면 벙커로 가고
+			if (MyVariable.enemyUnitAroundMyStartPoint.size() > MyVariable.attackUnit.size()) {
+				for (Unit unit : MyVariable.attackUnit) {
+					CommandUtil.attackMove(unit, MyUtil.GetMyBunkerPosition());
+				}
+			} 
+			// 적이 나보다 적으면 공격한다.
+			else {
+				for (Unit unit : MyVariable.attackUnit) {
+					if (MyVariable.mostCloseEnemyUnit != null) {
+						CommandUtil.attackMove(unit, MyVariable.mostCloseEnemyUnit.getPoint());
+					} else {
+						CommandUtil.attackMove(unit, MyVariable.enemyUnitAroundMyStartPoint.get(0).getPoint());
+					}
 				}
 			}
 		}

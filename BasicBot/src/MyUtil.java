@@ -85,7 +85,7 @@ public class MyUtil {
 	public static boolean canUseScan() {
 		boolean canUseScan = false;
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
-			if (unit.canUseTechPosition(TechType.Scanner_Sweep)) {
+			if (unit.isCompleted() && unit.canUseTechPosition(TechType.Scanner_Sweep)) {
 				canUseScan = true;
 			}
 		}

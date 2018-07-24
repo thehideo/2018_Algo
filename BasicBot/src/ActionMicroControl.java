@@ -1,4 +1,3 @@
-import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -8,18 +7,21 @@ public class ActionMicroControl implements ActionInterface {
 		int selfCnt = MyVariable.attackUnit.size() + MyVariable.defenceUnit.size();
 		int enemyCnt = MyVariable.enemyUnitAroundMyStartPoint.size();
 
+		// 싸이오닉 스톰 맞으면 뒤로 뺀다.
+		for (Unit selfUnit : MyVariable.underStormUnit) {
+			CommandUtil.move(selfUnit, MyVariable.myStartLocation.toPosition());
+		}
+
 		// 내 본진 주위에 다크템플러가 있고, 보이는 경우에 가장 먼저 공격한다.
-		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0 && MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0) {
-			for (Unit enemyUnit : MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar)) {
-				if (enemyUnit.isCloaked() == false) {
-					for (Unit selfUnit : MyVariable.attackUnit) {
-						CommandUtil.attackUnit(selfUnit, enemyUnit);
-					}
-					for (Unit selfUnit : MyVariable.defenceUnit) {
-						CommandUtil.attackUnit(selfUnit, enemyUnit);
-					}
-					return;
+		for (Unit enemyUnit : MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar)) {
+			if (enemyUnit.isCloaked() == false) {
+				for (Unit selfUnit : MyVariable.attackUnit) {
+					CommandUtil.attackUnit(selfUnit, enemyUnit);
 				}
+				for (Unit selfUnit : MyVariable.defenceUnit) {
+					CommandUtil.attackUnit(selfUnit, enemyUnit);
+				}
+				return;
 			}
 		}
 
@@ -34,7 +36,7 @@ public class ActionMicroControl implements ActionInterface {
 		}
 
 		// 탱크보다 멀리있는 유닛은 뒤로 보냄
-		if (MyVariable.mostFarAttackUnit != null && MyVariable.mostFarTank != null && MyVariable.distanceOfMostFarTank < MyVariable.distanceOfMostFarAttackUnit) {
+		if (MyVariable.mostFarAttackUnit != null && MyVariable.mostFarTank != null && MyVariable.mostFarTank.isCompleted() == true && MyVariable.distanceOfMostFarTank < MyVariable.distanceOfMostFarAttackUnit) {
 			CommandUtil.attackMove(MyVariable.mostFarAttackUnit, MyVariable.myStartLocation.toPosition());
 		}
 

@@ -238,6 +238,10 @@ public class InformationManager {
 						}
 
 					}
+
+					if (unit.isUnderStorm()) {
+						MyVariable.underStormUnit.add(unit);
+					}
 				}
 			}
 
@@ -344,6 +348,9 @@ public class InformationManager {
 		}
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
 			MyVariable.findCarrier = true;
+		}
+		if (MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar).size() > 0) {
+			MyVariable.findHighTempler = true;
 		}
 	}
 
