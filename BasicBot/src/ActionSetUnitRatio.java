@@ -18,11 +18,12 @@ public class ActionSetUnitRatio implements ActionInterface {
 			if (MyVariable.findCarrier == true) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 3);
 			} else {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
+				if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() / 2 < MyVariable.getSelfAttackUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfAttackUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size()) {
+					MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
+				}
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 			}
 		}
-		// 프로토스 이면
 		else if (InformationManager.Instance().enemyRace == Race.Terran) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);

@@ -12,6 +12,10 @@ public class ActionControlScanUnit implements ActionInterface {
 			else if (MyVariable.mostFarTank != null) {
 				CommandUtil.move(unit, MyVariable.mostFarTank.getPosition());
 			}
+			// 탱크도 없으면 본진으로 이동
+			else {
+				CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+			}
 		}
 	}
 }
