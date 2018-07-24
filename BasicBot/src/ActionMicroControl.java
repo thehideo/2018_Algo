@@ -5,7 +5,6 @@ import bwapi.UnitType;
 public class ActionMicroControl implements ActionInterface {
 	@Override
 	public void action() {
-		TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
 		int selfCnt = MyVariable.attackUnit.size() + MyVariable.defenceUnit.size();
 		int enemyCnt = MyVariable.enemyUnitAroundMyStartPoint.size();
 
@@ -36,7 +35,7 @@ public class ActionMicroControl implements ActionInterface {
 
 		// 탱크보다 멀리있는 유닛은 뒤로 보냄
 		if (MyVariable.mostFarAttackUnit != null && MyVariable.mostFarTank != null && MyVariable.distanceOfMostFarTank < MyVariable.distanceOfMostFarAttackUnit) {
-			CommandUtil.attackMove(MyVariable.mostFarAttackUnit, myStartLocation.toPosition());
+			CommandUtil.attackMove(MyVariable.mostFarAttackUnit, MyVariable.myStartLocation.toPosition());
 		}
 
 		// 적의 숫자가 많으면 SCV를 동원한다. (초반에만 동작)
@@ -46,12 +45,12 @@ public class ActionMicroControl implements ActionInterface {
 				double distance1 = 50;
 
 				if (MyVariable.mostCloseBunker != null) {
-					distance1 = MyUtil.distanceTilePosition(myStartLocation.getPoint(), MyVariable.mostCloseBunker.getTilePosition()) + 3;
+					distance1 = MyUtil.distanceTilePosition(MyVariable.myStartLocation.getPoint(), MyVariable.mostCloseBunker.getTilePosition()) + 3;
 				}
-				double distance2 = MyUtil.distanceTilePosition(myStartLocation.getPoint(), unit.getPoint().toTilePosition());
+				double distance2 = MyUtil.distanceTilePosition(MyVariable.myStartLocation.getPoint(), unit.getPoint().toTilePosition());
 
 				if (distance1 <= distance2) {
-					CommandUtil.attackMove(unit, myStartLocation.getPoint().toPosition());
+					CommandUtil.attackMove(unit, MyVariable.myStartLocation.getPoint().toPosition());
 				} else {
 					cnt++;
 					if (cnt > 10) {

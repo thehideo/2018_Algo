@@ -92,4 +92,15 @@ public class MyUtil {
 		return canUseScan;
 	}
 
+	public static boolean haveCompletedScienceVessle() {
+		boolean result = false;
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Science_Vessel)) {
+			if (unit.isCompleted() == true) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+
 }

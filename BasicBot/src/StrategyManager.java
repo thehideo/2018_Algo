@@ -1,21 +1,12 @@
-import java.awt.image.ImagingOpException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 
-import javax.swing.ActionMap;
-
 import bwapi.Race;
-import bwapi.TechType;
 import bwapi.Unit;
 import bwapi.UnitType;
-import bwapi.UpgradeType;
-import bwta.BWTA;
-import bwta.BaseLocation;
-import bwta.Chokepoint;
 
 /// 상황을 판단하여, 정찰, 빌드, 공격, 방어 등을 수행하도록 총괄 지휘를 하는 class <br>
 /// InformationManager 에 있는 정보들로부터 상황을 판단하고, <br>
@@ -24,29 +15,6 @@ import bwta.Chokepoint;
 public class StrategyManager {
 
 	private static StrategyManager instance = new StrategyManager();
-
-	public StrategyManager() {
-		ActionManager.Instance().addAction(new ActionCreateUnit(), 1);
-		ActionManager.Instance().addAction(new ActionUpgrade(), 2);
-		ActionManager.Instance().addAction(new ActionControlMarin(), 3);
-		ActionManager.Instance().addAction(new ActionCheckBunker(), 4);
-		ActionManager.Instance().addAction(new ActionControlScanUnit(), 7);
-		ActionManager.Instance().addAction(new ActionCreateBuilding(), 9);
-		ActionManager.Instance().addAction(new ActionSetUnitRatio(), 10);
-		ActionManager.Instance().addAction(new ActionControlAttackUnit(), 12);
-		ActionManager.Instance().addAction(new ActionSupplyManagement(), 13);
-		// Scanner 체크는 2번
-		ActionManager.Instance().addAction(new ActionUseScanner(), 2);
-		ActionManager.Instance().addAction(new ActionUseScanner(), 14);
-		ActionManager.Instance().addAction(new ActionControlTank(), 15);
-		ActionManager.Instance().addAction(new ActionControlDefenceUnit(), 16);
-		ActionManager.Instance().addAction(new ActionControlVulture(), 17);
-		ActionManager.Instance().addAction(new ActionPatrolBaseLocation(), 18);
-
-	}
-
-	// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
-	// 경기 결과 파일 Save / Load 및 로그파일 Save 예제 추가를 위한 변수 및 메소드 선언
 
 	/// 한 게임에 대한 기록을 저장하는 자료구조
 	private class GameRecord {
@@ -73,28 +41,11 @@ public class StrategyManager {
 
 	/// 경기가 시작될 때 일회적으로 전략 초기 세팅 관련 로직을 실행합니다
 	public void onStart() {
-
-		// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
-		// 경기 결과 파일 Save / Load 및 로그파일 Save 예제 추가
-
-		// 과거 게임 기록을 로딩합니다
-		loadGameRecordList();
-
-		// BasicBot 1.1 Patch End //////////////////////////////////////////////////
-
 		setInitialBuildOrder();
 	}
 
 	/// 경기가 종료될 때 일회적으로 전략 결과 정리 관련 로직을 실행합니다
 	public void onEnd(boolean isWinner) {
-
-		// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
-		// 경기 결과 파일 Save / Load 및 로그파일 Save 예제 추가
-
-		// 과거 게임 기록 + 이번 게임 기록을 저장합니다
-		saveGameRecordList(isWinner);
-
-		// BasicBot 1.1 Patch End //////////////////////////////////////////////////
 	}
 
 	/// 경기 진행 중 매 프레임마다 경기 전략 관련 로직을 실행합니다
@@ -102,9 +53,7 @@ public class StrategyManager {
 		if (BuildManager.Instance().buildQueue.isEmpty()) {
 			MyVariable.isInitialBuildOrderFinished = true;
 		}
-
-		ActionManager.Instance().action();
-
+		ActionManager.Instance().update();
 		executeWorkerTraining();
 	}
 

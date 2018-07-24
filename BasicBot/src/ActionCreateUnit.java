@@ -6,7 +6,7 @@ import bwapi.UnitType;
 
 public class ActionCreateUnit implements ActionInterface {
 
-	// 설정된 비율에 따라서 비율이 낮은것을 생산
+	// 설정된 비율에 따라서 현재 비율이 낮은 유닛을 생산
 	public void action() {
 		if (MyVariable.isInitialBuildOrderFinished == false) {
 			return;

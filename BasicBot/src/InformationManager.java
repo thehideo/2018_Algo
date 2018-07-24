@@ -61,7 +61,6 @@ public class InformationManager {
 	private Map<Player, UnitData> unitData = new HashMap<Player, UnitData>();
 
 	// 내 본진 위치 저장
-	private TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation().getPoint();
 	private int refreshIndex = 0;
 	static boolean findMineral = false;
 
@@ -172,9 +171,9 @@ public class InformationManager {
 					// 본진 밖을 벗어난 SCV는 다시 본진으로 위치 시킨다
 					else if (unit.getType() == UnitType.Terran_SCV) {
 						if (unit.isAttackFrame() == true) {
-							double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+							double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
 							if (distance > 20) {
-								unit.move(myStartLocation.toPosition());
+								unit.move(MyVariable.myStartLocation.toPosition());
 							}
 						}
 					}
@@ -205,7 +204,7 @@ public class InformationManager {
 						MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
 
 						// 가장 멀리있는 공격 유닛 확인
-						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
 						if (MyVariable.distanceOfMostFarAttackUnit < distance) {
 							MyVariable.distanceOfMostFarAttackUnit = distance;
 							MyVariable.mostFarAttackUnit = unit;
@@ -213,7 +212,7 @@ public class InformationManager {
 
 					}
 					if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
-						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
 						if (MyVariable.distanceOfMostFarTank < distance) {
 							MyVariable.distanceOfMostFarTank = distance;
 
@@ -223,7 +222,7 @@ public class InformationManager {
 					}
 
 					if (unit.getType() == UnitType.Terran_Missile_Turret) {
-						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
 						if (MyVariable.distanceOfMostFarTurret < distance) {
 							MyVariable.distanceOfMostFarTurret = distance;
 							MyVariable.mostFarTurret = unit;
@@ -231,7 +230,7 @@ public class InformationManager {
 					}
 
 					if (unit.getType() == UnitType.Terran_Bunker) {
-						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
 						if (MyVariable.distanceOfMostCloseBunker > distance) {
 							MyVariable.distanceOfMostCloseBunker = distance;
 
@@ -291,8 +290,6 @@ public class InformationManager {
 	private void updateEnemyUnitMap() {
 		MyVariable.clearEnemyUnit();
 
-		// TilePosition myStartLocation =
-		// MyBotModule.Broodwar.self().getStartLocation().getPoint();
 		for (Unit unit : MyBotModule.Broodwar.enemy().getUnits()) {
 			// UnitData 정보 update(기본 제공된 소스 데이터)
 			updateUnitInfo(unit);
@@ -324,7 +321,7 @@ public class InformationManager {
 				// UnitType.Protoss_Probe && unit.getType() != UnitType.Zerg_Drone)
 				{
 					// 내 본진 근처 적유닛
-					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), myStartLocation);
+					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
 					if (distance < 40) {
 						MyVariable.enemyUnitAroundMyStartPoint.add(unit);
 					}
