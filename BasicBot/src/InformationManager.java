@@ -321,19 +321,24 @@ public class InformationManager {
 				if (unit.isAttacking()) {
 					MyVariable.enemyAttactingUnit.add(unit);
 				}
-				// if (unit.getType() != UnitType.Terran_SCV && unit.getType() !=
-				// UnitType.Protoss_Probe && unit.getType() != UnitType.Zerg_Drone)
-				{
-					// 내 본진 근처 적유닛
-					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
-					if (distance < 40) {
-						MyVariable.enemyUnitAroundMyStartPoint.add(unit);
-					}
-					if (MyVariable.distanceOfMostCloseEnemyUnit > distance) {
-						MyVariable.distanceOfMostCloseEnemyUnit = distance;
-						MyVariable.mostCloseEnemyUnit = unit;
+
+				// 내 본진 근처 적유닛
+				double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
+				if (distance < 40) {
+					MyVariable.enemyUnitAroundMyStartPoint.add(unit);
+				}
+
+				if (MyVariable.distanceOfMostCloseEnemyUnit > distance) {
+					MyVariable.distanceOfMostCloseEnemyUnit = distance;
+					MyVariable.mostCloseEnemyUnit = unit;
+				}
+				if (unit.getType() == UnitType.Protoss_Carrier) {
+					if (MyVariable.distanceOfMostCloseCarrier > distance) {
+						MyVariable.distanceOfMostCloseCarrier = distance;
+						MyVariable.mostCloseCarrier = unit;
 					}
 				}
+
 			}
 		}
 
@@ -346,7 +351,7 @@ public class InformationManager {
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0) {
 			MyVariable.findDarkTempler = true;
 		}
-		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
+		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0 || MyVariable.getEnemyUnit(UnitType.Protoss_Fleet_Beacon).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Stargate).size() >= 2 && MyVariable.getEnemyUnit(UnitType.Protoss_Interceptor).size() > 0) {
 			MyVariable.findCarrier = true;
 		}
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar).size() > 0) {

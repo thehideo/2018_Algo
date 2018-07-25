@@ -36,7 +36,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 				for (Unit unit : MyVariable.attackUnit) {
 					CommandUtil.attackMove(unit, MyUtil.GetMyBunkerPosition());
 				}
-			} 
+			}
 			// 적이 나보다 적으면 공격한다.
 			else {
 				for (Unit unit : MyVariable.attackUnit) {
@@ -58,15 +58,22 @@ public class ActionControlAttackUnit implements ActionInterface {
 			}
 			// 프로토스 공격 조건
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
-				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-					if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 2) {
+				// 캐리어를 발견했을 때
+				if (MyVariable.findCarrier == true) {
+					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() > 30) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
-				}
-				// 확장 기지가 있다면
-				else {
-					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 3) {
-						MyVariable.isFullScaleAttackStarted = true;
+				} else {
+					if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
+						if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 2) {
+							MyVariable.isFullScaleAttackStarted = true;
+						}
+					}
+					// 확장 기지가 있다면
+					else {
+						if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 3) {
+							MyVariable.isFullScaleAttackStarted = true;
+						}
 					}
 				}
 			}
@@ -112,8 +119,12 @@ public class ActionControlAttackUnit implements ActionInterface {
 			} else {
 				if (MyVariable.attackUnit.size() < 10) {
 					MyVariable.isFullScaleAttackStarted = false;
-
 				}
+			}
+
+			// 상대가 캐리어가 있는데 골리앗이 없으면 방어 모드
+			if (MyVariable.findCarrier == true && MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() <= 10) {
+				MyVariable.isFullScaleAttackStarted = false;
 			}
 
 			// 메딕 비율만 높아도 방어 모드로 변경 (50%이상)

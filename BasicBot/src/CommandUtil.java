@@ -44,7 +44,7 @@ public class CommandUtil {
 
 	static public void attackUnit(Unit attacker, Unit target) {
 		UnitCommand currentCommand = attacker.getLastCommand();
-		if (currentCommand.getUnitCommandType() == UnitCommandType.Attack_Unit && currentCommand.getTarget() == target) {
+		if (currentCommand.getTarget() == target && attacker.isIdle() != false) {
 			return;
 		}
 
@@ -57,9 +57,10 @@ public class CommandUtil {
 		attacker.attack(target);
 	}
 
-	static public void attackMove(Unit attacker, final Position targetPosition) {
+	static public void attackMove(Unit attacker, Position targetPosition) {
 		UnitCommand currentCommand = attacker.getLastCommand();
-		if (currentCommand.getTargetPosition().equals(targetPosition)) {
+
+		if (currentCommand.getTargetPosition().equals(targetPosition) && attacker.isIdle() != false) {
 			return;
 		}
 
@@ -72,7 +73,13 @@ public class CommandUtil {
 		attacker.attack(targetPosition);
 	}
 
-	static public void move(Unit attacker, final Position targetPosition) {
+	static public void move(Unit attacker, Position targetPosition) {
+
+		UnitCommand currentCommand = attacker.getLastCommand();
+
+		if (currentCommand.getTargetPosition().equals(targetPosition) && attacker.isIdle() != false) {
+			return;
+		}
 
 		if (commandHash.contains(attacker)) {
 			return;
@@ -85,7 +92,8 @@ public class CommandUtil {
 
 	static public void rightClick(Unit unit, Unit target) {
 		UnitCommand currentCommand = unit.getLastCommand();
-		if (currentCommand.getUnitCommandType() == UnitCommandType.Right_Click_Unit && target.getPosition().equals(currentCommand.getTargetPosition())) {
+
+		if (currentCommand.getTarget() == target && unit.isIdle() != false) {
 			return;
 		}
 
@@ -100,7 +108,8 @@ public class CommandUtil {
 
 	static public void repair(Unit unit, Unit target) {
 		UnitCommand currentCommand = unit.getLastCommand();
-		if (currentCommand.getUnitCommandType() == UnitCommandType.Repair && currentCommand.getTarget() == target) {
+
+		if (currentCommand.getTarget() == target && unit.isIdle() != false) {
 			return;
 		}
 

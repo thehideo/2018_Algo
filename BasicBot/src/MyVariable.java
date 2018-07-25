@@ -159,6 +159,9 @@ public class MyVariable {
 	public static double distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
 	public static Unit mostCloseEnemyUnit = null;
 
+	public static double distanceOfMostCloseCarrier = Double.MAX_VALUE;
+	public static Unit mostCloseCarrier = null;
+
 	public static void clearUnitRaio() {
 		MyVariable.attackUnitRatio.clear();
 		MyVariable.defenceUnitCountTotal.clear();
@@ -203,6 +206,9 @@ public class MyVariable {
 
 		distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
 		mostCloseEnemyUnit = null;
+
+		distanceOfMostCloseCarrier = Double.MAX_VALUE;
+		mostCloseCarrier = null;
 	}
 
 }

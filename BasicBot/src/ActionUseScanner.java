@@ -1,10 +1,14 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import bwapi.TechType;
+import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 
 public class ActionUseScanner implements ActionInterface {
+
+	HashSet<TilePosition> scanTilePosition = new HashSet<TilePosition>();
 
 	@Override
 	public void action() {
@@ -30,6 +34,26 @@ public class ActionUseScanner implements ActionInterface {
 			}
 		}
 
+		if (MyVariable.findDarkTempler == false) {
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
+				if (unit.getEnergy() > 150) {
+					for (TilePosition enemyBuildingPosition : MyVariable.enemyBuildingUnit) {
+						if (!scanTilePosition.contains(enemyBuildingPosition)) {
+							int X = enemyBuildingPosition.getX();
+							int Y = enemyBuildingPosition.getY();
+							for (int i = -4; i <= 4; i++) {
+								for (int j = -4; j <= 4; j++) {
+									scanTilePosition.add(new TilePosition(i + X, j + Y));
+								}
+							}
+							useScanner_Sweep(unit, enemyBuildingPosition);
+							break;
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	// 스캐너 사용
@@ -44,6 +68,13 @@ public class ActionUseScanner implements ActionInterface {
 				break;
 			}
 		}
+	}
+
+	void useScanner_Sweep(Unit scanner, TilePosition tilePosition) {
+		if (scanner.canUseTech(TechType.Scanner_Sweep, tilePosition.toPosition())) {
+			scanner.useTech(TechType.Scanner_Sweep, tilePosition.toPosition());
+		}
+
 	}
 
 	// 스캐너 사용이 가능한지 확인

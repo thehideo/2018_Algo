@@ -25,7 +25,11 @@ public class ActionUpgrade implements ActionInterface {
 					if (unit.canUpgrade(UpgradeType.Charon_Boosters)) {
 						if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Charon_Boosters) == 0) {
 							{
-								BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Charon_Boosters, false);
+								if (MyVariable.findCarrier == false) {
+									BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Charon_Boosters, false);
+								} else {
+									BuildManager.Instance().buildQueue.queueAsHighestPriority(UpgradeType.Charon_Boosters, true);
+								}
 								break;
 							}
 						}

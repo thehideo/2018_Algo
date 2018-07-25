@@ -12,7 +12,7 @@ public class ActionMicroControl implements ActionInterface {
 			CommandUtil.move(selfUnit, MyVariable.myStartLocation.toPosition());
 		}
 
-		// 내 본진 주위에 다크템플러가 있고, 보이는 경우에 가장 먼저 공격한다.
+		// 주위에 다크템플러가 있고, 보이는 경우에 가장 먼저 공격한다.
 		for (Unit enemyUnit : MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar)) {
 			if (enemyUnit.isCloaked() == false) {
 				for (Unit selfUnit : MyVariable.attackUnit) {
@@ -22,6 +22,20 @@ public class ActionMicroControl implements ActionInterface {
 					CommandUtil.attackUnit(selfUnit, enemyUnit);
 				}
 				return;
+			}
+		}
+
+		// 주위에 캐리어가 있고, 보이는 경우에 가장 먼저 공격한다.
+		if (MyVariable.mostCloseCarrier != null) {
+			for (Unit selfUnit : MyVariable.getSelfUnit(UnitType.Terran_Goliath)) {
+				CommandUtil.attackUnit(selfUnit, MyVariable.mostCloseCarrier);
+			}
+		} else {
+			for (Unit enemyUnit : MyVariable.getEnemyUnit(UnitType.Protoss_Carrier)) {
+				for (Unit selfUnit : MyVariable.getSelfUnit(UnitType.Terran_Goliath)) {
+					CommandUtil.attackUnit(selfUnit, enemyUnit);
+				}
+				break;
 			}
 		}
 
@@ -41,7 +55,7 @@ public class ActionMicroControl implements ActionInterface {
 		}
 
 		// 적의 숫자가 많으면 SCV를 동원한다. (초반에만 동작)
-		if (selfCnt < enemyCnt * 2 && selfCnt < 10 && MyBotModule.Broodwar.getFrameCount() < 14000) {
+		if (selfCnt < enemyCnt * 2 && selfCnt < 10 && MyBotModule.Broodwar.getFrameCount() < 12000) {
 			int cnt = 0;
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_SCV)) {
 				double distance1 = 50;
