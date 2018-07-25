@@ -60,7 +60,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				// 캐리어를 발견했을 때
 				if (MyVariable.findCarrier == true) {
-					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() > 30) {
+					if (MyVariable.attackUnit.size() > 30) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				} else {

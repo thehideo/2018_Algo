@@ -351,7 +351,7 @@ public class InformationManager {
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0) {
 			MyVariable.findDarkTempler = true;
 		}
-		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0 || MyVariable.getEnemyUnit(UnitType.Protoss_Fleet_Beacon).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Stargate).size() >= 2 && MyVariable.getEnemyUnit(UnitType.Protoss_Interceptor).size() > 0) {
+		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Fleet_Beacon).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Stargate).size() >= 1) {
 			MyVariable.findCarrier = true;
 		}
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar).size() > 0) {
