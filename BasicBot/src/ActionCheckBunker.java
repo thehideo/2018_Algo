@@ -8,15 +8,21 @@ public class ActionCheckBunker implements ActionInterface {
 	public void action() {
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
 			if (unit.isCompleted()) {
-				if (unit.getLoadedUnits().size() < 4) {
-					for (Unit unit2 : MyVariable.getSelfUnit(UnitType.Terran_Marine)) {
-						if (unit2.isCompleted() && unit2.isLoaded() == false && unit2.isIdle() == true) {
-							unit2.rightClick(unit);
-							MyVariable.bunkerUnit.add(unit);
-							MyVariable.attackUnit.remove(unit);
-						}
+				if (MyVariable.isFullScaleAttackStarted == true) {
+					if (unit.getLoadedUnits().size() > 0) {
+						unit.unloadAll();
 					}
-					return;
+				} else {
+					if (unit.getLoadedUnits().size() < 4) {
+						for (Unit unit2 : MyVariable.getSelfUnit(UnitType.Terran_Marine)) {
+							if (unit2.isCompleted() && unit2.isLoaded() == false && unit2.isIdle() == true) {
+								unit2.rightClick(unit);
+								MyVariable.bunkerUnit.add(unit);
+								MyVariable.attackUnit.remove(unit);
+							}
+						}
+						return;
+					}
 				}
 			}
 		}
