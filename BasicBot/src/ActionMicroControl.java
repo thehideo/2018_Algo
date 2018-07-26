@@ -25,11 +25,12 @@ public class ActionMicroControl implements ActionInterface {
 			}
 		}
 
-		// 주위에 캐리어가 있고, 보이는 경우에 가장 먼저 공격한다.
-		if (MyVariable.mostCloseCarrier != null) {
+		// 주위에 캐리어가 있고, 각 골리앗 마다 가장 가까운 녀석을 공격한다.
+		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
 			for (Unit selfUnit : MyVariable.getSelfUnit(UnitType.Terran_Goliath)) {
-				if (MyUtil.distanceTilePosition(selfUnit.getTilePosition(), MyVariable.mostCloseCarrier.getTilePosition()) * 32 < UnitType.Terran_Goliath.airWeapon().maxRange()) {
-					CommandUtil.attackUnit(selfUnit, MyVariable.mostCloseCarrier);
+				Unit mostCloseCarrier = getMostCloseEnemyUnit(UnitType.Protoss_Carrier, selfUnit);
+				if (mostCloseCarrier != null) {
+					CommandUtil.attackUnit(selfUnit, mostCloseCarrier);
 				}
 			}
 		}
@@ -86,6 +87,19 @@ public class ActionMicroControl implements ActionInterface {
 			}
 		}
 
+	}
+
+	public Unit getMostCloseEnemyUnit(UnitType unitType, Unit myUnit) {
+		Unit mostCloseEnemyUnit = null;
+		double minDistance = Double.MAX_VALUE;
+		for (Unit enemyUnit : MyVariable.getEnemyUnit(unitType)) {
+			double distance = MyUtil.distanceTilePosition(myUnit.getTilePosition(), enemyUnit.getTilePosition());
+			if (minDistance > distance) {
+				minDistance = distance;
+				mostCloseEnemyUnit = enemyUnit;
+			}
+		}
+		return mostCloseEnemyUnit;
 	}
 
 }

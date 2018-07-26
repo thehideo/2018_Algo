@@ -1,18 +1,24 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import bwapi.TechType;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
+import bwta.BWTA;
+import bwta.BaseLocation;
 
 public class ActionUseScanner implements ActionInterface {
 
 	HashSet<TilePosition> scanTilePosition = new HashSet<TilePosition>();
 
+	int index = 0;
+
+	List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
+
 	@Override
 	public void action() {
-
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Zerg_Lurker)) {
 			MyVariable.needTerran_Science_Vessel = true;
 			if (unit.isAttacking() && unit.isBurrowed() == true && unit.isDetected() == false) {
@@ -35,26 +41,43 @@ public class ActionUseScanner implements ActionInterface {
 		}
 
 		// 스캔이 많이 남으면 적 본진을 스캔함
+		int ScanPoint = 200;
 		if (MyVariable.findDarkTempler == false && MyVariable.findLucker == false) {
-			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
-				if (unit.getEnergy() > 100) {
-					for (TilePosition enemyBuildingPosition : MyVariable.enemyBuildingUnit) {
-						if (!scanTilePosition.contains(enemyBuildingPosition)) {
-							int X = enemyBuildingPosition.getX();
-							int Y = enemyBuildingPosition.getY();
-							for (int i = -4; i <= 4; i++) {
-								for (int j = -4; j <= 4; j++) {
-									scanTilePosition.add(new TilePosition(i + X, j + Y));
-								}
+			ScanPoint = 100;
+		} else {
+			ScanPoint = 200;
+		}
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
+			if (unit.getEnergy() > ScanPoint) {
+				boolean use = false;
+				for (TilePosition enemyBuildingPosition : MyVariable.enemyBuildingUnit) {
+					if (!scanTilePosition.contains(enemyBuildingPosition)) {
+						int X = enemyBuildingPosition.getX();
+						int Y = enemyBuildingPosition.getY();
+						for (int i = -4; i <= 4; i++) {
+							for (int j = -4; j <= 4; j++) {
+								scanTilePosition.add(new TilePosition(i + X, j + Y));
 							}
-							useScanner_Sweep(unit, enemyBuildingPosition);
-							break;
 						}
+						useScanner_Sweep(unit, enemyBuildingPosition);
+						use = true;
+						break;
+					}
+				}
+				if (use == false) {
+					if (index < BWTA.getBaseLocations().size()) {
+						BaseLocation baseLocation = listBaseLocation.get(index);
+						TilePosition tilePosition = baseLocation.getTilePosition();
+						if (!scanTilePosition.contains(tilePosition)) {
+							useScanner_Sweep(unit, tilePosition);
+						}
+						index++;
+					} else {
+						index = 0;
 					}
 				}
 			}
 		}
-
 	}
 
 	// 스캐너 사용
