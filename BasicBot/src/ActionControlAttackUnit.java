@@ -60,7 +60,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				// 캐리어를 발견했을 때
 				if (MyVariable.findCarrier == true) {
-					if (MyVariable.attackUnit.size() > 30) {
+					if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() > 15) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				} else {
@@ -112,7 +112,18 @@ public class ActionControlAttackUnit implements ActionInterface {
 		// 공격 모드가 되면, 모든 전투유닛들을 적군 Main BaseLocation 로 공격 가도록 합니다
 		else {
 			// 유닛이 많이 죽으면 방어 모드로 전환
-			if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
+			if (InformationManager.Instance().enemyRace == Race.Protoss) {
+				// 상대가 캐리어가 있는데 골리앗이 없으면 방어 모드
+				if (MyVariable.findCarrier == true) {
+					if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() <= 5) {
+						MyVariable.isFullScaleAttackStarted = false;
+					}
+				} else {
+					if (MyVariable.attackUnit.size() < 10 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() <= 2) {
+						MyVariable.isFullScaleAttackStarted = false;
+					}
+				}
+			} else if (InformationManager.Instance().enemyRace == Race.Terran) {
 				if (MyVariable.attackUnit.size() < 10 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() <= 2) {
 					MyVariable.isFullScaleAttackStarted = false;
 				}
@@ -120,11 +131,6 @@ public class ActionControlAttackUnit implements ActionInterface {
 				if (MyVariable.attackUnit.size() < 10) {
 					MyVariable.isFullScaleAttackStarted = false;
 				}
-			}
-
-			// 상대가 캐리어가 있는데 골리앗이 없으면 방어 모드
-			if (MyVariable.findCarrier == true && MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() <= 10) {
-				MyVariable.isFullScaleAttackStarted = false;
 			}
 
 			// 메딕 비율만 높아도 방어 모드로 변경 (50%이상)
@@ -145,11 +151,11 @@ public class ActionControlAttackUnit implements ActionInterface {
 				// 발견한 건물이 있다면 그쪽으로 이동
 				else {
 					// 메딕은 치료할 곳으로 이동한다.
-					if (unit.getType() == UnitType.Terran_Medic) {
-						if (MyVariable.attackedUnit.size() > 0) {
-							CommandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
-						}
-					}
+					//if (unit.getType() == UnitType.Terran_Medic) {
+					//	if (MyVariable.attackedUnit.size() > 0) {
+					//		CommandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
+					//	}
+					//}
 					// 가장 멀리 있는 유닛은 뒤로 간다. 모아서 가기위해서
 					if (unit == MyVariable.mostFarAttackUnit) {
 						CommandUtil.attackMove(unit, MyVariable.myStartLocation.toPosition());

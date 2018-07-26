@@ -15,28 +15,29 @@ public class ActionUseScanner implements ActionInterface {
 
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Zerg_Lurker)) {
 			MyVariable.needTerran_Science_Vessel = true;
-			if (unit.isAttacking() && unit.isBurrowed() == true) {
+			if (unit.isAttacking() && unit.isBurrowed() == true && unit.isDetected() == false) {
 				useScanner_Sweep(unit);
 			}
 		}
 
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar)) {
 			MyVariable.needTerran_Science_Vessel = true;
-			if (unit.isAttacking() && unit.isCloaked() == true) {
+			if (unit.isAttacking() && unit.isCloaked() == true && unit.isDetected() == false) {
 				useScanner_Sweep(unit);
 			}
 		}
 
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_Wraith)) {
 			MyVariable.needTerran_Science_Vessel = true;
-			if (unit.isAttacking() && unit.isCloaked() == true) {
+			if (unit.isAttacking() && unit.isCloaked() == true && unit.isDetected() == false) {
 				useScanner_Sweep(unit);
 			}
 		}
 
-		if (MyVariable.findDarkTempler == false) {
+		// 스캔이 많이 남으면 적 본진을 스캔함
+		if (MyVariable.findDarkTempler == false && MyVariable.findLucker == false) {
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
-				if (unit.getEnergy() > 150) {
+				if (unit.getEnergy() > 100) {
 					for (TilePosition enemyBuildingPosition : MyVariable.enemyBuildingUnit) {
 						if (!scanTilePosition.contains(enemyBuildingPosition)) {
 							int X = enemyBuildingPosition.getX();

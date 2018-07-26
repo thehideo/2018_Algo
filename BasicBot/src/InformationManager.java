@@ -308,6 +308,10 @@ public class InformationManager {
 					if (!unit.getType().isRefinery()) {
 						MyVariable.enemyBuildingUnit.add(unit.getTilePosition());
 					}
+
+					if (unit.getType() == UnitType.Terran_Command_Center || unit.getType() == UnitType.Protoss_Nexus) {
+						MyVariable.mapEnemyMainBuilding.add(unit.getTilePosition());
+					}
 				}
 				// 일반 공격
 				else {
@@ -357,6 +361,7 @@ public class InformationManager {
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar).size() > 0) {
 			MyVariable.findHighTempler = true;
 		}
+
 	}
 
 	/// 해당 unit 의 정보를 업데이트 합니다 (UnitType, lastPosition, HitPoint 등)

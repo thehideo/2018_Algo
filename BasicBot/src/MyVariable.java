@@ -64,6 +64,9 @@ public class MyVariable {
 	// 애드온 지을자리를 기억해둔다.
 	public static HashSet<TilePosition> addonPlace = new HashSet<TilePosition>();
 
+	// 상대편 command center, neus, 해처리 개수 파악용
+	public static HashSet<TilePosition> mapEnemyMainBuilding = new HashSet<TilePosition>();
+
 	// 전체
 	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
 

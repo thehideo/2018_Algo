@@ -8,6 +8,7 @@ public class ActionCheckBunker implements ActionInterface {
 	public void action() {
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
 			if (unit.isCompleted()) {
+				// 총 공격일 때는 다 꺼냄
 				if (MyVariable.isFullScaleAttackStarted == true) {
 					if (unit.getLoadedUnits().size() > 0) {
 						unit.unloadAll();

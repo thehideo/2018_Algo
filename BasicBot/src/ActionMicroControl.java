@@ -28,14 +28,9 @@ public class ActionMicroControl implements ActionInterface {
 		// 주위에 캐리어가 있고, 보이는 경우에 가장 먼저 공격한다.
 		if (MyVariable.mostCloseCarrier != null) {
 			for (Unit selfUnit : MyVariable.getSelfUnit(UnitType.Terran_Goliath)) {
-				CommandUtil.attackUnit(selfUnit, MyVariable.mostCloseCarrier);
-			}
-		} else {
-			for (Unit enemyUnit : MyVariable.getEnemyUnit(UnitType.Protoss_Carrier)) {
-				for (Unit selfUnit : MyVariable.getSelfUnit(UnitType.Terran_Goliath)) {
-					CommandUtil.attackUnit(selfUnit, enemyUnit);
+				if (MyUtil.distanceTilePosition(selfUnit.getTilePosition(), MyVariable.mostCloseCarrier.getTilePosition()) * 32 < UnitType.Terran_Goliath.airWeapon().maxRange()) {
+					CommandUtil.attackUnit(selfUnit, MyVariable.mostCloseCarrier);
 				}
-				break;
 			}
 		}
 

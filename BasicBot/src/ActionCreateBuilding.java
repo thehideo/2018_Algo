@@ -35,16 +35,16 @@ public class ActionCreateBuilding implements ActionInterface {
 	}
 
 	void terranBuild() {
-		if (MyVariable.isFullScaleAttackStarted) {
+		if (MyVariable.isFullScaleAttackStarted && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1) {
 			if (checkNeedToBuild(UnitType.Terran_Factory, 3))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			if (checkNeedToBuild(UnitType.Terran_Machine_Shop, 3))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			if (checkNeedToBuild(UnitType.Terran_Command_Center, 2)) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Command_Center, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
-				if (checkNeedToBuild(UnitType.Terran_Refinery, 2)) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
-				}
+			}
+			if (checkNeedToBuild(UnitType.Terran_Refinery, 2) && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2) {
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
 			}
 			if (checkNeedToBuild(UnitType.Terran_Comsat_Station, 2) && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Comsat_Station, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
@@ -87,19 +87,19 @@ public class ActionCreateBuilding implements ActionInterface {
 	}
 
 	void protossBuild() {
-		if (MyVariable.isFullScaleAttackStarted) {
+		if (MyVariable.isFullScaleAttackStarted || MyVariable.mapEnemyMainBuilding.size() >= 2) {
 			if (checkNeedToBuild(UnitType.Terran_Factory, 3))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			if (checkNeedToBuild(UnitType.Terran_Machine_Shop, 3))
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			if (checkNeedToBuild(UnitType.Terran_Command_Center, 2)) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Command_Center, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
-				if (checkNeedToBuild(UnitType.Terran_Refinery, 2)) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
-				}
 			}
 			if (checkNeedToBuild(UnitType.Terran_Comsat_Station, 2) && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Comsat_Station, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
+			}
+			if (checkNeedToBuild(UnitType.Terran_Refinery, 2) && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2) {
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation, false);
 			}
 		}
 
@@ -162,7 +162,12 @@ public class ActionCreateBuilding implements ActionInterface {
 		}
 
 		// Terran_Armory 건설
-		if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 2 && (MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() >= 4 || MyVariable.findCarrier == true)) {
+		if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 2 && (MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() >= 4)) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		}
+
+		// Terran_Armory 건설
+		if (checkNeedToBuild(UnitType.Terran_Armory, 2) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 2 && MyVariable.findCarrier == true) {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 	}

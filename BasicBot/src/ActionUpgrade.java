@@ -111,6 +111,7 @@ public class ActionUpgrade implements ActionInterface {
 					}
 				}
 			}
+			// 시즈 모드 개발
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
 				if (unit.canResearch(TechType.Tank_Siege_Mode)) {
 					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Tank_Siege_Mode) == 0) {

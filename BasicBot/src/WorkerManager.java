@@ -429,7 +429,8 @@ public class WorkerManager {
 			 */
 
 			// Move / Idle Worker 가 없을때, 다른 Worker 중에서 차출한다
-			if (unit.isCompleted() && (workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Move && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Idle && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Build && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Scout && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Gas)) {
+			// 막혀서 못나가는 것은 뽑지 않는다.
+			if (unit.isCompleted() && (workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Move && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Idle && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Build && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Scout && workerData.getWorkerJob(unit) != WorkerData.WorkerJob.Gas && unit.isStuck() == false)) {
 				// if it is a new closest distance, set the pointer
 				double distance = unit.getDistance(buildingPosition.toPosition());
 				if (closestMiningWorker == null || (distance < closestMiningWorkerDistance && unit.isCarryingMinerals() == false && unit.isCarryingGas() == false)) {
