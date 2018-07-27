@@ -32,7 +32,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 		// 본진에 적이 있으면 공격
 		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			// 적이 나보다 많으면 벙커로 가고
-			if (MyVariable.enemyUnitAroundMyStartPoint.size() > MyVariable.attackUnit.size()) {
+			if (MyVariable.enemyUnitAroundMyStartPoint.size() * 1.5 > MyVariable.attackUnit.size()) {
 				for (Unit unit : MyVariable.attackUnit) {
 					CommandUtil.attackMove(unit, MyUtil.GetMyBunkerPosition());
 				}
@@ -60,7 +60,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				// 캐리어를 발견했을 때
 				if (MyVariable.findCarrier == true) {
-					if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() > 20) {
+					if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() > 15) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				} else {
@@ -150,22 +150,9 @@ public class ActionControlAttackUnit implements ActionInterface {
 				}
 				// 발견한 건물이 있다면 그쪽으로 이동
 				else {
-					// 메딕은 치료할 곳으로 이동한다.
-					// if (unit.getType() == UnitType.Terran_Medic) {
-					// if (MyVariable.attackedUnit.size() > 0) {
-					// CommandUtil.attackMove(unit, MyVariable.attackedUnit.get(0).getPosition());
-					// }
-					// }
-					// 가장 멀리 있는 유닛은 뒤로 간다. 모아서 가기위해서
-					if (unit == MyVariable.mostFarAttackUnit) {
-						CommandUtil.attackMove(unit, MyVariable.myStartLocation.toPosition());
-					}
-					// 발견된 적의 위치로 GoGo
-					else {
-						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
-							CommandUtil.attackMove(unit, tilePosition.toPosition());
-							break;
-						}
+					for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
+						CommandUtil.attackMove(unit, tilePosition.toPosition());
+						break;
 					}
 				}
 			}

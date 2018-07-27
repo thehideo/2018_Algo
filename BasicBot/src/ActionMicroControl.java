@@ -4,6 +4,9 @@ import bwapi.UnitType;
 public class ActionMicroControl implements ActionInterface {
 	@Override
 	public void action() {
+
+		checkBunker();
+
 		int selfCnt = MyVariable.attackUnit.size() + MyVariable.defenceUnit.size();
 		int enemyCnt = MyVariable.enemyUnitAroundMyStartPoint.size();
 
@@ -33,6 +36,18 @@ public class ActionMicroControl implements ActionInterface {
 					CommandUtil.attackUnit(selfUnit, mostCloseCarrier);
 				}
 			}
+			int totalMarin = MyVariable.getSelfUnit(UnitType.Terran_Marine).size();
+			int index = 0;
+			for (Unit selfUnit : MyVariable.getSelfUnit(UnitType.Terran_Marine)) {
+				if (totalMarin / 2 < index) {
+					break;
+				}
+				Unit mostCloseCarrier = getMostCloseEnemyUnit(UnitType.Protoss_Carrier, selfUnit);
+				if (mostCloseCarrier != null) {
+					CommandUtil.attackUnit(selfUnit, mostCloseCarrier);
+				}
+				index++;
+			}
 		}
 
 		// 러커 또는 다크템플러가 확인되었는데 스캔할 방법이 없으면 터렛으로 도망
@@ -45,13 +60,26 @@ public class ActionMicroControl implements ActionInterface {
 			return;
 		}
 
-		// 탱크보다 멀리있는 유닛은 뒤로 보냄
-		if (MyVariable.mostFarAttackUnit != null && MyVariable.mostFarTank != null && MyVariable.mostFarTank.isCompleted() == true && MyVariable.distanceOfMostFarTank < MyVariable.distanceOfMostFarAttackUnit) {
+//		if (MyVariable.mostFarTank != null && MyVariable.mostFarTank.isCompleted() == true && !MyVariable.mapChokePointAround.contains(MyVariable.mostFarTank.getTilePosition())) {
+//			if (MyVariable.isFullScaleAttackStarted == true) {
+//				for (Unit unit : MyVariable.attackUnit) {
+//					if (unit.getType() != UnitType.Terran_Siege_Tank_Siege_Mode && unit.getType() != UnitType.Terran_Siege_Tank_Tank_Mode) {
+//						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
+//						if (distance > MyVariable.distanceOfMostFarTank) {
+//							CommandUtil.attackMove(unit, MyVariable.myFirstchokePoint.toPosition());
+//						}
+//					}
+//				}
+//			}
+//		}
+
+		// 탱크 보다 멀리 있는 유닛은 뒤로 보냄
+		if (MyVariable.mostFarTank != null && MyVariable.mostFarTank.isCompleted() == true && MyVariable.mostFarAttackUnit != null && MyVariable.distanceOfMostFarTank < MyVariable.distanceOfMostFarAttackUnit) {
 			CommandUtil.attackMove(MyVariable.mostFarAttackUnit, MyVariable.myStartLocation.toPosition());
 		}
 
 		// 적의 숫자가 많으면 SCV를 동원한다. (초반에만 동작)
-		if (selfCnt < enemyCnt * 2 && selfCnt < 10 && MyBotModule.Broodwar.getFrameCount() < 12000) {
+		if (selfCnt < enemyCnt * 1.5 && selfCnt < 10 && MyBotModule.Broodwar.getFrameCount() < 12000 && MyVariable.distanceOfMostCloseEnemyUnit < MyVariable.distanceOfMostCloseBunker + 3) {
 			int cnt = 0;
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_SCV)) {
 				double distance1 = 50;
@@ -62,7 +90,7 @@ public class ActionMicroControl implements ActionInterface {
 				double distance2 = MyUtil.distanceTilePosition(MyVariable.myStartLocation.getPoint(), unit.getPoint().toTilePosition());
 
 				if (distance1 <= distance2) {
-					CommandUtil.attackMove(unit, MyVariable.myStartLocation.getPoint().toPosition());
+					// WorkerManager.Instance().
 				} else {
 					cnt++;
 					if (cnt > 10) {
@@ -86,7 +114,32 @@ public class ActionMicroControl implements ActionInterface {
 				}
 			}
 		}
+	}
 
+	public void checkBunker() {
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
+			if (unit.isCompleted()) {
+				// 총 공격일 때는 다 꺼냄
+				if (MyVariable.isFullScaleAttackStarted == true) {
+					if (unit.getLoadedUnits().size() > 0) {
+						unit.unloadAll();
+					}
+				} else {
+					if (unit.getLoadedUnits().size() < 4) {
+						for (Unit unit2 : MyVariable.getSelfUnit(UnitType.Terran_Marine)) {
+							if (unit2.isCompleted() && unit2.isLoaded() == false) {
+								CommandUtil.commandHash.add(unit2);
+
+								unit2.rightClick(unit);
+								MyVariable.bunkerUnit.add(unit);
+								MyVariable.attackUnit.remove(unit);
+							}
+						}
+						return;
+					}
+				}
+			}
+		}
 	}
 
 	public Unit getMostCloseEnemyUnit(UnitType unitType, Unit myUnit) {

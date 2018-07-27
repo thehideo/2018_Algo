@@ -5,6 +5,7 @@ import bwapi.Unit;
 import bwapi.UnitType;
 import bwta.BWTA;
 import bwta.BaseLocation;
+import bwta.Chokepoint;
 
 /// 실제 봇프로그램의 본체가 되는 class<br>
 /// 스타크래프트 경기 도중 발생하는 이벤트들이 적절하게 처리되도록 해당 Manager 객체에게 이벤트를 전달하는 관리자 Controller 역할을 합니다
@@ -28,8 +29,20 @@ public class GameCommander {
 			}
 		}
 
-		StrategyManager.Instance().onStart();
+		int cp_range = 3;
+		for (Chokepoint cp : BWTA.getChokepoints()) {
+			TilePosition tp = cp.getPoint().toTilePosition();
+			for (int i = -cp_range; i <= cp_range; i++) {
+				for (int j = -cp_range; j <= cp_range; j++) {
+					int X = tp.getX();
+					int Y = tp.getY();
+					TilePosition t2 = new TilePosition(X + i, Y + j);
+					MyVariable.mapChokePointAround.add(t2);
+				}
+			}
+		}
 
+		StrategyManager.Instance().onStart();
 		ActionManager.Instance().onStart();
 
 	}
@@ -78,13 +91,6 @@ public class GameCommander {
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Destroy 될 때 발생하는 이벤트를 처리합니다
 	public void onUnitDestroy(Unit unit) {
-
-		if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().isBuilding() == false) {
-			if (MyVariable.enemyBuildingUnit.size() == 0) {
-				MyVariable.enemyBuildingUnit.add(unit.getTilePosition());
-			}
-		}
-
 		if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().canBuildAddon()) {
 			int width = unit.getType().tileWidth() + 2;
 			int height = unit.getType().tileHeight();
@@ -107,6 +113,8 @@ public class GameCommander {
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(unit.getType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			}
 		}
+
+		MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
 
 	}
 
