@@ -43,8 +43,12 @@ public class CommandUtil {
 	}
 
 	static public void attackUnit(Unit attacker, Unit target) {
-		UnitCommand currentCommand = attacker.getLastCommand();
-		if (currentCommand.getTarget() == target && attacker.isIdle() != false) {
+		// UnitCommand currentCommand = attacker.getLastCommand();
+		// if (currentCommand.getTarget() == target && attacker.isIdle() != false) {
+		// return;
+		// }
+
+		if (attacker == null || target == null || target.isDetected() == false) {
 			return;
 		}
 
@@ -57,10 +61,15 @@ public class CommandUtil {
 		attacker.attack(target);
 	}
 
-	static public void attackMove(Unit attacker, Position targetPosition) {
-		UnitCommand currentCommand = attacker.getLastCommand();
+	static public void attackMove(Unit attacker, final Position targetPosition) {
+		// UnitCommand currentCommand = attacker.getLastCommand();
+		//
+		// if (currentCommand.getTargetPosition().equals(targetPosition) &&
+		// attacker.isIdle() != false) {
+		// return;
+		// }
 
-		if (currentCommand.getTargetPosition().equals(targetPosition) && attacker.isIdle() != false) {
+		if (targetPosition == null || attacker == null || !targetPosition.isValid() || attacker.isDetected() == false) {
 			return;
 		}
 
@@ -73,11 +82,16 @@ public class CommandUtil {
 		attacker.attack(targetPosition);
 	}
 
-	static public void move(Unit attacker, Position targetPosition) {
+	static public void move(Unit attacker, final Position targetPosition) {
 
-		UnitCommand currentCommand = attacker.getLastCommand();
+		// UnitCommand currentCommand = attacker.getLastCommand();
+		//
+		// if (currentCommand.getTargetPosition().equals(targetPosition) &&
+		// attacker.isIdle() != false) {
+		// return;
+		// }
 
-		if (currentCommand.getTargetPosition().equals(targetPosition) && attacker.isIdle() != false) {
+		if (targetPosition == null || attacker == null || !targetPosition.isValid()) {
 			return;
 		}
 
@@ -91,9 +105,13 @@ public class CommandUtil {
 	}
 
 	static public void rightClick(Unit unit, Unit target) {
-		UnitCommand currentCommand = unit.getLastCommand();
+		// UnitCommand currentCommand = unit.getLastCommand();
+		//
+		// if (currentCommand.getTarget() == target && unit.isIdle() != false) {
+		// return;
+		// }
 
-		if (currentCommand.getTarget() == target && unit.isIdle() != false) {
+		if (unit == null || target == null) {
 			return;
 		}
 
@@ -107,9 +125,12 @@ public class CommandUtil {
 	}
 
 	static public void repair(Unit unit, Unit target) {
-		UnitCommand currentCommand = unit.getLastCommand();
-
-		if (currentCommand.getTarget() == target && unit.isIdle() != false) {
+		// UnitCommand currentCommand = unit.getLastCommand();
+		//
+		// if (currentCommand.getTarget() == target && unit.isIdle() != false) {
+		// return;
+		// }
+		if (unit == null || target == null) {
 			return;
 		}
 

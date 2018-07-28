@@ -1,3 +1,4 @@
+import bwapi.TechType;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -17,6 +18,14 @@ public class ActionControlScanUnit implements ActionInterface {
 			else {
 				CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
 			}
+			/*
+			 * if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) { Unit
+			 * carrierMostClose = MyUtil.getMostCloseEnemyUnit(UnitType.Protoss_Carrier,
+			 * unit); if (carrierMostClose != null) { if
+			 * (unit.canUseTechUnit(TechType.EMP_Shockwave, carrierMostClose)) {
+			 * unit.useTech(TechType.EMP_Shockwave, carrierMostClose); } } }
+			 */
 		}
 	}
+
 }

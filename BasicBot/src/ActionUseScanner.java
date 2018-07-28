@@ -2,17 +2,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import bwapi.Position;
 import bwapi.TechType;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 import bwta.BWTA;
 import bwta.BaseLocation;
+import bwta.Chokepoint;
 
 public class ActionUseScanner implements ActionInterface {
 
 	HashSet<TilePosition> scanTilePosition = new HashSet<TilePosition>();
 
+	int useIndex = 0;
 	int index = 0;
 
 	List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
@@ -47,43 +50,69 @@ public class ActionUseScanner implements ActionInterface {
 		} else {
 			ScanPoint = 200;
 		}
+
+		boolean use = false;
+		use = false;
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station)) {
-			if (unit.getEnergy() > ScanPoint) {
-				boolean use = false;
-				for (TilePosition enemyBuildingPosition : MyVariable.enemyBuildingUnit) {
-					if (!scanTilePosition.contains(enemyBuildingPosition)) {
-						int X = enemyBuildingPosition.getX();
-						int Y = enemyBuildingPosition.getY();
-						for (int i = -4; i <= 4; i++) {
-							for (int j = -4; j <= 4; j++) {
-								scanTilePosition.add(new TilePosition(i + X, j + Y));
+			if (use == true) {
+				break;
+			}
+			if (unit.getEnergy() >= ScanPoint) {
+				// 적 확장 기지를 스캔함
+				if (useIndex % 2 == 0) {
+					Chokepoint bl = InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.enemy());
+					if (bl != null) {
+						if (useScanner_Sweep(bl.getPoint())) {
+							use = true;
+						}
+
+					}
+				}
+				// 적 건물 아무곳을 스캔함
+				else if (useIndex % 2 == 1) {
+					for (TilePosition enemyBuildingPosition : MyVariable.enemyBuildingUnit) {
+						if (!scanTilePosition.contains(enemyBuildingPosition)) {
+							int X = enemyBuildingPosition.getX();
+							int Y = enemyBuildingPosition.getY();
+							for (int i = -4; i <= 4; i++) {
+								for (int j = -4; j <= 4; j++) {
+									scanTilePosition.add(new TilePosition(i + X, j + Y));
+								}
 							}
+							if (useScanner_Sweep(enemyBuildingPosition.toPosition())) {
+								use = true;
+							}
+							break;
 						}
-						useScanner_Sweep(unit, enemyBuildingPosition);
-						use = true;
-						break;
+					}
+					if (use == false) {
+						if (index < BWTA.getBaseLocations().size()) {
+							BaseLocation baseLocation = listBaseLocation.get(index);
+							TilePosition tilePosition = baseLocation.getTilePosition();
+							if (!scanTilePosition.contains(tilePosition)) {
+								if (useScanner_Sweep(tilePosition.toPosition())) {
+									use = true;
+								}
+							}
+							index++;
+						} else {
+							index = 0;
+						}
 					}
 				}
-				if (use == false) {
-					if (index < BWTA.getBaseLocations().size()) {
-						BaseLocation baseLocation = listBaseLocation.get(index);
-						TilePosition tilePosition = baseLocation.getTilePosition();
-						if (!scanTilePosition.contains(tilePosition)) {
-							useScanner_Sweep(unit, tilePosition);
-						}
-						index++;
-					} else {
-						index = 0;
-					}
-				}
+
+			}
+
+			if (use == true) {
+				useIndex++;
 			}
 		}
 	}
 
 	// 스캐너 사용
-	int beforeTime = 0;
+	static int beforeTime = 0;
 
-	void useScanner_Sweep(Unit unit) {
+	public static void useScanner_Sweep(Unit unit) {
 		ArrayList<Unit> units = MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station);
 		for (int i = 0; i < units.size(); i++) {
 			if (units.get(i).canUseTech(TechType.Scanner_Sweep, unit) && MyBotModule.Broodwar.getFrameCount() - beforeTime > 24 * 3) {
@@ -94,26 +123,24 @@ public class ActionUseScanner implements ActionInterface {
 		}
 	}
 
-	void useScanner_Sweep(Unit scanner, TilePosition tilePosition) {
-		if (scanner.canUseTech(TechType.Scanner_Sweep, tilePosition.toPosition())) {
+	public static boolean useScanner_Sweep(Position position) {
+		boolean use = false;
+		ArrayList<Unit> units = MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station);
+		for (int i = 0; i < units.size(); i++) {
+			if (units.get(i).canUseTechPosition(TechType.Scanner_Sweep, position) && MyBotModule.Broodwar.getFrameCount() - beforeTime > 24 * 3) {
+				units.get(i).useTech(TechType.Scanner_Sweep, position);
+				use = true;
+				beforeTime = MyBotModule.Broodwar.getFrameCount();
+				break;
+			}
+		}
+		return use;
+	}
+
+	static void useScanner_Sweep(Unit scanner, TilePosition tilePosition) {
+		if (scanner.canUseTechPosition(TechType.Scanner_Sweep, tilePosition.toPosition())) {
 			scanner.useTech(TechType.Scanner_Sweep, tilePosition.toPosition());
 		}
 
-	}
-
-	// 스캐너 사용이 가능한지 확인
-	void canUseScanner_Sweep(Unit unit) {
-		ArrayList<Unit> units = MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station);
-		for (int i = 0; i < units.size(); i++) {
-			if (units.get(i).canUseTech(TechType.Scanner_Sweep, unit)) {
-				if (MyBotModule.Broodwar.getFrameCount() - beforeTime > 24 * 3) {
-					units.get(i).useTech(TechType.Scanner_Sweep, unit);
-					beforeTime = MyBotModule.Broodwar.getFrameCount();
-				}
-				break;
-			} else {
-				MyVariable.needTerran_Science_Vessel = true;
-			}
-		}
 	}
 }

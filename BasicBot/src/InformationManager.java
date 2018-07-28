@@ -177,10 +177,15 @@ public class InformationManager {
 							}
 						}
 					}
+					else if(unit.getType()==UnitType.Terran_Wraith) {
+						
+					}
+					
 					// 공격 유닛
 					// else if (unit.isLoaded() == false && (unit.canAttack() || unit.getType() ==
 					// UnitType.Terran_Medic)) {
 					else if (unit.isLoaded() == false && unit.getType().isBuilding() == false) {
+						
 						MyVariable.attackUnit.add(unit);
 						MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
 						// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
@@ -328,7 +333,7 @@ public class InformationManager {
 
 				// 내 본진 근처 적유닛
 				double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
-				if (distance < 40) {
+				if (distance < 40 && unit.isDetected()==true) {
 					MyVariable.enemyUnitAroundMyStartPoint.add(unit);
 				}
 

@@ -12,6 +12,14 @@ import bwta.Chokepoint;
 public class GameCommander {
 	/// 경기가 시작될 때 일회적으로 발생하는 이벤트를 처리합니다
 	public void onStart() {
+		System.out.println("Protoss_Photon_Cannon.airWeapon="+UnitType.Protoss_Photon_Cannon.airWeapon().maxRange());
+		System.out.println("Protoss_Photon_Cannon.groundWeapon="+UnitType.Protoss_Photon_Cannon.groundWeapon().maxRange());
+		System.out.println("Protoss_Dragoon.airWeapon="+UnitType.Protoss_Dragoon.airWeapon().maxRange());
+		System.out.println("Protoss_Dragoon.groundWeapon="+UnitType.Protoss_Dragoon.groundWeapon().maxRange());
+
+		
+		
+		
 		TilePosition startLocation = MyBotModule.Broodwar.self().getStartLocation();
 		if (startLocation == TilePosition.None || startLocation == TilePosition.Unknown) {
 			return;

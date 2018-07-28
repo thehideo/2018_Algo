@@ -27,6 +27,10 @@ public class MyUtil {
 		return Math.sqrt((a.getX() - b.getX()) * (a.getX() - b.getX()) + (a.getY() - b.getY()) * (a.getY() - b.getY()));
 	}
 
+	static int GetMyTankCnt() {
+		return MyVariable.getSelfAttackUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfAttackUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size();
+	}
+
 	static Position GetMyBunkerDonthaveTurretPosition() {
 		Position bunkerPosition = null;
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
@@ -101,6 +105,19 @@ public class MyUtil {
 			}
 		}
 		return result;
+	}
+
+	public static Unit getMostCloseEnemyUnit(UnitType unitType, Unit myUnit) {
+		Unit mostCloseEnemyUnit = null;
+		double minDistance = Double.MAX_VALUE;
+		for (Unit enemyUnit : MyVariable.getEnemyUnit(unitType)) {
+			double distance = MyUtil.distanceTilePosition(myUnit.getTilePosition(), enemyUnit.getTilePosition());
+			if (minDistance > distance) {
+				minDistance = distance;
+				mostCloseEnemyUnit = enemyUnit;
+			}
+		}
+		return mostCloseEnemyUnit;
 	}
 
 }

@@ -1,3 +1,6 @@
+import java.util.List;
+
+import bwapi.Position;
 import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.Unit;
@@ -24,7 +27,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 		boolean needToWaitVessel = false;
 
 		// scanner가 모두 소진되었고 베슬도 없으면 본진에 대기해야함 (베슬 생산이 완료될 때 까지)
-		if (MyUtil.canUseScan() == false && !MyUtil.haveCompletedScienceVessle()) {
+		if ((MyVariable.findDarkTempler || MyVariable.findLucker) && MyUtil.canUseScan() == false && !MyUtil.haveCompletedScienceVessle()) {
 			needToWaitVessel = true;
 			MyVariable.isFullScaleAttackStarted = false;
 		}
@@ -34,16 +37,33 @@ public class ActionControlAttackUnit implements ActionInterface {
 			// 적이 나보다 많으면 벙커로 가고
 			if (MyVariable.enemyUnitAroundMyStartPoint.size() * 1.5 > MyVariable.attackUnit.size()) {
 				for (Unit unit : MyVariable.attackUnit) {
-					CommandUtil.attackMove(unit, MyUtil.GetMyBunkerPosition());
+					Position bunkerPosition = MyUtil.GetMyBunkerPosition();
+					if (bunkerPosition == null) {
+						for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
+							if (enemyUnit.isDetected() == true) {
+								CommandUtil.attackMove(unit, enemyUnit.getPosition());
+								break;
+							}
+						}
+					} else {
+						CommandUtil.attackMove(unit, bunkerPosition);
+					}
+
 				}
 			}
 			// 적이 나보다 적으면 공격한다.
 			else {
 				for (Unit unit : MyVariable.attackUnit) {
-					if (MyVariable.mostCloseEnemyUnit != null) {
+					if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.isDetected() == true) {
 						CommandUtil.attackMove(unit, MyVariable.mostCloseEnemyUnit.getPoint());
 					} else {
-						CommandUtil.attackMove(unit, MyVariable.enemyUnitAroundMyStartPoint.get(0).getPoint());
+
+						for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
+							if (enemyUnit.isDetected() == true) {
+								CommandUtil.attackMove(unit, enemyUnit.getPosition());
+								break;
+							}
+						}
 					}
 				}
 			}
@@ -51,8 +71,12 @@ public class ActionControlAttackUnit implements ActionInterface {
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
 		else if (MyVariable.isFullScaleAttackStarted == false || needToWaitVessel == true) {
 			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
-			for (Unit unit : MyVariable.attackUnit) {
-				if (unit.isIdle()) {
+			if (MyVariable.attackUnit.size() <= 4) {
+				for (Unit unit : MyVariable.attackUnit) {
+					CommandUtil.attackMove(unit, MyVariable.myStartLocation.toPosition());
+				}
+			} else {
+				for (Unit unit : MyVariable.attackUnit) {
 					CommandUtil.attackMove(unit, saveChokePoint.getCenter());
 				}
 			}
@@ -60,18 +84,18 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				// 캐리어를 발견했을 때
 				if (MyVariable.findCarrier == true) {
-					if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() > 15) {
+					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				} else {
 					if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-						if (MyVariable.attackUnit.size() > 30 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 2) {
+						if (MyVariable.attackUnit.size() > 30 && MyUtil.GetMyTankCnt() >= 2) {
 							MyVariable.isFullScaleAttackStarted = true;
 						}
 					}
 					// 확장 기지가 있다면
 					else {
-						if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 3) {
+						if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 3) {
 							MyVariable.isFullScaleAttackStarted = true;
 						}
 					}
@@ -80,13 +104,13 @@ public class ActionControlAttackUnit implements ActionInterface {
 			// 테란 공격 조건
 			else if (InformationManager.Instance().enemyRace == Race.Terran) {
 				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 6) {
+					if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 6) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
 				// 확장 기지가 있다면
 				else {
-					if (MyVariable.attackUnit.size() > 50 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 6) {
+					if (MyVariable.attackUnit.size() > 50 && MyUtil.GetMyTankCnt() >= 6) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
@@ -100,7 +124,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 				}
 				// 확장 기지가 있다면
 				else {
-					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() >= 3) {
+					if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 3) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
@@ -115,16 +139,16 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				// 상대가 캐리어가 있는데 골리앗이 없으면 방어 모드
 				if (MyVariable.findCarrier == true) {
-					if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() <= 5) {
+					if (MyVariable.attackUnit.size() < 10) {
 						MyVariable.isFullScaleAttackStarted = false;
 					}
 				} else {
-					if (MyVariable.attackUnit.size() < 10 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() <= 2) {
+					if (MyVariable.attackUnit.size() < 10 || MyUtil.GetMyTankCnt() <= 2) {
 						MyVariable.isFullScaleAttackStarted = false;
 					}
 				}
 			} else if (InformationManager.Instance().enemyRace == Race.Terran) {
-				if (MyVariable.attackUnit.size() < 10 || MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() <= 2) {
+				if (MyVariable.attackUnit.size() < 10 || MyUtil.GetMyTankCnt() <= 2) {
 					MyVariable.isFullScaleAttackStarted = false;
 				}
 			} else {

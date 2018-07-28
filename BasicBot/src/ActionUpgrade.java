@@ -19,8 +19,10 @@ public class ActionUpgrade implements ActionInterface {
 					}
 				}
 			}
+			
+		
 			// 골리앗 사거리
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() > 4)
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() > 4 || MyVariable.findCarrier == true)
 				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
 					if (unit.canUpgrade(UpgradeType.Charon_Boosters)) {
 						if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Charon_Boosters) == 0) {
