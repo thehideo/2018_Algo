@@ -94,7 +94,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				// 캐리어를 발견했을 때
 				if (MyVariable.findCarrier == true) {
-					if ((MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8) || MyBotModule.Broodwar.self().supplyUsed()>250) {
+					if ((MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8)) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				} else {

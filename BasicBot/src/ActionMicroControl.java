@@ -20,7 +20,7 @@ public class ActionMicroControl implements ActionInterface {
 			underStormControl();
 			enemyDarkTempler();
 			ghostControl();
-			// goliathControl();
+			goliathControl();
 		}
 
 		vultureControl();

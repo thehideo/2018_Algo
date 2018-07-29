@@ -37,8 +37,9 @@ public class ActionCreateUnit implements ActionInterface {
 						if (MyBotModule.Broodwar.canMake(unitType)) {
 							if (BuildManager.Instance().buildQueue.getItemCount(unitType) == 0) {
 								BuildManager.Instance().buildQueue.queueAsLowestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+								break;
 							}
-							break;
+							
 						}
 					}
 				}

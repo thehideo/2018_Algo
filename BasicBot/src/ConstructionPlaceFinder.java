@@ -211,7 +211,7 @@ public class ConstructionPlaceFinder {
 
 		TilePosition tp = null;
 
-		if (buildingType !=UnitType.Terran_Bunker && buildingType !=UnitType.Terran_Missile_Turret) {
+		if (buildingType != UnitType.Terran_Bunker && buildingType != UnitType.Terran_Missile_Turret) {
 			tp = getBuildLocationNearSameBuildType(buildingType, desiredPosition);
 			if (tp != null) {
 				return tp;

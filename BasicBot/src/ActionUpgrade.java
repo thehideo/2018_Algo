@@ -83,6 +83,21 @@ public class ActionUpgrade implements ActionInterface {
 				}
 			}
 		}
+		// Marine 사거리/스팀팩 업그레이드
+				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Academy)) {
+					if (unit.canUpgrade(UpgradeType.U_238_Shells)) {
+						if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.U_238_Shells) == 0) {
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.U_238_Shells, false);
+							break;
+						}
+					}
+					if (unit.canResearch(TechType.Stim_Packs)) {
+						if (BuildManager.Instance().buildQueue.getItemCount(TechType.Stim_Packs) == 0) {
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
+							break;
+						}
+					}
+				}
 	}
 
 	public void updateTerran() {
@@ -150,6 +165,21 @@ public class ActionUpgrade implements ActionInterface {
 				}
 			}
 		}
+		// Marine 사거리/스팀팩 업그레이드
+				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Academy)) {
+					if (unit.canUpgrade(UpgradeType.U_238_Shells)) {
+						if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.U_238_Shells) == 0) {
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.U_238_Shells, false);
+							break;
+						}
+					}
+					if (unit.canResearch(TechType.Stim_Packs)) {
+						if (BuildManager.Instance().buildQueue.getItemCount(TechType.Stim_Packs) == 0) {
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
+							break;
+						}
+					}
+				}
 	}
 
 	public void updateZerg() {

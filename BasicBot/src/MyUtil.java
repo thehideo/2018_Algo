@@ -69,7 +69,7 @@ public class MyUtil {
 		List<TilePosition> ltp = BWTA.getShortestPath(MyVariable.myFirstchokePoint, MyVariable.myStartLocation);
 
 		if (ltp.size() > 5) {
-			bunkerPosition = ltp.get(2).toPosition();
+			bunkerPosition = ltp.get(4).toPosition();
 		}
 
 		if (bunkerPosition == null)

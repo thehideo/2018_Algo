@@ -68,40 +68,41 @@ public class ActionUseScanner implements ActionInterface {
 
 					}
 				}
-				// 적 건물 아무곳을 스캔함
+				// 적 본진과 확장 중간을 스캔
 				else if (useIndex % 2 == 1) {
-					for (TilePosition enemyBuildingPosition : MyVariable.enemyBuildingUnit) {
-						if (!scanTilePosition.contains(enemyBuildingPosition)) {
-							int X = enemyBuildingPosition.getX();
-							int Y = enemyBuildingPosition.getY();
-							for (int i = -4; i <= 4; i++) {
-								for (int j = -4; j <= 4; j++) {
-									scanTilePosition.add(new TilePosition(i + X, j + Y));
-								}
-							}
-							if (useScanner_Sweep(enemyBuildingPosition.toPosition())) {
-								use = true;
-							}
-							break;
-						}
-					}
-					if (use == false) {
-						if (index < BWTA.getBaseLocations().size()) {
-							BaseLocation baseLocation = listBaseLocation.get(index);
-							TilePosition tilePosition = baseLocation.getTilePosition();
-							if (!scanTilePosition.contains(tilePosition)) {
-								if (useScanner_Sweep(tilePosition.toPosition())) {
-									use = true;
-								}
-							}
-							index++;
-						} else {
-							index = 0;
+					Chokepoint bl = InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.enemy());
+					BaseLocation bl2 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy());
+					if (bl != null && bl2 != null) {
+						if (useScanner_Sweep(new Position((bl.getPoint().getX() + bl2.getPoint().getX()) / 2, (bl.getPoint().getY() + bl2.getPoint().getY()) / 2))) {
+							use = true;
 						}
 					}
 				}
-
 			}
+
+			/*
+			 * 
+			 * // 적 본진을 스캔함 else if (useIndex % 2 == 1) { BaseLocation bl =
+			 * InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy(
+			 * )); if (bl != null) { if (useScanner_Sweep(bl.getPoint())) { use = true; }
+			 * 
+			 * } }
+			 */
+
+			/*
+			 * for (TilePosition enemyBuildingPosition : MyVariable.enemyBuildingUnit) { if
+			 * (!scanTilePosition.contains(enemyBuildingPosition)) { int X =
+			 * enemyBuildingPosition.getX(); int Y = enemyBuildingPosition.getY(); for (int
+			 * i = -4; i <= 4; i++) { for (int j = -4; j <= 4; j++) {
+			 * scanTilePosition.add(new TilePosition(i + X, j + Y)); } } if
+			 * (useScanner_Sweep(enemyBuildingPosition.toPosition())) { use = true; } break;
+			 * } } if (use == false) { if (index < BWTA.getBaseLocations().size()) {
+			 * BaseLocation baseLocation = listBaseLocation.get(index); TilePosition
+			 * tilePosition = baseLocation.getTilePosition(); if
+			 * (!scanTilePosition.contains(tilePosition)) { if
+			 * (useScanner_Sweep(tilePosition.toPosition())) { use = true; } } index++; }
+			 * else { index = 0; } }
+			 */
 
 			if (use == true) {
 				useIndex++;
