@@ -23,6 +23,8 @@ public class ActionMicroControl implements ActionInterface {
 			// goliathControl();
 		}
 
+		vultureControl();
+
 		// 러커 또는 다크템플러가 확인되었는데 스캔할 방법이 없으면 터렛으로 도망
 		if ((MyVariable.findLucker == true || MyVariable.findDarkTempler) && MyUtil.canUseScan() == false && MyVariable.getSelfUnit(UnitType.Terran_Science_Vessel).size() == 0) {
 			if (MyVariable.mostFarTurret != null) {
@@ -31,6 +33,14 @@ public class ActionMicroControl implements ActionInterface {
 				}
 			}
 			return;
+		}
+	}
+
+	public void vultureControl() {
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Vulture)) {
+			if (unit.getGroundWeaponCooldown() != 0 && MyVariable.mostFarTank != null) {
+				CommandUtil.attackMove(unit, MyVariable.mostFarTank.getPosition());
+			}
 		}
 	}
 

@@ -1,5 +1,3 @@
-import java.util.List;
-
 import bwapi.Position;
 import bwapi.Race;
 import bwapi.TilePosition;
@@ -22,11 +20,24 @@ public class ActionControlAttackUnit implements ActionInterface {
 		}
 	}
 
+	public boolean decisionWaitAroundBunker() {
+		boolean decision = false;
+		// 적이 나보다 많으면
+		if (MyVariable.enemyUnitAroundMyStartPoint.size() * 1.5 > MyVariable.attackUnit.size()) {
+			decision = true;
+		}
+		// 벙커 밖에서 벌처가 알짱거리면
+		if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.getType() == UnitType.Terran_Vulture && MyVariable.distanceOfMostCloseEnemyUnit > MyVariable.distanceOfMostCloseBunker) {
+			decision = true;
+		}
+		return decision;
+	}
+
 	@Override
 	public void action() {
 		boolean needToWaitVessel = false;
 
-		// scanner가 모두 소진되었고 베슬도 없으면 본진에 대기해야함 (베슬 생산이 완료될 때 까지)
+		// scanner가 모두 소진되었고 베슬도 없으면 본진에 대기해야함 (싸이언스 베슬 생산이 완료될 때 까지)
 		if ((MyVariable.findDarkTempler || MyVariable.findLucker) && MyUtil.canUseScan() == false && !MyUtil.haveCompletedScienceVessle()) {
 			needToWaitVessel = true;
 			MyVariable.isFullScaleAttackStarted = false;
@@ -34,8 +45,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 
 		// 본진에 적이 있으면 공격
 		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
-			// 적이 나보다 많으면 벙커로 가고
-			if (MyVariable.enemyUnitAroundMyStartPoint.size() * 1.5 > MyVariable.attackUnit.size()) {
+			if (decisionWaitAroundBunker()) {
 				for (Unit unit : MyVariable.attackUnit) {
 					Position bunkerPosition = MyUtil.GetMyBunkerPosition();
 					if (bunkerPosition == null) {
@@ -84,7 +94,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				// 캐리어를 발견했을 때
 				if (MyVariable.findCarrier == true) {
-					if (MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8) {
+					if ((MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8) || MyBotModule.Broodwar.self().supplyUsed()>250) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				} else {

@@ -37,7 +37,6 @@ public class ActionManager {
 		addAction(new ActionUseScanner(), 14);
 		addAction(new ActionControlTank(), 15);
 		addAction(new ActionControlDefenceUnit(), 16);
-		addAction(new ActionControlVulture(), 17);
 		addAction(new ActionPatrolBaseLocation(), 18);
 	}
 

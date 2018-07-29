@@ -397,6 +397,7 @@ public class WorkerManager {
 	public Unit chooseConstuctionWorkerClosestTo(UnitType buildingType, TilePosition buildingPosition, boolean setJobAsConstructionWorker, int avoidWorkerID) {
 		// variables to hold the closest worker of each type to the building
 		Unit closestMovingWorker = null;
+		
 		Unit closestMiningWorker = null;
 
 		// BasicBot 1.1 Patch Start ////////////////////////////////////////////////

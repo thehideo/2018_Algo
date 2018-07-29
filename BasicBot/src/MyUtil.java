@@ -17,6 +17,14 @@ public class MyUtil {
 		return Math.sqrt((a.getX() - b.getX()) * (a.getX() - b.getX()) + (a.getY() - b.getY()) * (a.getY() - b.getY()));
 	}
 
+	static String getBuildingSizeKey(UnitType unitType) {
+		int x = unitType.tileWidth();
+		int y = unitType.tileHeight();
+		boolean addon = unitType.canBuildAddon();
+		String key = "" + x + "|" + y + "|" + addon + (unitType == UnitType.Terran_Supply_Depot);
+		return key;
+	}
+	
 	static double distanceTilePosition(Unit a_u, Unit b_u) {
 		TilePosition a = a_u.getTilePosition();
 		TilePosition b = b_u.getTilePosition();

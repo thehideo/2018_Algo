@@ -136,8 +136,8 @@ public class InformationManager {
 	}
 
 	private void updateSelfUnitMap() {
-		MyVariable.clearSelfUnit();
 
+		MyVariable.clearSelfUnit();
 		if (findMineral == false) {
 			findMineral = true;
 			for (Unit unit : MyBotModule.Broodwar.getAllUnits()) {
@@ -161,6 +161,17 @@ public class InformationManager {
 			// 발견되지 않는 Type 추가
 			MyVariable.getSelfUnit(unit.getType()).add(unit);
 
+			if (unit.getType().isBuilding()) {
+				if (unit.getType() != UnitType.Terran_Bunker && unit.getType() != UnitType.Terran_Missile_Turret) {
+					String key = MyUtil.getBuildingSizeKey(unit.getType());
+
+					if (!MyVariable.mapBuildingSizeMap.containsKey(key)) {
+						MyVariable.mapBuildingSizeMap.put(key, new ArrayList<Unit>());
+					}
+					MyVariable.mapBuildingSizeMap.get(key).add(unit);
+				}
+			}
+
 			// defenceUnit에 할당
 			if (!setUnitAsDefence(unit)) {
 				if (!setUnitAsPatrol(unit)) {
@@ -176,16 +187,15 @@ public class InformationManager {
 								unit.move(MyVariable.myStartLocation.toPosition());
 							}
 						}
+					} else if (unit.getType() == UnitType.Terran_Wraith) {
+
 					}
-					else if(unit.getType()==UnitType.Terran_Wraith) {
-						
-					}
-					
+
 					// 공격 유닛
 					// else if (unit.isLoaded() == false && (unit.canAttack() || unit.getType() ==
 					// UnitType.Terran_Medic)) {
 					else if (unit.isLoaded() == false && unit.getType().isBuilding() == false) {
-						
+
 						MyVariable.attackUnit.add(unit);
 						MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
 						// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
@@ -317,6 +327,7 @@ public class InformationManager {
 					if (unit.getType() == UnitType.Terran_Command_Center || unit.getType() == UnitType.Protoss_Nexus) {
 						MyVariable.mapEnemyMainBuilding.add(unit.getTilePosition());
 					}
+
 				}
 				// 일반 공격
 				else {
@@ -333,7 +344,7 @@ public class InformationManager {
 
 				// 내 본진 근처 적유닛
 				double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
-				if (distance < 40 && unit.isDetected()==true) {
+				if (distance < 40 && unit.isDetected() == true) {
 					MyVariable.enemyUnitAroundMyStartPoint.add(unit);
 				}
 
@@ -350,23 +361,28 @@ public class InformationManager {
 
 			}
 		}
-
-		if (MyVariable.getEnemyUnit(UnitType.Zerg_Mutalisk).size() > 0) {
-			MyVariable.findMutal = true;
+		if (InformationManager.Instance().enemyRace == Race.Zerg) {
+			if (MyVariable.getEnemyUnit(UnitType.Zerg_Mutalisk).size() > 0) {
+				MyVariable.findMutal = true;
+			}
+			if (MyVariable.getEnemyUnit(UnitType.Zerg_Lurker).size() > 0) {
+				MyVariable.findLucker = true;
+			}
+		} else if (InformationManager.Instance().enemyRace == Race.Protoss) {
+			if (MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0) {
+				MyVariable.findDarkTempler = true;
+			}
+			if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Fleet_Beacon).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Stargate).size() >= 1) {
+				MyVariable.findCarrier = true;
+			}
+			if (MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar).size() > 0) {
+				MyVariable.findHighTempler = true;
+			}
+		} else if (InformationManager.Instance().enemyRace == Race.Terran) {
+			if (MyVariable.getEnemyUnit(UnitType.Terran_Wraith).size() > 0) {
+				MyVariable.findWraith = true;
+			}
 		}
-		if (MyVariable.getEnemyUnit(UnitType.Zerg_Lurker).size() > 0) {
-			MyVariable.findLucker = true;
-		}
-		if (MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0) {
-			MyVariable.findDarkTempler = true;
-		}
-		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Fleet_Beacon).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Stargate).size() >= 1) {
-			MyVariable.findCarrier = true;
-		}
-		if (MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar).size() > 0) {
-			MyVariable.findHighTempler = true;
-		}
-
 	}
 
 	/// 해당 unit 의 정보를 업데이트 합니다 (UnitType, lastPosition, HitPoint 등)

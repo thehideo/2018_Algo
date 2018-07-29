@@ -11,6 +11,13 @@ import bwta.Chokepoint;
 
 public class MyVariable {
 
+	// 맵에서의 본진 위치
+	public static int xx = -1;
+	public static int yy = -1;
+	// 맵 싸이즈
+	public static int map_max_x = 0;
+	public static int map_max_y = 0;
+
 	/////////////////////////////////////////////
 	// 전체 전략 판단
 	/////////////////////////////////////////////
@@ -38,6 +45,8 @@ public class MyVariable {
 
 	public static boolean findCarrier = false;
 
+	public static boolean findWraith = false;
+
 	// 초당(1000ms) 프레임수(game speed 에 따라 다름)s
 	public static int nFrameCntPerMin = Math.round(1000 / Config.SetLocalSpeed);
 
@@ -64,11 +73,16 @@ public class MyVariable {
 	// 애드온 지을자리를 기억해둔다.
 	public static HashSet<TilePosition> addonPlace = new HashSet<TilePosition>();
 
+	// 서플 지을자리를 기억해둔다.
+	public static HashSet<TilePosition> supplyPlace = new HashSet<TilePosition>();
+
 	// 애드온 지을자리를 기억해둔다.
 	public static HashSet<TilePosition> mapChokePointAround = new HashSet<TilePosition>();
 
 	// 상대편 command center, neus, 해처리 개수 파악용
 	public static HashSet<TilePosition> mapEnemyMainBuilding = new HashSet<TilePosition>();
+
+	public static HashMap<String, ArrayList<Unit>> mapBuildingSizeMap = new HashMap<String, ArrayList<Unit>>();
 
 	// 전체
 	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
@@ -144,6 +158,8 @@ public class MyVariable {
 
 		distanceOfMostCloseBunker = Double.MAX_VALUE;
 		mostCloseBunker = null;
+		
+		mapBuildingSizeMap.clear();
 
 	}
 
@@ -209,7 +225,7 @@ public class MyVariable {
 		MyVariable.enemyAttactingUnit.clear();
 		MyVariable.enemyGroundUnit.clear();
 		MyVariable.enemyUnitAroundMyStartPoint.clear();
-
+	
 		distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
 		mostCloseEnemyUnit = null;
 
