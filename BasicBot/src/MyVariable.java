@@ -124,7 +124,7 @@ public class MyVariable {
 	// 적 확장 방어 유닛
 	public static ArrayList<Unit> patrolUnit = new ArrayList<Unit>();
 
-	public static HashSet<Position> spinderMinePosition = new HashSet<Position>();
+	public static HashSet<TilePosition> spinderMinePosition = new HashSet<TilePosition>();
 
 	public static ArrayList<Unit> minerals = new ArrayList<Unit>();
 
@@ -139,7 +139,7 @@ public class MyVariable {
 		MyVariable.patrolUnit.clear();
 		MyVariable.scanUnit.clear();
 		MyVariable.bunkerUnit.clear();
-
+		spinderMinePosition.clear();
 		underStormUnit.clear();
 
 		// 방어할 유닛 개수 초기화
@@ -158,7 +158,7 @@ public class MyVariable {
 
 		distanceOfMostCloseBunker = Double.MAX_VALUE;
 		mostCloseBunker = null;
-		
+
 		mapBuildingSizeMap.clear();
 
 	}
@@ -225,7 +225,7 @@ public class MyVariable {
 		MyVariable.enemyAttactingUnit.clear();
 		MyVariable.enemyGroundUnit.clear();
 		MyVariable.enemyUnitAroundMyStartPoint.clear();
-	
+
 		distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
 		mostCloseEnemyUnit = null;
 

@@ -132,29 +132,7 @@ public class BuildManager {
 				if (t.isUnit()) {
 					if (t.getUnitType().isBuilding()) {
 
-						// 저그 종족 건물 중 Zerg_Lair, Zerg_Hive, Zerg_Greater_Spire,
-						// Zerg_Sunken_Colony, Zerg_Spore_Colony 는 기존 건물을 Morph
-						// 시켜 만든다
-						// Morph를 시작하면 isMorphing = true, isBeingConstructed =
-						// true, isConstructing = true 가 되고
-						// 완성되면 isMorphing = false, isBeingConstructed = false,
-						// isConstructing = false, isCompleted = true 가 된다
-						if (t.getUnitType().getRace() == Race.Zerg && t.getUnitType().whatBuilds().first.isBuilding()) {
-							producer.morph(t.getUnitType());
-						}
-						// 테란 Addon 건물의 경우 (Addon 건물을 지을수 있는지는 getProducer 함수에서
-						// 이미 체크완료)
-						// 모건물이 Addon 건물 짓기 전에는 canBuildAddon = true,
-						// isConstructing = false, canCommand = true 이다가
-						// Addon 건물을 짓기 시작하면 canBuildAddon = false,
-						// isConstructing = true, canCommand = true 가 되고 (Addon
-						// 건물 건설 취소는 가능하나 Train 등 커맨드는 불가능)
-						// 완성되면 canBuildAddon = false, isConstructing = false 가
-						// 된다
-						else if (t.getUnitType().isAddon()) {
-
-							// std::cout + "addon build start " + std::endl;
-
+						if (t.getUnitType().isAddon()) {
 							producer.buildAddon(t.getUnitType());
 							// 테란 Addon 건물의 경우 정상적으로 buildAddon 명령을 내려도 SCV가 모건물
 							// 근처에 있을 때 한동안 buildAddon 명령이 취소되는 경우가 있어서
@@ -162,24 +140,11 @@ public class BuildManager {
 							// buildQueue 에서 제거해야한다
 							if (producer.isConstructing() == false) {
 								isOkToRemoveQueue = false;
-							}
-							// std::cout + "8";
+							}					
 						}
 						// 그외 대부분 건물의 경우
-						else {
-							// ConstructionPlaceFinder 를 통해 건설 가능 위치
-							// desiredPosition 를 알아내서
-							// ConstructionManager 의 ConstructionTask Queue에 추가를
-							// 해서 desiredPosition 에 건설을 하게 한다.
-							// ConstructionManager 가 건설 도중에 해당 위치에 건설이 어려워지면 다시
-							// ConstructionPlaceFinder 를 통해 건설 가능 위치를
-							// desiredPosition 주위에서 찾을 것이다
+						else {							
 							TilePosition desiredPosition = getDesiredPosition(t.getUnitType(), currentItem.seedLocation, currentItem.seedLocationStrategy);
-
-							// std::cout << "BuildManager " +
-							// currentItem.metaType.getUnitType().getName().c_str()
-							// + " desiredPosition " + desiredPosition.x + "," +
-							// desiredPosition.y + std::endl;
 
 							if (desiredPosition != TilePosition.None) {
 								// Send the construction task to the

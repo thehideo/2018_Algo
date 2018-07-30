@@ -153,9 +153,20 @@ public class InformationManager {
 
 			// 벙커 안에 있는 것은 스킵
 			if (unit.getType() == UnitType.Terran_Vulture_Spider_Mine) {
-				if (!MyVariable.spinderMinePosition.contains(unit.getPosition())) {
-					MyVariable.spinderMinePosition.add(unit.getPosition());
-				}
+
+				int X = unit.getTilePosition().getX();
+				int Y = unit.getTilePosition().getY();
+
+				MyVariable.spinderMinePosition.add(new TilePosition(X - 1, Y - 1));
+				MyVariable.spinderMinePosition.add(new TilePosition(X - 1, Y + 0));
+				MyVariable.spinderMinePosition.add(new TilePosition(X - 1, Y + 1));
+				MyVariable.spinderMinePosition.add(new TilePosition(X + 0, Y - 1));
+				MyVariable.spinderMinePosition.add(new TilePosition(X + 0, Y + 0));
+				MyVariable.spinderMinePosition.add(new TilePosition(X + 0, Y + 1));
+				MyVariable.spinderMinePosition.add(new TilePosition(X + 1, Y - 1));
+				MyVariable.spinderMinePosition.add(new TilePosition(X + 1, Y + 0));
+				MyVariable.spinderMinePosition.add(new TilePosition(X + 1, Y + 1));
+
 			}
 
 			// 발견되지 않는 Type 추가

@@ -198,6 +198,10 @@ public class ConstructionPlaceFinder {
 		if (buildingType.isRefinery()) {
 			return getRefineryPositionNear(desiredPosition);
 		}
+		
+		if(buildingType==UnitType.Terran_Command_Center) {
+			return desiredPosition;
+		}
 
 		if (desiredPosition == TilePosition.None || desiredPosition == TilePosition.Unknown || desiredPosition == TilePosition.Invalid || desiredPosition.isValid() == false) {
 			desiredPosition = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self()).getTilePosition();

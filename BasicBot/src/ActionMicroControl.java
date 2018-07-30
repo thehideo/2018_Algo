@@ -41,7 +41,18 @@ public class ActionMicroControl implements ActionInterface {
 			if (unit.getGroundWeaponCooldown() != 0 && MyVariable.mostFarTank != null) {
 				CommandUtil.attackMove(unit, MyVariable.mostFarTank.getPosition());
 			}
+			if (MyBotModule.Broodwar.getFrameCount() % 12 == 0 && MyUtil.distanceTilePosition(MyVariable.myStartLocation, unit.getTilePosition()) > 40) {
+				if (unit.canUseTech(TechType.Spider_Mines, unit.getPosition())) {
+					if (!MyVariable.spinderMinePosition.contains(unit.getPoint().toTilePosition())) {
+						if (!CommandUtil.commandHash.contains(unit)) {
+							CommandUtil.commandHash.add(unit);
+							unit.useTech(TechType.Spider_Mines, unit.getPosition());
+						}
+					}
+				}
+			}
 		}
+
 	}
 
 	public void scvControl() {

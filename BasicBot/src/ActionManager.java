@@ -27,17 +27,23 @@ public class ActionManager {
 		addAction(new ActionCreateUnit(), 1);
 		addAction(new ActionUpgrade(), 2);
 		addAction(new ActionControlMarin(), 3);
-		addAction(new ActionControlScanUnit(), 7);
-		addAction(new ActionCreateBuilding(), 9);
-		addAction(new ActionSetUnitRatio(), 10);
-		addAction(new ActionControlAttackUnit(), 12);
-		addAction(new ActionSupplyManagement(), 13);
+		addAction(new ActionControlScanUnit(), 4);
+		addAction(new ActionCreateBuilding(), 5);
+		addAction(new ActionSetUnitRatio(), 6);
+		addAction(new ActionControlAttackUnit(), 7);
+		addAction(new ActionSupplyManagement(), 8);
+		addAction(new ActionControlDefenceUnit(), 9);		
+		addAction(new ActionPatrolBaseLocation(), 10);
+		
 		// Scanner 체크는 2번
 		addAction(new ActionUseScanner(), 2);
-		addAction(new ActionUseScanner(), 14);
-		addAction(new ActionControlTank(), 15);
-		addAction(new ActionControlDefenceUnit(), 16);
-		addAction(new ActionPatrolBaseLocation(), 18);
+		addAction(new ActionUseScanner(), 9);
+		
+		// Tank 체크는 3번
+		addAction(new ActionControlTank(), 6);
+		addAction(new ActionControlTank(), 14);
+		addAction(new ActionControlTank(), 22);
+		
 	}
 
 	public void addAction(ActionInterface action, int index) {
@@ -46,7 +52,7 @@ public class ActionManager {
 
 	public void update() {
 		try {
-			//if (MyBotModule.Broodwar.getFrameCount() % 2 == 0) 
+			//if (MyBotModule.Broodwar.getFrameCount() % 12 == 0) 
 			{
 				// 매 프레임마다 유닛 중복 명령을 방지하는 hash초기화 한다.
 				CommandUtil.clearCommandHash();
