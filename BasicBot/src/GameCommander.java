@@ -10,6 +10,10 @@ import bwta.Chokepoint;
 /// 실제 봇프로그램의 본체가 되는 class<br>
 /// 스타크래프트 경기 도중 발생하는 이벤트들이 적절하게 처리되도록 해당 Manager 객체에게 이벤트를 전달하는 관리자 Controller 역할을 합니다
 public class GameCommander {
+	
+	private boolean bTimeDPFlg = false;    // 매 프레임마다 소요시간 콘솔 출력할지 여부(true:매 프레임마다 출력, false:55ms 초과시에만 출력)
+	private long lTotalSpendTime = 0L;    // 프레임당 평균 소요시간 계산용(전체 소요시간)
+	
 	/// 경기가 시작될 때 일회적으로 발생하는 이벤트를 처리합니다
 	public void onStart() {
 		System.out.println("Protoss_Photon_Cannon.airWeapon=" + UnitType.Protoss_Photon_Cannon.airWeapon().maxRange());
@@ -130,6 +134,8 @@ public class GameCommander {
 	/// 경기가 종료될 때 일회적으로 발생하는 이벤트를 처리합니다
 	public void onEnd(boolean isWinner) {
 		StrategyManager.Instance().onEnd(isWinner);
+		
+		System.out.println("[Info] 평균 소요시간 : " + lTotalSpendTime/MyBotModule.Broodwar.getFrameCount() + "ms");
 	}
 
 	/// 경기 진행 중 매 프레임마다 발생하는 이벤트를 처리합니다
@@ -137,6 +143,10 @@ public class GameCommander {
 		if (MyBotModule.Broodwar.isPaused() || MyBotModule.Broodwar.self() == null || MyBotModule.Broodwar.self().isDefeated() || MyBotModule.Broodwar.self().leftGame() || MyBotModule.Broodwar.enemy() == null || MyBotModule.Broodwar.enemy().isDefeated() || MyBotModule.Broodwar.enemy().leftGame()) {
 			return;
 		}
+		
+		// Time & Memory check
+	    long startTime = System.currentTimeMillis();
+//	    long s_memory= Runtime.getRuntime().freeMemory();
 
 		// 아군 베이스 위치. 적군 베이스 위치. 각 유닛들의 상태정보 등을 Map 자료구조에 저장/업데이트
 		InformationManager.Instance().update();
@@ -162,6 +172,17 @@ public class GameCommander {
 
 		// JohnVer만의 추가 Action
 		ActionManager.Instance().update();
+		
+		// 평균 소요시간 DP Start
+		long spendTime = (System.currentTimeMillis() - startTime);
+		lTotalSpendTime += spendTime;
+		if(spendTime > 55) {   // 44ms 초과 시 Inform
+			System.out.println("[Warning][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### "+spendTime + "ms 소요, 평균 " + lTotalSpendTime/MyBotModule.Broodwar.getFrameCount() + "ms");
+		} else {
+			if(MyBotModule.Broodwar.getFrameCount() > 0 && bTimeDPFlg)   // 1 프레임 부터 계산시작
+				System.out.println("[Info][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### "+spendTime + "ms 소요, 평균 " + lTotalSpendTime/MyBotModule.Broodwar.getFrameCount() + "ms");
+		}
+		// 평균 소요시간 DP End
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Create 될 때 발생하는 이벤트를 처리합니다
