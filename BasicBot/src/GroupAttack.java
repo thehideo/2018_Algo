@@ -3,15 +3,27 @@ import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
+import bwta.BWTA;
+import bwta.BaseLocation;
 import bwta.Chokepoint;
 
-public class ActionControlAttackUnit implements ActionInterface {
+public class GroupAttack extends Group {
 	int minPointX = Integer.MAX_VALUE;
 	int maxPointX = Integer.MIN_VALUE;
 	int minPointY = Integer.MAX_VALUE;
 	int maxPointY = Integer.MIN_VALUE;
 
-	public ActionControlAttackUnit() {
+	static GroupAttack actionControlAttackUnit = new GroupAttack();
+
+	GroupAttack instance() {
+		return actionControlAttackUnit;
+	}
+
+	public Position getTarget(Unit unit) {
+		return target;
+	}
+
+	public GroupAttack() {
 		for (int i = 0; i < MyBotModule.Broodwar.getStartLocations().size(); i++) {
 			minPointX = Math.min(minPointX, MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX());
 			maxPointX = Math.max(maxPointX, MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX());
@@ -35,6 +47,7 @@ public class ActionControlAttackUnit implements ActionInterface {
 
 	@Override
 	public void action() {
+
 		boolean needToWaitVessel = false;
 
 		// scanner가 모두 소진되었고 베슬도 없으면 본진에 대기해야함 (싸이언스 베슬 생산이 완료될 때 까지)
@@ -46,49 +59,45 @@ public class ActionControlAttackUnit implements ActionInterface {
 		// 본진에 적이 있으면 공격
 		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			if (decisionWaitAroundBunker()) {
-				for (Unit unit : MyVariable.attackUnit) {
-					Position bunkerPosition = MyUtil.GetMyBunkerPosition();
-					if (bunkerPosition == null) {
-						for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
-							if (enemyUnit.isDetected() == true) {
-								CommandUtil.attackMove(unit, enemyUnit.getPosition());
-								break;
-							}
+				Position bunkerPosition = MyUtil.GetMyBunkerPosition();
+				if (bunkerPosition == null) {
+					for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
+						if (enemyUnit.isDetected() == true) {
+							target = enemyUnit.getPosition();
+							break;
 						}
-					} else {
-						CommandUtil.attackMove(unit, bunkerPosition);
 					}
-
+				} else {
+					target = bunkerPosition;
 				}
 			}
 			// 적이 나보다 적으면 공격한다.
 			else {
-				for (Unit unit : MyVariable.attackUnit) {
-					if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.isDetected() == true) {
-						CommandUtil.attackMove(unit, MyVariable.mostCloseEnemyUnit.getPoint());
-					} else {
 
-						for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
-							if (enemyUnit.isDetected() == true) {
-								CommandUtil.attackMove(unit, enemyUnit.getPosition());
-								break;
-							}
+				if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.isDetected() == true) {
+					target = MyVariable.mostCloseEnemyUnit.getPoint();
+				} else {
+					for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
+						if (enemyUnit.isDetected() == true) {
+							target = enemyUnit.getPosition();
+							break;
 						}
 					}
 				}
+
 			}
 		}
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
 		else if (MyVariable.isFullScaleAttackStarted == false || needToWaitVessel == true) {
 			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
 			if (MyVariable.attackUnit.size() <= 4) {
-				for (Unit unit : MyVariable.attackUnit) {
-					CommandUtil.attackMove(unit, MyVariable.myStartLocation.toPosition());
-				}
+
+				target = MyVariable.myStartLocation.toPosition();
+
 			} else {
-				for (Unit unit : MyVariable.attackUnit) {
-					CommandUtil.attackMove(unit, saveChokePoint.getCenter());
-				}
+
+				target = saveChokePoint.getCenter();
+
 			}
 			// 프로토스 공격 조건
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
@@ -172,24 +181,18 @@ public class ActionControlAttackUnit implements ActionInterface {
 				MyVariable.isFullScaleAttackStarted = false;
 			}
 
-			for (Unit unit : MyVariable.attackUnit) {
-				// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
-				if (MyVariable.enemyBuildingUnit.size() == 0) {
-					if (unit.isIdle()) {
-						int xValue = minPointX + MyUtil.random.nextInt(maxPointX - minPointX);
-						int yValue = minPointY + MyUtil.random.nextInt(maxPointY - minPointY);
-						TilePosition position = new TilePosition(xValue, yValue);
-						CommandUtil.attackMove(unit, position.toPosition());
-					}
-				}
-				// 발견한 건물이 있다면 그쪽으로 이동
-				else {
-					for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
-						CommandUtil.attackMove(unit, tilePosition.toPosition());
-						break;
-					}
+			// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
+			if (MyVariable.enemyBuildingUnit.size() == 0) {
+				for (BaseLocation bl : BWTA.getBaseLocations()) {
+					MyVariable.enemyBuildingUnit.add(bl.getTilePosition());
 				}
 			}
+
+			for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
+				target = tilePosition.toPosition();
+				break;
+			}
+
 		}
 	}
 }

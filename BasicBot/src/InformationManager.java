@@ -136,7 +136,6 @@ public class InformationManager {
 	}
 
 	private void updateSelfUnitMap() {
-
 		MyVariable.clearSelfUnit();
 		if (findMineral == false) {
 			findMineral = true;
@@ -186,12 +185,9 @@ public class InformationManager {
 			// defenceUnit에 할당
 			if (!setUnitAsDefence(unit)) {
 				if (!setUnitAsPatrol(unit)) {
-					// scanUnit에 할당
-					if (unit.getType() == UnitType.Terran_Science_Vessel) {
-						MyVariable.scanUnit.add(unit);
-					}
+
 					// 본진 밖을 벗어난 SCV는 다시 본진으로 위치 시킨다
-					else if (unit.getType() == UnitType.Terran_SCV) {
+					if (unit.getType() == UnitType.Terran_SCV) {
 						if (unit.isAttackFrame() == true) {
 							double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
 							if (distance > 20) {
@@ -206,26 +202,22 @@ public class InformationManager {
 					// else if (unit.isLoaded() == false && (unit.canAttack() || unit.getType() ==
 					// UnitType.Terran_Medic)) {
 					else if (unit.isLoaded() == false && unit.getType().isBuilding() == false) {
-
 						MyVariable.attackUnit.add(unit);
-						MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
-						// 그 위치에 갔지만 인식이 안되는 경우를 대비해서
-						refreshIndex++;
-						if (refreshIndex % 3 == 0) {
-							int x = unit.getTilePosition().getX();
-							int y = unit.getTilePosition().getY();
-
-							MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 1));
-							MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y - 0));
-							MyVariable.enemyBuildingUnit.remove(new TilePosition(x - 1, y + 1));
-
-							MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y - 1));
-							MyVariable.enemyBuildingUnit.remove(new TilePosition(x, y + 1));
-
-							MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 1));
-							MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y - 0));
-							MyVariable.enemyBuildingUnit.remove(new TilePosition(x + 1, y + 1));
+						
+						
+						TilePosition target=null;
+						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
+							target = tilePosition;
+							break;
 						}
+						
+						if(target!=null) {
+							if(MyUtil.distancePosition(target.toPosition(), unit.getPosition())<64){
+								MyVariable.enemyBuildingUnit.remove(target);
+							}
+						}
+						
+						
 
 						MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
 
@@ -263,10 +255,6 @@ public class InformationManager {
 							MyVariable.mostCloseBunker = unit;
 						}
 
-					}
-
-					if (unit.isUnderStorm()) {
-						MyVariable.underStormUnit.add(unit);
 					}
 				}
 			}

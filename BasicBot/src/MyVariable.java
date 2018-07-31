@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import bwapi.Position;
 import bwapi.TilePosition;
@@ -87,6 +88,10 @@ public class MyVariable {
 	// 전체
 	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
 
+	public static Set<UnitType> getSelfUnitKey() {
+		return mapSelfUnit.keySet();
+	}
+
 	public static ArrayList<Unit> getSelfUnit(UnitType unitType) {
 		if (!mapSelfUnit.containsKey(unitType)) {
 			mapSelfUnit.put(unitType, new ArrayList<Unit>());
@@ -109,14 +114,9 @@ public class MyVariable {
 	// 공격 당하는 유닛
 	public static ArrayList<Unit> attackedUnit = new ArrayList<Unit>();
 
-	// 스톰에 맞은 유닛
-	public static ArrayList<Unit> underStormUnit = new ArrayList<Unit>();
-
-	// 방어 유닛
+		// 방어 유닛
 	public static ArrayList<Unit> defenceUnit = new ArrayList<Unit>();
 
-	// 스캔할 수 있는 유닛 (싸이언스 베슬)
-	public static ArrayList<Unit> scanUnit = new ArrayList<Unit>();
 
 	// 벙커 지키는 유닛
 	public static ArrayList<Unit> bunkerUnit = new ArrayList<Unit>();
@@ -137,10 +137,8 @@ public class MyVariable {
 		MyVariable.attackedUnit.clear();
 		MyVariable.defenceUnit.clear();
 		MyVariable.patrolUnit.clear();
-		MyVariable.scanUnit.clear();
 		MyVariable.bunkerUnit.clear();
 		spinderMinePosition.clear();
-		underStormUnit.clear();
 
 		// 방어할 유닛 개수 초기화
 		MyVariable.defenceUnitCount.clear();

@@ -2,7 +2,7 @@ import bwapi.Race;
 import bwapi.Unit;
 import bwapi.UnitType;
 
-public class ActionSetUnitRatio implements ActionInterface {
+public class ActionSetUnitRatio extends ActionControlAbstract {
 
 	@Override
 	public void action() {

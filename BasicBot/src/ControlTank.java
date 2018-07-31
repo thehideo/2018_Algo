@@ -1,32 +1,10 @@
-import java.util.ArrayList;
-
 import bwapi.Unit;
 import bwapi.UnitType;
 
-public class ActionControlTank implements ActionInterface {
+public class ControlTank extends ControlAbstract {
 
 	public static final int SIEGE_MODE_MIN_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().minRange(); // 64
 	public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
-
-	@Override
-	public void action() {
-		ArrayList<Unit> Terran_Siege_Tank_Siege_Mode = MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode);
-		ArrayList<Unit> Terran_Siege_Tank_Tank_Mode = MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode);
-
-		for (Unit unit : Terran_Siege_Tank_Siege_Mode) {
-			if (needSiege(unit) == false) {
-				CommandUtil.unsiege(unit);
-			}
-		}
-
-		int cnt = Terran_Siege_Tank_Siege_Mode.size();
-		for (Unit unit : Terran_Siege_Tank_Tank_Mode) {
-			if (cnt < 5 && needSiege(unit) == true) {
-				cnt++;
-				CommandUtil.siege(unit);
-			}
-		}
-	}
 
 	boolean needSiege(Unit unit) {
 		boolean result = false;
@@ -46,5 +24,17 @@ public class ActionControlTank implements ActionInterface {
 			}
 		}
 		return result;
+	}
+
+	public void actionMain(Unit unit,  Group groupAbstract) {
+		if (needSiege(unit) == false && unit.isSieged()) {
+			CommandUtil.unsiege(unit);
+	
+		}
+		if (needSiege(unit) == true&& !unit.isSieged()) {
+			CommandUtil.siege(unit);
+		
+		}
+		CommandUtil.attackMove(unit,  groupAbstract.getTarget(unit));
 	}
 }

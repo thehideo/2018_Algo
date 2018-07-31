@@ -3,6 +3,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import bwapi.Position;
+import bwapi.Race;
 import bwapi.TechType;
 import bwapi.TilePosition;
 import bwapi.Unit;
@@ -11,7 +12,7 @@ import bwta.BWTA;
 import bwta.BaseLocation;
 import bwta.Chokepoint;
 
-public class ActionUseScanner implements ActionInterface {
+public class ActionUseScanner extends ActionControlAbstract {
 
 	HashSet<TilePosition> scanTilePosition = new HashSet<TilePosition>();
 
@@ -45,7 +46,7 @@ public class ActionUseScanner implements ActionInterface {
 
 		// 스캔이 많이 남으면 적 본진을 스캔함
 		int ScanPoint = 200;
-		if (MyVariable.findDarkTempler == false && MyVariable.findLucker == false) {
+		if (MyVariable.findDarkTempler == false && MyVariable.findLucker == false && InformationManager.Instance().enemyRace == Race.Protoss) {
 			ScanPoint = 100;
 		} else {
 			ScanPoint = 200;

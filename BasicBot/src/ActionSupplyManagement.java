@@ -3,7 +3,7 @@ import bwapi.Race;
 import bwapi.Unit;
 import bwapi.UnitType;
 
-public class ActionSupplyManagement implements ActionInterface {
+public class ActionSupplyManagement  extends ActionControlAbstract  {
 
 	@Override
 	public void action() {

@@ -5,7 +5,7 @@ import bwapi.Unit;
 import bwapi.UnitType;
 import bwapi.UpgradeType;
 
-public class ActionUpgrade implements ActionInterface {
+public class ActionUpgrade  extends ActionControlAbstract  {
 
 	@Override
 	public void action() {
