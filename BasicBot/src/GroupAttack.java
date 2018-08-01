@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Random;
+
 import bwapi.Position;
 import bwapi.Race;
 import bwapi.TilePosition;
@@ -19,8 +22,31 @@ public class GroupAttack extends Group {
 		return actionControlAttackUnit;
 	}
 
-	public Position getTarget(Unit unit) {
-		return target;
+	public Position getTargetPosition(Unit unit) {
+		Position result = null;
+
+		if (targetPosition == null) {
+			if (mapTargetPosition.containsKey(unit.getID())) {
+				Position tmp = mapTargetPosition.get(unit.getID());
+				if (MyUtil.distanceTilePosition(tmp.toTilePosition(), unit.getTilePosition()) < 4) {
+					int x = MyUtil.random.nextInt(maxPointX);
+					int y = MyUtil.random.nextInt(maxPointY);
+					mapTargetPosition.put(unit.getID(), new TilePosition(x, y).toPosition());
+				}
+				result = mapTargetPosition.get(unit.getID());
+			} else {
+
+				int x = MyUtil.random.nextInt(maxPointX);
+				int y = MyUtil.random.nextInt(maxPointY);
+				mapTargetPosition.put(unit.getID(), new TilePosition(x, y).toPosition());
+
+				result = mapTargetPosition.get(unit.getID());
+			}
+		} else {
+			result = targetPosition;
+		}
+
+		return result;
 	}
 
 	public GroupAttack() {
@@ -63,23 +89,23 @@ public class GroupAttack extends Group {
 				if (bunkerPosition == null) {
 					for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
 						if (enemyUnit.isDetected() == true) {
-							target = enemyUnit.getPosition();
+							targetPosition = enemyUnit.getPosition();
 							break;
 						}
 					}
 				} else {
-					target = bunkerPosition;
+					targetPosition = bunkerPosition;
 				}
 			}
 			// 적이 나보다 적으면 공격한다.
 			else {
 
 				if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.isDetected() == true) {
-					target = MyVariable.mostCloseEnemyUnit.getPoint();
+					targetPosition = MyVariable.mostCloseEnemyUnit.getPoint();
 				} else {
 					for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
 						if (enemyUnit.isDetected() == true) {
-							target = enemyUnit.getPosition();
+							targetPosition = enemyUnit.getPosition();
 							break;
 						}
 					}
@@ -92,23 +118,25 @@ public class GroupAttack extends Group {
 			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
 			if (MyVariable.attackUnit.size() <= 4) {
 
-				target = MyVariable.myStartLocation.toPosition();
+				targetPosition = MyVariable.myStartLocation.toPosition();
 
 			} else {
 
-				target = saveChokePoint.getCenter();
+				targetPosition = saveChokePoint.getCenter();
 
 			}
 			// 프로토스 공격 조건
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				// 캐리어를 발견했을 때
-				if (MyVariable.findCarrier == true) {
-					if ((MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8)) {
-						MyVariable.isFullScaleAttackStarted = true;
-					}
-				} else {
+				//if (MyVariable.findCarrier == true) {
+				//	if ((MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8)) {
+				//		MyVariable.isFullScaleAttackStarted = true;
+				//	}
+				//} else 
+				
+				{
 					if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-						if (MyVariable.attackUnit.size() > 30 && MyUtil.GetMyTankCnt() >= 2) {
+						if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 2) {
 							MyVariable.isFullScaleAttackStarted = true;
 						}
 					}
@@ -183,14 +211,14 @@ public class GroupAttack extends Group {
 
 			// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
 			if (MyVariable.enemyBuildingUnit.size() == 0) {
-				for (BaseLocation bl : BWTA.getBaseLocations()) {
-					MyVariable.enemyBuildingUnit.add(bl.getTilePosition());
-				}
-			}
+				targetPosition = null;
 
-			for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
-				target = tilePosition.toPosition();
-				break;
+			} else {
+				mapTargetUnit.clear();
+				for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
+					targetPosition = tilePosition.toPosition();
+					break;
+				}
 			}
 
 		}

@@ -36,7 +36,7 @@ public class ActionCreateUnit  extends ActionControlAbstract  {
 					if (tmp.get(unitType) == tmp2.get(i)) {
 						if (MyBotModule.Broodwar.canMake(unitType)) {
 							if (BuildManager.Instance().buildQueue.getItemCount(unitType) == 0) {
-								BuildManager.Instance().buildQueue.queueAsLowestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+								BuildManager.Instance().buildQueue.queueAsHighestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 								break;
 							}
 							

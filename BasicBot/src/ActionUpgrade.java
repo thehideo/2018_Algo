@@ -5,7 +5,7 @@ import bwapi.Unit;
 import bwapi.UnitType;
 import bwapi.UpgradeType;
 
-public class ActionUpgrade  extends ActionControlAbstract  {
+public class ActionUpgrade extends ActionControlAbstract {
 
 	@Override
 	public void action() {
@@ -19,6 +19,22 @@ public class ActionUpgrade  extends ActionControlAbstract  {
 	}
 
 	public void updateProtoss() {
+		// 벌처
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
+			if (unit.canResearch(TechType.Spider_Mines)) {
+				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Spider_Mines) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Spider_Mines, false);
+					break;
+				}
+			}
+			if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
+				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters, false);
+					break;
+				}
+			}
+		}
+
 		// 시즈 모드
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
 			if (unit.canResearch(TechType.Tank_Siege_Mode)) {
@@ -42,23 +58,6 @@ public class ActionUpgrade  extends ActionControlAbstract  {
 							}
 							break;
 						}
-					}
-				}
-			}
-		}
-
-		// 벌처
-		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Vulture).size() > 4 && MyVariable.findCarrier == false) {
-			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
-				if (unit.canResearch(TechType.Spider_Mines)) {
-					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Spider_Mines) == 0) {
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Spider_Mines, false);
-						break;
-					}
-				}
-				if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
-					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters) == 0) {
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters, false);
 					}
 				}
 			}

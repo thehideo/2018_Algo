@@ -35,6 +35,6 @@ public class ControlTank extends ControlAbstract {
 			CommandUtil.siege(unit);
 		
 		}
-		CommandUtil.attackMove(unit,  groupAbstract.getTarget(unit));
+		CommandUtil.attackMove(unit,  groupAbstract.getTargetPosition(unit));
 	}
 }

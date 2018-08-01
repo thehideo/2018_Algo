@@ -152,20 +152,9 @@ public class InformationManager {
 
 			// 벙커 안에 있는 것은 스킵
 			if (unit.getType() == UnitType.Terran_Vulture_Spider_Mine) {
-
-				int X = unit.getTilePosition().getX();
-				int Y = unit.getTilePosition().getY();
-
-				MyVariable.spinderMinePosition.add(new TilePosition(X - 1, Y - 1));
-				MyVariable.spinderMinePosition.add(new TilePosition(X - 1, Y + 0));
-				MyVariable.spinderMinePosition.add(new TilePosition(X - 1, Y + 1));
-				MyVariable.spinderMinePosition.add(new TilePosition(X + 0, Y - 1));
-				MyVariable.spinderMinePosition.add(new TilePosition(X + 0, Y + 0));
-				MyVariable.spinderMinePosition.add(new TilePosition(X + 0, Y + 1));
-				MyVariable.spinderMinePosition.add(new TilePosition(X + 1, Y - 1));
-				MyVariable.spinderMinePosition.add(new TilePosition(X + 1, Y + 0));
-				MyVariable.spinderMinePosition.add(new TilePosition(X + 1, Y + 1));
-
+				int X = unit.getTilePosition().getX() / 4;
+				int Y = unit.getTilePosition().getY() / 4;
+				MyVariable.spinderMinePosition.add(new TilePosition(X, Y));
 			}
 
 			// 발견되지 않는 Type 추가
@@ -199,25 +188,20 @@ public class InformationManager {
 					}
 
 					// 공격 유닛
-					// else if (unit.isLoaded() == false && (unit.canAttack() || unit.getType() ==
-					// UnitType.Terran_Medic)) {
-					else if (unit.isLoaded() == false && unit.getType().isBuilding() == false) {
+					else if (unit.isLoaded() == false && unit.getType().isBuilding() == false && (unit.canAttack() || unit.getType() == UnitType.Terran_Medic)) {
 						MyVariable.attackUnit.add(unit);
-						
-						
-						TilePosition target=null;
+
+						TilePosition target = null;
 						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 							target = tilePosition;
 							break;
 						}
-						
-						if(target!=null) {
-							if(MyUtil.distancePosition(target.toPosition(), unit.getPosition())<64){
+
+						if (target != null) {
+							if (MyUtil.distancePosition(target.toPosition(), unit.getPosition()) < 64) {
 								MyVariable.enemyBuildingUnit.remove(target);
 							}
 						}
-						
-						
 
 						MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
 

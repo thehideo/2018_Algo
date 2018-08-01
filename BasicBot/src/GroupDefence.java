@@ -8,14 +8,14 @@ public class GroupDefence extends Group {
 		Position position = MyUtil.GetMyBunkerPosition();
 		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
-				target = enemyUnit.getPosition();
+				targetPosition = enemyUnit.getPosition();
 				break;
 			}
 		} else {
 			if (MyVariable.isFullScaleAttackStarted == true || position == null) {
-				target = MyVariable.myStartLocation.toPosition();
+				targetPosition = MyVariable.myStartLocation.toPosition();
 			} else {
-				target = MyUtil.getSaveChokePoint().getPoint();
+				targetPosition = MyUtil.getSaveChokePoint().getPoint();
 			}
 		}
 	}

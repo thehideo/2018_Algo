@@ -18,6 +18,6 @@ public class ControlMarin extends ControlAbstract {
 			}
 		}
 
-		CommandUtil.attackMove(unit, groupAbstract.getTarget(unit));
+		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
 	}
 }

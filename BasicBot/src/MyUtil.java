@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.Random;
 
 import bwapi.Position;
+import bwapi.Race;
 import bwapi.TechType;
 import bwapi.TilePosition;
 import bwapi.Unit;
@@ -24,7 +25,7 @@ public class MyUtil {
 		String key = "" + x + "|" + y + "|" + addon + (unitType == UnitType.Terran_Supply_Depot);
 		return key;
 	}
-	
+
 	static double distanceTilePosition(Unit a_u, Unit b_u) {
 		TilePosition a = a_u.getTilePosition();
 		TilePosition b = b_u.getTilePosition();
@@ -84,11 +85,17 @@ public class MyUtil {
 	// 방어할 ChokePoint를 구한다.
 	// 기본은 첫번째 초크 포인트
 	public static Chokepoint getSaveChokePoint() {
-		Chokepoint chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
-
-		// 확장했으면 확장부분을 지킨다.
-		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 || MyVariable.mapEnemyMainBuilding.size() >= 2 || MyVariable.attackUnit.size() > 30) {
+		Chokepoint chokePoint =null;
+		if (InformationManager.Instance().enemyRace == Race.Protoss) {
 			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+		} else {
+
+			chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
+
+			// 확장했으면 확장부분을 지킨다.
+			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 || MyVariable.mapEnemyMainBuilding.size() >= 2 || MyVariable.attackUnit.size() > 30) {
+				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+			}
 		}
 
 		return chokePoint;
