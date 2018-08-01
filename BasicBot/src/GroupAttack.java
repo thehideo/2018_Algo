@@ -28,7 +28,7 @@ public class GroupAttack extends Group {
 		if (targetPosition == null) {
 			if (mapTargetPosition.containsKey(unit.getID())) {
 				Position tmp = mapTargetPosition.get(unit.getID());
-				if (MyUtil.distanceTilePosition(tmp.toTilePosition(), unit.getTilePosition()) < 4) {
+				if (MyUtil.distanceTilePosition(tmp.toTilePosition(), unit.getTilePosition()) < 5) {
 					int x = MyUtil.random.nextInt(maxPointX);
 					int y = MyUtil.random.nextInt(maxPointY);
 					mapTargetPosition.put(unit.getID(), new TilePosition(x, y).toPosition());
@@ -136,13 +136,13 @@ public class GroupAttack extends Group {
 				
 				{
 					if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-						if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 2) {
+						if (MyVariable.attackUnit.size() > 30 ) {
 							MyVariable.isFullScaleAttackStarted = true;
 						}
 					}
 					// 확장 기지가 있다면
 					else {
-						if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 3) {
+						if (MyVariable.attackUnit.size() > 30) {
 							MyVariable.isFullScaleAttackStarted = true;
 						}
 					}

@@ -15,6 +15,7 @@ public class ActionCreateUnit  extends ActionControlAbstract  {
 			HashMap<UnitType, Double> tmp = new HashMap<UnitType, Double>();
 			for (UnitType unitType : MyVariable.attackUnitRatio.keySet()) {
 				// 0은 계산 불가
+				
 				if (MyVariable.attackUnitRatio.get(unitType) == 0 && MyBotModule.Broodwar.canMake(unitType) == false) {
 					continue;
 				}
