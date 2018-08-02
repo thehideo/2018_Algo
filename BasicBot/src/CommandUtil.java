@@ -81,6 +81,26 @@ public class CommandUtil {
 		attacker.attack(targetPosition);
 	}
 
+	static public void patrol(Unit attacker, final Position targetPosition) {
+		UnitCommand currentCommand = attacker.getLastCommand();
+
+		if (currentCommand.getUnitCommandType() == UnitCommandType.Patrol && currentCommand.getTargetPosition().equals(targetPosition) && attacker.isIdle() == false) {
+			return;
+		}
+
+		if (targetPosition == null || attacker == null || !targetPosition.isValid() || attacker.isDetected() == false) {
+			return;
+		}
+
+		if (commandHash.contains(attacker)) {
+			return;
+		} else {
+			commandHash.add(attacker);
+		}
+
+		attacker.patrol(targetPosition);
+	}
+
 	static public void move(Unit attacker, final Position targetPosition) {
 
 		UnitCommand currentCommand = attacker.getLastCommand();

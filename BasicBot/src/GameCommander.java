@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import bwapi.Player;
 import bwapi.Position;
 import bwapi.TilePosition;
@@ -281,15 +283,26 @@ public class GameCommander {
 		}
 
 		// 아군 유닛을 그룹에 등록
-		if (unit.getPlayer() == MyBotModule.Broodwar.self() && !unit.getType().isBuilding()) {
-			if (unit.getType() == UnitType.Terran_SCV) {
-				GroupManager.instance().addToWorkerGroup(unit);
-			} else if (unit.getType() == UnitType.Terran_Science_Vessel) {
-				GroupManager.instance().addScanGroup(unit);
-			} else if (unit.getType() != UnitType.Terran_Vulture_Spider_Mine) {
-				GroupManager.instance().addToAttackGroup(unit);
+		if (unit.getPlayer() == MyBotModule.Broodwar.self()) {
+			if (!unit.getType().isBuilding()) {
+				if (unit.getType() == UnitType.Terran_SCV) {
+					GroupManager.instance().addToWorkerGroup(unit);
+				} else if (unit.getType() == UnitType.Terran_Science_Vessel) {
+					GroupManager.instance().addScanGroup(unit);
+				} else if (unit.getType() != UnitType.Terran_Vulture_Spider_Mine) {
+					GroupManager.instance().addToAttackGroup(unit);
+				}
+			} else {
+				if (unit.getType() != UnitType.Terran_Bunker && unit.getType() != UnitType.Terran_Missile_Turret) {
+					String key = MyUtil.getBuildingSizeKey(unit.getType());
+
+					if (!MyVariable.mapBuildingSizeMap.containsKey(key)) {
+						MyVariable.mapBuildingSizeMap.put(key, new ArrayList<Unit>());
+					}
+					MyVariable.mapBuildingSizeMap.get(key).add(unit);
+				}
 			}
-			// 기타 Group은 나중에 AttackGroup에서 차출된다.
+
 		}
 
 		// ResourceDepot 및 Worker 에 대한 처리

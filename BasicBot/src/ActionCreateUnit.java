@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import bwapi.UnitType;
 
-public class ActionCreateUnit  extends ActionControlAbstract  {
+public class ActionCreateUnit extends ActionControlAbstract {
 
 	// 설정된 비율에 따라서 현재 비율이 낮은 유닛을 생산
 	public void action() {
@@ -15,7 +15,7 @@ public class ActionCreateUnit  extends ActionControlAbstract  {
 			HashMap<UnitType, Double> tmp = new HashMap<UnitType, Double>();
 			for (UnitType unitType : MyVariable.attackUnitRatio.keySet()) {
 				// 0은 계산 불가
-				
+
 				if (MyVariable.attackUnitRatio.get(unitType) == 0 && MyBotModule.Broodwar.canMake(unitType) == false) {
 					continue;
 				}
@@ -37,11 +37,17 @@ public class ActionCreateUnit  extends ActionControlAbstract  {
 					if (tmp.get(unitType) == tmp2.get(i)) {
 						if (MyBotModule.Broodwar.canMake(unitType)) {
 							if (BuildManager.Instance().buildQueue.getItemCount(unitType) == 0) {
-								BuildManager.Instance().buildQueue.queueAsHighestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+								// 높은 우선 순위로 하면 벌처만 생산될 수도 있음
+								if (MyVariable.attackUnit.size() < 1) {
+									BuildManager.Instance().buildQueue.queueAsHighestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+								} else {
+									BuildManager.Instance().buildQueue.queueAsLowestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+								}
 								break;
 							}
-							
+
 						}
+
 					}
 				}
 			}

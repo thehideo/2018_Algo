@@ -37,7 +37,7 @@ public class MyVariable {
 
 	// 뮤탈리스트를 찾았는지
 	public static boolean findLucker = false;
-
+	
 	// 다크템플러를 찾았는지
 	public static boolean findDarkTempler = false;
 
@@ -156,9 +156,6 @@ public class MyVariable {
 
 		distanceOfMostCloseBunker = Double.MAX_VALUE;
 		mostCloseBunker = null;
-
-		mapBuildingSizeMap.clear();
-
 	}
 
 	/////////////////////////////////////////////

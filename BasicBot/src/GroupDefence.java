@@ -2,7 +2,7 @@ import bwapi.Position;
 import bwapi.TilePosition;
 import bwapi.Unit;
 
-public class GroupDefence extends Group {
+public class GroupDefence extends GroupAbstract {
 	@Override
 	public void action() {
 		Position position = MyUtil.GetMyBunkerPosition();

@@ -86,7 +86,7 @@ public class MyUtil {
 	// 기본은 첫번째 초크 포인트
 	public static Chokepoint getSaveChokePoint() {
 		Chokepoint chokePoint =null;
-		if (InformationManager.Instance().enemyRace == Race.Protoss) {
+		if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
 			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
 		} else {
 

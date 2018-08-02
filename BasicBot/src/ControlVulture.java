@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 import bwapi.TechType;
 import bwapi.TilePosition;
 import bwapi.Unit;
@@ -10,16 +8,9 @@ public class ControlVulture extends ControlAbstract {
 
 	BaseLocation bl = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.self());
 
-	public void actionMain(Unit unit, Group groupAbstract) {
-		/*
-		 * if (unit.getGroundWeaponCooldown() != 0) { CommandUtil.move(unit,
-		 * MyVariable.myStartLocation.toPosition()); }
-		 */
-
-		// InformationManager.Instance().selfPlayer.
-
+	public void actionMain(Unit unit, GroupAbstract groupAbstract) {
 		if (MyUtil.distanceTilePosition(MyVariable.myStartLocation, unit.getTilePosition()) > MyUtil.distanceTilePosition(MyVariable.myStartLocation, MyVariable.myFirstchokePoint)) {
-			if (bl != null && MyUtil.distanceTilePosition(unit.getTilePosition(), bl.getTilePosition()) > 7) {
+			if (bl != null && MyUtil.distanceTilePosition(unit.getTilePosition(), bl.getTilePosition()) > 6) {
 				if (unit.canUseTech(TechType.Spider_Mines, unit.getPosition())) {
 					int X = unit.getTilePosition().getX() / 4;
 					int Y = unit.getTilePosition().getY() / 4;
@@ -44,6 +35,8 @@ public class ControlVulture extends ControlAbstract {
 			}
 		}
 
-		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
+		//if (MyVariable.enemyAttactingUnit.size() > 0) {
+			CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
+		//}
 	}
 }

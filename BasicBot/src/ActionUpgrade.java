@@ -82,24 +82,26 @@ public class ActionUpgrade extends ActionControlAbstract {
 				}
 			}
 		}
-		// Marine 사거리/스팀팩 업그레이드
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Academy)) {
-			if (unit.canUpgrade(UpgradeType.U_238_Shells)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.U_238_Shells) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.U_238_Shells, false);
+
+	}
+
+	public void updateTerran() {
+		// 벌처
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
+			if (unit.canResearch(TechType.Spider_Mines)) {
+				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Spider_Mines) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Spider_Mines, false);
 					break;
 				}
 			}
-			if (unit.canResearch(TechType.Stim_Packs)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Stim_Packs) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
+			if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
+				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters, false);
 					break;
 				}
 			}
 		}
-	}
 
-	public void updateTerran() {
 		// 시즈 모드
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
 			if (unit.canResearch(TechType.Tank_Siege_Mode)) {
@@ -128,23 +130,6 @@ public class ActionUpgrade extends ActionControlAbstract {
 			}
 		}
 
-		// 벌처
-		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Vulture).size() > 4) {
-			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
-				if (unit.canResearch(TechType.Spider_Mines)) {
-					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Spider_Mines) == 0) {
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Spider_Mines, false);
-						break;
-					}
-				}
-				if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
-					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters) == 0) {
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters, false);
-					}
-				}
-			}
-		}
-
 		// 메카닉 업그레이드
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Armory)) {
 			if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Weapons)) {
@@ -164,21 +149,7 @@ public class ActionUpgrade extends ActionControlAbstract {
 				}
 			}
 		}
-		// Marine 사거리/스팀팩 업그레이드
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Academy)) {
-			if (unit.canUpgrade(UpgradeType.U_238_Shells)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.U_238_Shells) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.U_238_Shells, false);
-					break;
-				}
-			}
-			if (unit.canResearch(TechType.Stim_Packs)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Stim_Packs) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
-					break;
-				}
-			}
-		}
+
 	}
 
 	public void updateZerg() {

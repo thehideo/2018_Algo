@@ -10,7 +10,7 @@ import bwta.BWTA;
 import bwta.BaseLocation;
 import bwta.Chokepoint;
 
-public class GroupAttack extends Group {
+public class GroupAttack extends GroupAbstract {
 	int minPointX = Integer.MAX_VALUE;
 	int maxPointX = Integer.MIN_VALUE;
 	int minPointY = Integer.MAX_VALUE;
@@ -190,12 +190,12 @@ public class GroupAttack extends Group {
 						MyVariable.isFullScaleAttackStarted = false;
 					}
 				} else {
-					if (MyVariable.attackUnit.size() < 10 || MyUtil.GetMyTankCnt() <= 2) {
+					if (MyVariable.attackUnit.size() < 10 ) {
 						MyVariable.isFullScaleAttackStarted = false;
 					}
 				}
 			} else if (InformationManager.Instance().enemyRace == Race.Terran) {
-				if (MyVariable.attackUnit.size() < 10 || MyUtil.GetMyTankCnt() <= 2) {
+				if (MyVariable.attackUnit.size() < 10) {
 					MyVariable.isFullScaleAttackStarted = false;
 				}
 			} else {

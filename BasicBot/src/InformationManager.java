@@ -160,16 +160,7 @@ public class InformationManager {
 			// 발견되지 않는 Type 추가
 			MyVariable.getSelfUnit(unit.getType()).add(unit);
 
-			if (unit.getType().isBuilding()) {
-				if (unit.getType() != UnitType.Terran_Bunker && unit.getType() != UnitType.Terran_Missile_Turret) {
-					String key = MyUtil.getBuildingSizeKey(unit.getType());
-
-					if (!MyVariable.mapBuildingSizeMap.containsKey(key)) {
-						MyVariable.mapBuildingSizeMap.put(key, new ArrayList<Unit>());
-					}
-					MyVariable.mapBuildingSizeMap.get(key).add(unit);
-				}
-			}
+			
 
 			// defenceUnit에 할당
 			if (!setUnitAsDefence(unit)) {

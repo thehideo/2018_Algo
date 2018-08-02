@@ -22,7 +22,7 @@ public class ActionMicroControl extends ActionControlAbstract {
 			ControlAbstract controlAbstract = GroupManager.instance().getControlAbstract(unitType);
 			if (controlAbstract != null) {
 				for (Unit unit : MyVariable.getSelfUnit(unitType)) {
-					Group groupAbstract = GroupManager.instance().getUnitsGroup(unit);
+					GroupAbstract groupAbstract = GroupManager.instance().getUnitsGroup(unit);
 					if (groupAbstract != null) {
 						controlAbstract.action(unit, groupAbstract);
 					}

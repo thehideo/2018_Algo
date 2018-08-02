@@ -26,7 +26,7 @@ public class ControlTank extends ControlAbstract {
 		return result;
 	}
 
-	public void actionMain(Unit unit,  Group groupAbstract) {
+	public void actionMain(Unit unit,  GroupAbstract groupAbstract) {
 		if (needSiege(unit) == false && unit.isSieged()) {
 			CommandUtil.unsiege(unit);
 	
