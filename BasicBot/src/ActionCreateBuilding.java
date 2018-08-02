@@ -264,7 +264,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
-		if (checkNeedToBuild(UnitType.Terran_Academy, 1) && MyUtil.GetMyTankCnt() >= 2) {
+		if (checkNeedToBuild(UnitType.Terran_Academy, 1) && (MyUtil.GetMyTankCnt() >= 2 || MyVariable.findDarkTempler == true)) {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Academy, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
