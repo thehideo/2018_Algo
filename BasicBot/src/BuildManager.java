@@ -140,10 +140,10 @@ public class BuildManager {
 							// buildQueue 에서 제거해야한다
 							if (producer.isConstructing() == false) {
 								isOkToRemoveQueue = false;
-							}					
+							}
 						}
 						// 그외 대부분 건물의 경우
-						else {							
+						else {
 							TilePosition desiredPosition = getDesiredPosition(t.getUnitType(), currentItem.seedLocation, currentItem.seedLocationStrategy);
 
 							if (desiredPosition != TilePosition.None) {

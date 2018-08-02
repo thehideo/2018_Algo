@@ -1,13 +1,8 @@
-import java.util.HashMap;
-import java.util.Random;
-
 import bwapi.Position;
 import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
-import bwta.BWTA;
-import bwta.BaseLocation;
 import bwta.Chokepoint;
 
 public class GroupAttack extends GroupAbstract {

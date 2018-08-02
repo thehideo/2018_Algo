@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import bwapi.TilePosition;
-import bwta.BWTA;
-
 public class ActionManager {
 	HashMap<Integer, ArrayList<ActionControlAbstract>> map = new HashMap<Integer, ArrayList<ActionControlAbstract>>();
 
@@ -30,7 +27,7 @@ public class ActionManager {
 		addAction(new ActionCreateBuilding(), 5);
 		addAction(new ActionSetUnitRatio(), 6);
 		addAction(new ActionControlBunker(), 6);
-		addAction(new ActionControlGroup(),7);
+		addAction(new ActionControlGroup(), 7);
 		addAction(new ActionSupplyManagement(), 8);
 
 		// Scanner 체크는 2번
@@ -48,7 +45,7 @@ public class ActionManager {
 			// if (MyBotModule.Broodwar.getFrameCount() % 12 == 0)
 			{
 				// 매 프레임마다 유닛 중복 명령을 방지하는 hash초기화 한다.
-				
+
 				// Action Micro Control이 모든 명령에 우선이다.
 				actionMicroControl.action();
 			}

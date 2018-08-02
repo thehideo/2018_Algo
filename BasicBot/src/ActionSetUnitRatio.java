@@ -1,5 +1,4 @@
 import bwapi.Race;
-import bwapi.Unit;
 import bwapi.UnitType;
 
 public class ActionSetUnitRatio extends ActionControlAbstract {
