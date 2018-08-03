@@ -38,7 +38,6 @@ public class ActionUseScanner extends ActionControlAbstract {
 		}
 
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_Wraith)) {
-			// MyVariable.needTerran_Science_Vessel = true;
 			if (unit.isAttacking() && unit.isCloaked() == true && unit.isDetected() == false) {
 				useScanner_Sweep(unit);
 			}

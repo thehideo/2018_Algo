@@ -70,7 +70,7 @@ public class MyUtil {
 		List<TilePosition> ltp = BWTA.getShortestPath(MyVariable.myFirstchokePoint, MyVariable.myStartLocation);
 
 		if (ltp.size() > 5) {
-			bunkerPosition = ltp.get(4).toPosition();
+			bunkerPosition = ltp.get(3).toPosition();
 		}
 
 		if (bunkerPosition == null)
@@ -85,13 +85,11 @@ public class MyUtil {
 	// 방어할 ChokePoint를 구한다.
 	// 기본은 첫번째 초크 포인트
 	public static Chokepoint getSaveChokePoint() {
-		Chokepoint chokePoint =null;
-		if (InformationManager.Instance().enemyRace == Race.Protoss || InformationManager.Instance().enemyRace == Race.Terran) {
+		Chokepoint chokePoint = null;
+		if (InformationManager.Instance().enemyRace == Race.Terran || InformationManager.Instance().enemyRace == Race.Protoss) {
 			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
 		} else {
-
 			chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
-
 			// 확장했으면 확장부분을 지킨다.
 			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 || MyVariable.mapEnemyMainBuilding.size() >= 2 || MyVariable.attackUnit.size() > 30) {
 				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);

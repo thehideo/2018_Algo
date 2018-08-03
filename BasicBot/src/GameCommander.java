@@ -166,11 +166,17 @@ public class GameCommander {
 		// 평균 소요시간 DP Start
 		long spendTime = (System.currentTimeMillis() - startTime);
 		lTotalSpendTime += spendTime;
-		if (spendTime > 55) { // 44ms 초과 시 Inform
-			System.out.println("[Warning][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
-		} else {
-			if (MyBotModule.Broodwar.getFrameCount() > 0 && bTimeDPFlg) // 1 프레임 부터 계산시작
-				System.out.println("[Info][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
+		
+		// 예외가 발생할 부분이 아닌데 발생하여 try catch문을 썼다.
+		try {
+			if (spendTime > 55) { // 44ms 초과 시 Inform
+				System.out.println("[Warning][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
+			} else {
+				if (MyBotModule.Broodwar.getFrameCount() > 0 && bTimeDPFlg) // 1 프레임 부터 계산시작
+					System.out.println("[Info][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		// 평균 소요시간 DP End
 	}
@@ -287,6 +293,8 @@ public class GameCommander {
 			if (!unit.getType().isBuilding()) {
 				if (unit.getType() == UnitType.Terran_SCV) {
 					GroupManager.instance().addToWorkerGroup(unit);
+				} else if (unit.getType() == UnitType.Terran_Wraith) {
+					GroupManager.instance().addToWraithGroup(unit);
 				} else if (unit.getType() == UnitType.Terran_Science_Vessel) {
 					GroupManager.instance().addScanGroup(unit);
 				} else if (unit.getType() != UnitType.Terran_Vulture_Spider_Mine) {

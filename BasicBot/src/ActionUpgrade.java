@@ -23,13 +23,29 @@ public class ActionUpgrade extends ActionControlAbstract {
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
 			if (unit.canResearch(TechType.Spider_Mines)) {
 				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Spider_Mines) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Spider_Mines, false);
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(TechType.Spider_Mines, false);
 					break;
 				}
 			}
-			if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters, false);
+			/*
+			 * if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) { if
+			 * (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters)
+			 * == 0) { BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.
+			 * Ion_Thrusters, false); break; } }
+			 */
+		}
+
+		// Marine 사거리/스팀팩 업그레이드
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Academy)) {
+			if (unit.canUpgrade(UpgradeType.U_238_Shells)) {
+				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.U_238_Shells) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.U_238_Shells, false);
+					break;
+				}
+			}
+			if (unit.canResearch(TechType.Stim_Packs)) {
+				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Stim_Packs) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Stim_Packs, false);
 					break;
 				}
 			}
@@ -40,6 +56,16 @@ public class ActionUpgrade extends ActionControlAbstract {
 			if (unit.canResearch(TechType.Tank_Siege_Mode)) {
 				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Tank_Siege_Mode) == 0) {
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+					break;
+				}
+			}
+		}
+
+		// 레이스 클로킹
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Control_Tower)) {
+			if (unit.canResearch(TechType.Cloaking_Field)) {
+				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Cloaking_Field) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Cloaking_Field, false);
 					break;
 				}
 			}
@@ -107,6 +133,16 @@ public class ActionUpgrade extends ActionControlAbstract {
 			if (unit.canResearch(TechType.Tank_Siege_Mode)) {
 				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Tank_Siege_Mode) == 0) {
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+					break;
+				}
+			}
+		}
+
+		// 레이스 클로킹
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Control_Tower)) {
+			if (unit.canResearch(TechType.Cloaking_Field)) {
+				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Cloaking_Field) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Cloaking_Field, false);
 					break;
 				}
 			}

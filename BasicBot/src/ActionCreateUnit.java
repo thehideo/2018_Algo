@@ -38,11 +38,9 @@ public class ActionCreateUnit extends ActionControlAbstract {
 						if (MyBotModule.Broodwar.canMake(unitType)) {
 							if (BuildManager.Instance().buildQueue.getItemCount(unitType) == 0) {
 								// 높은 우선 순위로 하면 벌처만 생산될 수도 있음
-								if (MyVariable.attackUnit.size() < 1) {
-									BuildManager.Instance().buildQueue.queueAsHighestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-								} else {
+								
 									BuildManager.Instance().buildQueue.queueAsLowestPriority(unitType, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-								}
+								
 								break;
 							}
 

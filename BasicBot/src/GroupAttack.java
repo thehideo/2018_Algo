@@ -111,11 +111,12 @@ public class GroupAttack extends GroupAbstract {
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
 		else if (MyVariable.isFullScaleAttackStarted == false || needToWaitVessel == true) {
 			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
-			if (MyVariable.attackUnit.size() <= 4) {
+			//if (MyVariable.attackUnit.size() <= 4) {
 
-				targetPosition = MyVariable.myStartLocation.toPosition();
+			//	targetPosition = MyVariable.myStartLocation.toPosition();
 
-			} else {
+			//} else 
+			{
 
 				targetPosition = saveChokePoint.getCenter();
 

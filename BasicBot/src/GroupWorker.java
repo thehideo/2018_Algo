@@ -21,13 +21,13 @@ public class GroupWorker extends GroupAbstract {
 					// WorkerManager.Instance().
 				} else {
 					cnt++;
-					if (cnt >= 8 || cnt >= MyVariable.getSelfUnit(UnitType.Terran_SCV).size() - 4) {
+					if (cnt >= MyVariable.enemyUnitAroundMyStartPoint.size() * 2 || cnt >= MyVariable.getSelfUnit(UnitType.Terran_SCV).size() - 4) {
 						break;
 					}
 					Unit enemyUnit = null;
 					Double minDistance = Double.MAX_VALUE;
 					for (Unit unit2 : MyVariable.enemyUnitAroundMyStartPoint) {
-						if (unit2.isFlying() == false && unit2.getType() != UnitType.Terran_SCV && unit2.getType() != UnitType.Protoss_Probe && unit2.getType() != UnitType.Zerg_Drone) {
+						if (unit2.isFlying() == false) {
 							double distance = MyUtil.distancePosition(unit.getPosition(), unit2.getPosition());
 							if (minDistance > distance) {
 								minDistance = distance;

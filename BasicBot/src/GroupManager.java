@@ -9,6 +9,7 @@ public class GroupManager {
 	GroupDefence groupDefence = new GroupDefence();
 	GroupScanUnit groupScanUnit = new GroupScanUnit();
 	GroupWorker groupWorker = new GroupWorker();
+	GroupWraith groupWraith = new GroupWraith();
 
 	// 싱글톤
 	public static GroupManager instance() {
@@ -50,6 +51,7 @@ public class GroupManager {
 		groupDefence.action();
 		groupScanUnit.action();
 		groupWorker.action();
+		groupWraith.action();
 	}
 
 	// 유닛이 어떤 그룹에 속해있는지 관리
@@ -69,6 +71,11 @@ public class GroupManager {
 		mapUnitGroup.put(unit.getID(), groupDefence);
 		groupDefence.addUnit(unit);
 	}
+	
+	void addToWraithGroup(Unit unit) {
+		mapUnitGroup.put(unit.getID(), groupWraith);
+		groupWraith.addUnit(unit);
+	}
 
 	void addToWorkerGroup(Unit unit) {
 		mapUnitGroup.put(unit.getID(), groupWorker);
@@ -85,5 +92,6 @@ public class GroupManager {
 		groupAttack.removeUnit(unit);
 		groupDefence.removeUnit(unit);
 		groupScanUnit.removeUnit(unit);
+		groupWraith.removeUnit(unit);
 	}
 }

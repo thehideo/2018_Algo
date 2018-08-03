@@ -9,11 +9,12 @@ public class ControlTank extends ControlAbstract {
 	boolean needSiege(Unit unit) {
 		boolean result = false;
 		// 방어 모드이면 시즈 모드로 대기
-		if (MyVariable.isFullScaleAttackStarted == false) {
+		
+		/*if (MyVariable.isFullScaleAttackStarted == false) {
 			if (MyUtil.distanceTilePosition(MyUtil.getSaveChokePoint().getPoint().toTilePosition(), unit.getTilePosition()) < 5) {
 				result = true;
 			}
-		}
+		}*/
 		if (result == false) {
 			for (Unit enemyUnit : MyVariable.enemyGroundUnit) {
 				int distance = unit.getDistance(enemyUnit);
