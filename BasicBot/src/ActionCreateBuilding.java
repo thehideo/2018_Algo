@@ -152,7 +152,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Comsat_Station, false);
 		}
 
-		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyVariable.findDarkTempler == true) {
+		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyUtil.GetMyTankCnt() >= 4) {
 			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 		}
 

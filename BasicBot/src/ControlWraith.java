@@ -27,7 +27,7 @@ public class ControlWraith extends ControlAbstract {
 		boolean mode = mapMode.get(wraith.getID());
 
 		if (mode == false) {
-			CommandUtil.move(wraith, MyUtil.getSaveChokePoint().getPoint());
+			CommandUtil.move(wraith, MyUtil.getSaveTilePosition().toPosition());
 		}
 
 		// 적이 근처에 없으면 클로킹 해제

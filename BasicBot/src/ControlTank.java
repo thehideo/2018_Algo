@@ -9,12 +9,12 @@ public class ControlTank extends ControlAbstract {
 	boolean needSiege(Unit unit) {
 		boolean result = false;
 		// 방어 모드이면 시즈 모드로 대기
-		
-		/*if (MyVariable.isFullScaleAttackStarted == false) {
-			if (MyUtil.distanceTilePosition(MyUtil.getSaveChokePoint().getPoint().toTilePosition(), unit.getTilePosition()) < 5) {
+
+		if (MyVariable.isFullScaleAttackStarted == false) {
+			if (MyUtil.distanceTilePosition(MyUtil.getSaveTilePosition(), unit.getTilePosition()) < 5) {
 				result = true;
 			}
-		}*/
+		}
 		if (result == false) {
 			for (Unit enemyUnit : MyVariable.enemyGroundUnit) {
 				int distance = unit.getDistance(enemyUnit);
@@ -27,15 +27,15 @@ public class ControlTank extends ControlAbstract {
 		return result;
 	}
 
-	public void actionMain(Unit unit,  GroupAbstract groupAbstract) {
+	public void actionMain(Unit unit, GroupAbstract groupAbstract) {
 		if (needSiege(unit) == false && unit.isSieged()) {
 			CommandUtil.unsiege(unit);
-	
+
 		}
-		if (needSiege(unit) == true&& !unit.isSieged()) {
+		if (needSiege(unit) == true && !unit.isSieged()) {
 			CommandUtil.siege(unit);
-		
+
 		}
-		CommandUtil.attackMove(unit,  groupAbstract.getTargetPosition(unit));
+		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
 	}
 }

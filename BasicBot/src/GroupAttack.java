@@ -110,29 +110,24 @@ public class GroupAttack extends GroupAbstract {
 		}
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
 		else if (MyVariable.isFullScaleAttackStarted == false || needToWaitVessel == true) {
-			Chokepoint saveChokePoint = MyUtil.getSaveChokePoint();
-			//if (MyVariable.attackUnit.size() <= 4) {
+			TilePosition saveTilePosition = MyUtil.getSaveTilePosition();
+			targetPosition = MyVariable.myStartLocation.toPosition();
 
-			//	targetPosition = MyVariable.myStartLocation.toPosition();
+			targetPosition = saveTilePosition.toPosition();
 
-			//} else 
-			{
-
-				targetPosition = saveChokePoint.getCenter();
-
-			}
 			// 프로토스 공격 조건
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				// 캐리어를 발견했을 때
-				//if (MyVariable.findCarrier == true) {
-				//	if ((MyVariable.attackUnit.size() > 40 && MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8)) {
-				//		MyVariable.isFullScaleAttackStarted = true;
-				//	}
-				//} else 
-				
+				// if (MyVariable.findCarrier == true) {
+				// if ((MyVariable.attackUnit.size() > 40 &&
+				// MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8)) {
+				// MyVariable.isFullScaleAttackStarted = true;
+				// }
+				// } else
+
 				{
 					if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-						if (MyVariable.attackUnit.size() > 30 ) {
+						if (MyVariable.attackUnit.size() > 30) {
 							MyVariable.isFullScaleAttackStarted = true;
 						}
 					}
@@ -146,17 +141,22 @@ public class GroupAttack extends GroupAbstract {
 			}
 			// 테란 공격 조건
 			else if (InformationManager.Instance().enemyRace == Race.Terran) {
-				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-					if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 6) {
-						MyVariable.isFullScaleAttackStarted = true;
-					}
+
+				if (MyBotModule.Broodwar.self().supplyTotal() >= 360) {
+					MyVariable.isFullScaleAttackStarted = true;
 				}
+
+				// if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
+				// if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 6) {
+				// MyVariable.isFullScaleAttackStarted = true;
+				// }
+				// }
 				// 확장 기지가 있다면
-				else {
-					if (MyVariable.attackUnit.size() > 50 && MyUtil.GetMyTankCnt() >= 6) {
-						MyVariable.isFullScaleAttackStarted = true;
-					}
-				}
+				// else {
+				// if (MyVariable.attackUnit.size() > 50 && MyUtil.GetMyTankCnt() >= 6) {
+				// MyVariable.isFullScaleAttackStarted = true;
+				// }
+				// }
 			}
 			// 저그 공격 조건
 			else {
@@ -186,7 +186,7 @@ public class GroupAttack extends GroupAbstract {
 						MyVariable.isFullScaleAttackStarted = false;
 					}
 				} else {
-					if (MyVariable.attackUnit.size() < 10 ) {
+					if (MyVariable.attackUnit.size() < 10) {
 						MyVariable.isFullScaleAttackStarted = false;
 					}
 				}

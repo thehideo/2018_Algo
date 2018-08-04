@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -37,7 +39,13 @@ public class MyUtil {
 	}
 
 	static int GetMyTankCnt() {
-		return MyVariable.getSelfAttackUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getSelfAttackUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size();
+		if (GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Tank_Mode) == null) {
+			GroupManager.instance().groupAttack.mapUnit.put(UnitType.Terran_Siege_Tank_Tank_Mode, new HashSet<Integer>());
+		}
+		if (GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Siege_Mode) == null) {
+			GroupManager.instance().groupAttack.mapUnit.put(UnitType.Terran_Siege_Tank_Siege_Mode, new HashSet<Integer>());
+		}
+		return GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Tank_Mode).size() + GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Siege_Mode).size();
 	}
 
 	static Position GetMyBunkerDonthaveTurretPosition() {
@@ -82,21 +90,58 @@ public class MyUtil {
 		return MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size();
 	}
 
+	static int indexToGo = 0;
+
+	static int goTimer = 0;
+
+	static HashMap<TilePosition, List<TilePosition>> mapShortestPath = new HashMap<TilePosition, List<TilePosition>>();
+
 	// 방어할 ChokePoint를 구한다.
 	// 기본은 첫번째 초크 포인트
-	public static Chokepoint getSaveChokePoint() {
-		Chokepoint chokePoint = null;
+	public static TilePosition getSaveTilePosition() {
+
+		// 전진 위치 초기화
+		if (MyUtil.GetMyTankCnt() == 0 && MyVariable.isFullScaleAttackStarted == true) {
+			indexToGo = 0;
+		}
+
+		TilePosition target = null;
 		if (InformationManager.Instance().enemyRace == Race.Terran || InformationManager.Instance().enemyRace == Race.Protoss) {
-			chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+			target = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition();
 		} else {
-			chokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
+			target = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition()).getPoint().toTilePosition();
 			// 확장했으면 확장부분을 지킨다.
 			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 || MyVariable.mapEnemyMainBuilding.size() >= 2 || MyVariable.attackUnit.size() > 30) {
-				chokePoint = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer);
+				target = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition();
 			}
 		}
 
-		return chokePoint;
+		// 탱크가 4마리 이상이면 앞으로 서서히 전진
+		if (MyUtil.GetMyTankCnt() > 4) {
+			if (!mapShortestPath.containsKey(target)) {
+				mapShortestPath.put(target, BWTA.getShortestPath(target, InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()).getTilePosition()));
+			}
+			List<TilePosition> shortestPath = mapShortestPath.get(target);
+			target = shortestPath.get(indexToGo);
+
+			// 전진후 일정 시간이 지나면 한칸 더 앞으로 이동한다.
+			if (MyBotModule.Broodwar.getFrameCount() > goTimer + 100) {
+				if (indexToGo >= shortestPath.size() - 30) {
+					MyVariable.isFullScaleAttackStarted=true;
+				} else {
+					indexToGo = indexToGo + 1;
+					goTimer = MyBotModule.Broodwar.getFrameCount();
+				}
+
+			}
+
+			// 적이 있으면 전진하지 않는다.
+			if (MyVariable.enemyAttactUnit.size() > 0) {
+				goTimer = MyBotModule.Broodwar.getFrameCount();
+			}
+		}
+
+		return target;
 	}
 
 	public static boolean canUseScan() {

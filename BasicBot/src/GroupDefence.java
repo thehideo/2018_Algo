@@ -22,7 +22,7 @@ public class GroupDefence extends GroupAbstract {
 			if (MyVariable.isFullScaleAttackStarted == true || position == null) {
 				targetPosition = MyVariable.myStartLocation.toPosition();
 			} else {
-				targetPosition = MyUtil.getSaveChokePoint().getPoint();
+				targetPosition = MyUtil.getSaveTilePosition().toPosition();
 			}
 		}
 	}
