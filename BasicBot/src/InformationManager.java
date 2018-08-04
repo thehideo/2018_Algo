@@ -152,6 +152,10 @@ public class InformationManager {
 			// UnitData 정보 update(기본 제공된 소스 데이터)
 			updateUnitInfo(unit);
 
+			if (unit.getType() == UnitType.Terran_Command_Center) {
+				MyVariable.mapSelfMainBuilding.add(unit.getTilePosition());
+			}
+
 			// 벙커 안에 있는 것은 스킵
 			if (unit.getType() == UnitType.Terran_Vulture_Spider_Mine) {
 				int X = unit.getTilePosition().getX() / 4;

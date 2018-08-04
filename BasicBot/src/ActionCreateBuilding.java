@@ -1,9 +1,16 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import bwapi.Position;
 import bwapi.Race;
 import bwapi.TechType;
+import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 import bwapi.UpgradeType;
+import bwta.BWTA;
+import bwta.BaseLocation;
 
 public class ActionCreateBuilding extends ActionControlAbstract {
 
@@ -34,6 +41,35 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Facility, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 			if (checkNeedToBuild(UnitType.Terran_Science_Vessel, 1) && MyVariable.getSelfUnit(UnitType.Terran_Science_Facility).size() >= 1)
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+		}
+
+		int needCommandCount = MyBotModule.Broodwar.getFrameCount() / 7000;
+		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() < needCommandCount) {
+			if (checkNeedToBuild(UnitType.Terran_Command_Center, needCommandCount)) {
+				ArrayList<TilePosition> listTilePosition = new ArrayList<TilePosition>();
+				List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
+				BaseLocation bl1 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self());
+				BaseLocation bl3 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy());
+				BaseLocation bl4 = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy());
+				if (bl3 != null && bl4 != null) {
+					for (BaseLocation bl : listBaseLocation) {
+						if (!bl.getTilePosition().equals(bl1.getTilePosition()) && !bl.getTilePosition().equals(bl3.getTilePosition()) && !bl.getTilePosition().equals(bl4.getTilePosition()) && !MyVariable.mapSelfMainBuilding.contains(bl.getTilePosition()) && !MyVariable.mapEnemyMainBuilding.contains(bl.getTilePosition()) && !MyVariable.enemyBuildingUnit.contains(bl.getTilePosition())) {
+							listTilePosition.add(bl.getTilePosition());
+						}
+					}
+					Collections.sort(listTilePosition, new ComparatorBaseLocationClose());
+				}
+				if (listTilePosition.size() > 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Command_Center, listTilePosition.get(0), true);
+				}
+			}
+		}
+
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
+			TilePosition tilePosition = ConstructionPlaceFinder.Instance().getRefineryPositionNear(unit.getTilePosition());
+			if (tilePosition != null && BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Refinery) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(UnitType.Terran_Refinery, null) == 0) {
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, tilePosition, true);
+			}
 		}
 	}
 
@@ -146,8 +182,19 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
-		if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		if (checkNeedToBuild(UnitType.Terran_Factory, MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() * 3) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
+			TilePosition tp = null;
+			for (Unit commandCenter : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
+				if (commandCenter.getTilePosition() != MyVariable.myStartLocation) {
+					tp = commandCenter.getTilePosition();
+					break;
+				}
+			}
+			if (tp == null) {
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			} else {
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, tp, false);
+			}
 		}
 	}
 
@@ -226,9 +273,14 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			}
 
-			if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-			}
+			// if (checkNeedToBuild(UnitType.Terran_Factory, 6) &&
+			// MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 &&
+			// MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 &&
+			// MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1 &&
+			// MyBotModule.Broodwar.self().minerals() > 400) {
+			// BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory,
+			// BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			// }
 
 		} else {
 			if (checkNeedToBuild(UnitType.Terran_Factory, 3) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1)
@@ -239,8 +291,28 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			}
 
-			if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
+			// if (checkNeedToBuild(UnitType.Terran_Factory, 6) &&
+			// MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 &&
+			// MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 &&
+			// MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1 &&
+			// MyBotModule.Broodwar.self().minerals() > 400) {
+			// BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory,
+			// BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			// }
+		}
+
+		if (checkNeedToBuild(UnitType.Terran_Factory, MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() * 3) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
+			TilePosition tp = null;
+			for (Unit commandCenter : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
+				if (commandCenter.getTilePosition() != MyVariable.myStartLocation) {
+					tp = commandCenter.getTilePosition();
+					break;
+				}
+			}
+			if (tp == null) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			} else {
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, tp, false);
 			}
 		}
 

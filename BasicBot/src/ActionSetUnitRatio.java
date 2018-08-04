@@ -33,23 +33,10 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 	}
 
 	public void unitProtoss() {
-		// 팩토리가 있는지 확인
-		// boolean canMakeVulture = false;
-		// for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Factory)) {
-		// if (unit.isCompleted()) {
-		// canMakeVulture = true;
-		// break;
-		// }
-		// }
-
-		// 벌처 생산 가능하면 바이오닉은 생산하지 않는다.
-		// if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() < 4 ||
-		// MyBotModule.Broodwar.self().minerals() > 400) {
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
 		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
 		}
-		// }
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 	}
@@ -58,13 +45,8 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 		if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 6) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
 		} else {
-			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Vulture).size() / 4 > MyUtil.GetMyTankCnt()) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
-			}
-			if (MyVariable.findWraith == true) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
-			}
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 		}
 	}
 
@@ -78,7 +60,7 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 		} else {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
-		}		
+		}
 	}
 
 }

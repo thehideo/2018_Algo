@@ -85,6 +85,9 @@ public class MyVariable {
 	// 상대편 command center, neus, 해처리 개수 파악용
 	public static HashSet<TilePosition> mapEnemyMainBuilding = new HashSet<TilePosition>();
 
+	// 상대편 command center, neus, 해처리 개수 파악용
+	public static HashSet<TilePosition> mapSelfMainBuilding = new HashSet<TilePosition>();
+
 	public static HashMap<String, ArrayList<Unit>> mapBuildingSizeMap = new HashMap<String, ArrayList<Unit>>();
 
 	// 전체
