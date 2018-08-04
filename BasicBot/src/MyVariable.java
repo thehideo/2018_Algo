@@ -37,7 +37,7 @@ public class MyVariable {
 
 	// 뮤탈리스트를 찾았는지
 	public static boolean findLucker = false;
-	
+
 	// 다크템플러를 찾았는지
 	public static boolean findDarkTempler = false;
 
@@ -54,6 +54,8 @@ public class MyVariable {
 	/////////////////////////////////////////////
 	// 내 유닛 정보
 	/////////////////////////////////////////////
+
+	public static HashMap<Integer, Unit> mapUnitIDUnit = new HashMap<Integer, Unit>();
 
 	public static TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation();
 
@@ -114,9 +116,8 @@ public class MyVariable {
 	// 공격 당하는 유닛
 	public static ArrayList<Unit> attackedUnit = new ArrayList<Unit>();
 
-		// 방어 유닛
+	// 방어 유닛
 	public static ArrayList<Unit> defenceUnit = new ArrayList<Unit>();
-
 
 	// 벙커 지키는 유닛
 	public static ArrayList<Unit> bunkerUnit = new ArrayList<Unit>();
@@ -140,11 +141,6 @@ public class MyVariable {
 		MyVariable.bunkerUnit.clear();
 		spinderMinePosition.clear();
 
-		// 방어할 유닛 개수 초기화
-		MyVariable.defenceUnitCount.clear();
-
-		MyVariable.patrolUnitCount.clear();
-
 		distanceOfMostFarTank = 0;
 		mostFarTank = null;
 
@@ -164,15 +160,6 @@ public class MyVariable {
 
 	public static HashMap<UnitType, Integer> attackUnitRatio = new HashMap<UnitType, Integer>();
 
-	public static HashMap<UnitType, Integer> defenceUnitCountTotal = new HashMap<UnitType, Integer>();
-
-	public static HashMap<UnitType, Integer> patrolUnitCountTotal = new HashMap<UnitType, Integer>();
-
-	// clearSelfUnit에서 초기화함!!!!!!!!!!
-	public static HashMap<UnitType, Integer> defenceUnitCount = new HashMap<UnitType, Integer>();
-
-	public static HashMap<UnitType, Integer> patrolUnitCount = new HashMap<UnitType, Integer>();
-
 	public static double distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
 	public static Unit mostCloseEnemyUnit = null;
 
@@ -181,8 +168,6 @@ public class MyVariable {
 
 	public static void clearUnitRaio() {
 		MyVariable.attackUnitRatio.clear();
-		MyVariable.defenceUnitCountTotal.clear();
-		MyVariable.patrolUnitCountTotal.clear();
 	}
 
 	/////////////////////////////////////////////

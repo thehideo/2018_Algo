@@ -27,12 +27,17 @@ public class ActionUpgrade extends ActionControlAbstract {
 					break;
 				}
 			}
-			/*
-			 * if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) { if
-			 * (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters)
-			 * == 0) { BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.
-			 * Ion_Thrusters, false); break; } }
-			 */
+
+			// if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
+			// if
+			// (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters)
+			// == 0) {
+			// BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters,
+			// false);
+			// break;
+			// }
+			// }
+
 		}
 
 		// Marine 사거리/스팀팩 업그레이드
@@ -85,6 +90,19 @@ public class ActionUpgrade extends ActionControlAbstract {
 							break;
 						}
 					}
+				}
+			}
+		}
+
+		// 바이오닉 공격력, 방어력 업그레이드
+		if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 10) {
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay)) {
+				if (unit.canUpgrade(UpgradeType.Terran_Infantry_Armor) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Armor) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Armor, false);
+					break;
+				}
+				if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 20) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Weapons, false);
 				}
 			}
 		}

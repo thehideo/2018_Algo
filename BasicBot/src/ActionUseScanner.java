@@ -47,11 +47,10 @@ public class ActionUseScanner extends ActionControlAbstract {
 		int ScanPoint = 200;
 		if (MyVariable.findDarkTempler == false && MyVariable.findLucker == false && InformationManager.Instance().enemyRace == Race.Protoss) {
 			ScanPoint = 100;
-		} 
+		}
 		if (MyVariable.findWraith == false && InformationManager.Instance().enemyRace == Race.Terran) {
 			ScanPoint = 100;
 		}
-		
 
 		boolean use = false;
 		use = false;

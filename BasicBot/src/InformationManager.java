@@ -147,6 +147,8 @@ public class InformationManager {
 		}
 
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
+			MyVariable.mapUnitIDUnit.put(unit.getID(), unit);
+
 			// UnitData 정보 update(기본 제공된 소스 데이터)
 			updateUnitInfo(unit);
 
@@ -160,78 +162,70 @@ public class InformationManager {
 			// 발견되지 않는 Type 추가
 			MyVariable.getSelfUnit(unit.getType()).add(unit);
 
-			
-
-			// defenceUnit에 할당
-			if (!setUnitAsDefence(unit)) {
-				if (!setUnitAsPatrol(unit)) {
-
-					// 본진 밖을 벗어난 SCV는 다시 본진으로 위치 시킨다
-					if (unit.getType() == UnitType.Terran_SCV) {
-						if (unit.isAttackFrame() == true) {
-							double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
-							if (distance > 20) {
-								unit.move(MyVariable.myStartLocation.toPosition());
-							}
-						}
-					} else if (unit.getType() == UnitType.Terran_Wraith) {
-
-					}
-
-					// 공격 유닛
-					else if (unit.isLoaded() == false && unit.getType().isBuilding() == false && (unit.canAttack() || unit.getType() == UnitType.Terran_Medic)) {
-						MyVariable.attackUnit.add(unit);
-
-						TilePosition target = null;
-						for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
-							target = tilePosition;
-							break;
-						}
-
-						if (target != null) {
-							if (MyUtil.distancePosition(target.toPosition(), unit.getPosition()) < 64) {
-								MyVariable.enemyBuildingUnit.remove(target);
-							}
-						}
-
-						MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
-
-						// 가장 멀리있는 공격 유닛 확인
-						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
-						if (MyVariable.distanceOfMostFarAttackUnit < distance) {
-							MyVariable.distanceOfMostFarAttackUnit = distance;
-							MyVariable.mostFarAttackUnit = unit;
-						}
-
-					}
-					if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
-						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
-						if (MyVariable.distanceOfMostFarTank < distance) {
-							MyVariable.distanceOfMostFarTank = distance;
-
-							MyVariable.mostFarTank = unit;
-						}
-
-					}
-
-					if (unit.getType() == UnitType.Terran_Missile_Turret) {
-						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
-						if (MyVariable.distanceOfMostFarTurret < distance) {
-							MyVariable.distanceOfMostFarTurret = distance;
-							MyVariable.mostFarTurret = unit;
-						}
-					}
-
-					if (unit.getType() == UnitType.Terran_Bunker) {
-						double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
-						if (MyVariable.distanceOfMostCloseBunker > distance) {
-							MyVariable.distanceOfMostCloseBunker = distance;
-
-							MyVariable.mostCloseBunker = unit;
-						}
-
+			// 본진 밖을 벗어난 SCV는 다시 본진으로 위치 시킨다
+			if (unit.getType() == UnitType.Terran_SCV) {
+				if (unit.isAttackFrame() == true) {
+					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
+					if (distance > 20) {
+						unit.move(MyVariable.myStartLocation.toPosition());
 					}
 				}
+			} else if (unit.getType() == UnitType.Terran_Wraith) {
+
+			}
+
+			// 공격 유닛
+			else if (unit.isLoaded() == false && unit.getType().isBuilding() == false && (unit.canAttack() || unit.getType() == UnitType.Terran_Medic)) {
+				MyVariable.attackUnit.add(unit);
+
+				TilePosition target = null;
+				for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
+					target = tilePosition;
+					break;
+				}
+
+				if (target != null) {
+					if (MyUtil.distancePosition(target.toPosition(), unit.getPosition()) < 64) {
+						MyVariable.enemyBuildingUnit.remove(target);
+					}
+				}
+
+				MyVariable.getSelfAttackUnit(unit.getType()).add(unit);
+
+				// 가장 멀리있는 공격 유닛 확인
+				double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
+				if (MyVariable.distanceOfMostFarAttackUnit < distance) {
+					MyVariable.distanceOfMostFarAttackUnit = distance;
+					MyVariable.mostFarAttackUnit = unit;
+				}
+
+			}
+			if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+				double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
+				if (MyVariable.distanceOfMostFarTank < distance) {
+					MyVariable.distanceOfMostFarTank = distance;
+
+					MyVariable.mostFarTank = unit;
+				}
+
+			}
+
+			if (unit.getType() == UnitType.Terran_Missile_Turret) {
+				double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
+				if (MyVariable.distanceOfMostFarTurret < distance) {
+					MyVariable.distanceOfMostFarTurret = distance;
+					MyVariable.mostFarTurret = unit;
+				}
+			}
+
+			if (unit.getType() == UnitType.Terran_Bunker) {
+				double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
+				if (MyVariable.distanceOfMostCloseBunker > distance) {
+					MyVariable.distanceOfMostCloseBunker = distance;
+
+					MyVariable.mostCloseBunker = unit;
+				}
+
 			}
 
 			// 공격당하고 있는 유닛
@@ -239,44 +233,6 @@ public class InformationManager {
 				MyVariable.attackedUnit.add(unit);
 			}
 		}
-	}
-
-	// 방어 유닛 구성
-	private boolean setUnitAsDefence(Unit unit) {
-		boolean result = false;
-		if (MyVariable.defenceUnitCountTotal.containsKey(unit.getType())) {
-			if (!MyVariable.defenceUnitCount.containsKey(unit.getType())) {
-				MyVariable.defenceUnitCount.put(unit.getType(), 0);
-			}
-			int total = MyVariable.defenceUnitCountTotal.get(unit.getType());
-			int now = MyVariable.defenceUnitCount.get(unit.getType());
-			if (total > now) {
-				MyVariable.defenceUnit.add(unit);
-				MyVariable.defenceUnitCount.put(unit.getType(), now + 1);
-				result = true;
-			}
-		}
-		return result;
-	}
-
-	// 방어 유닛 구성
-	private boolean setUnitAsPatrol(Unit unit) {
-		boolean result = false;
-		if (MyVariable.attackUnit.size() > 30) {
-			if (MyVariable.patrolUnitCountTotal.containsKey(unit.getType())) {
-				if (!MyVariable.patrolUnitCount.containsKey(unit.getType())) {
-					MyVariable.patrolUnitCount.put(unit.getType(), 0);
-				}
-				int total = MyVariable.patrolUnitCountTotal.get(unit.getType());
-				int now = MyVariable.patrolUnitCount.get(unit.getType());
-				if (total > now) {
-					MyVariable.patrolUnit.add(unit);
-					MyVariable.patrolUnitCount.put(unit.getType(), now + 1);
-					result = true;
-				}
-			}
-		}
-		return result;
 	}
 
 	// 적 Unit 정보 Update -> UnitData 와 MyVariable 에 저장

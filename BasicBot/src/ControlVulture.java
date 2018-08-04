@@ -35,8 +35,8 @@ public class ControlVulture extends ControlAbstract {
 			}
 		}
 
-		//if (MyVariable.enemyAttactingUnit.size() > 0) {
-			CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
-		//}
+		// if (MyVariable.enemyAttactingUnit.size() > 0) {
+		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
+		// }
 	}
 }

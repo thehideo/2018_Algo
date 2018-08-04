@@ -8,11 +8,11 @@ public class ControlMarin extends ControlAbstract {
 			return;
 		}
 
-		if (ActionControlBunker.needMarinCnt > 0) {
+		if (groupAbstract == GroupManager.instance().groupAttack && ActionControlBunker.needMarinCnt > 0) {
 			for (Unit bunker : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
 				if (bunker.getLoadedUnits().size() < 4) {
 					CommandUtil.commandHash.add(unit);
-					bunker.load(unit);
+					unit.rightClick(bunker);
 					break;
 				}
 			}

@@ -30,16 +30,18 @@ public abstract class ControlAbstract {
 			}
 		}
 
-		if (unit == MyVariable.mostFarAttackUnit && MyVariable.mostFarAttackUnit != MyVariable.mostFarTank && MyVariable.isFullScaleAttackStarted == true) {
-			if (MyVariable.mostFarTank != null) {
-				CommandUtil.attackMove(unit, MyVariable.mostFarTank.getPosition());
-			} else {
-				CommandUtil.attackMove(unit, MyVariable.myStartLocation.getPoint().toPosition());
+		if (groupAbstract == GroupManager.instance().groupAttack) {
+			if (unit == MyVariable.mostFarAttackUnit && MyVariable.mostFarAttackUnit != MyVariable.mostFarTank && MyVariable.isFullScaleAttackStarted == true) {
+				if (MyVariable.mostFarTank != null) {
+					CommandUtil.attackMove(unit, MyVariable.mostFarTank.getPosition());
+				} else {
+					CommandUtil.attackMove(unit, MyVariable.myStartLocation.getPoint().toPosition());
+				}
+
+				mapMoveBackTime.put(unit.getID(), MyBotModule.Broodwar.getFrameCount());
+
+				return;
 			}
-
-			mapMoveBackTime.put(unit.getID(), MyBotModule.Broodwar.getFrameCount());
-
-			return;
 		}
 
 		// 가장 앞에 있어서 뒤로 뺀 경우에는 다른 액션을 하지 않는다.

@@ -12,11 +12,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		if (MyVariable.isInitialBuildOrderFinished == true) {
 			commonBuild();
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
-				// if (MyVariable.findCarrier == true) {
-				// protossBuildFastCarrier();
-				// } else {
 				protossBuild();
-				// }
 			} else if (InformationManager.Instance().enemyRace == Race.Terran) {
 				terranBuild();
 			} else {
@@ -27,7 +23,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 
 	void commonBuild() {
 		// 베슬이 필요하면 바로 건설
-		if (MyVariable.needTerran_Science_Vessel) {
+		if (MyVariable.needTerran_Science_Vessel && InformationManager.Instance().enemyRace != Race.Protoss) {
 			if (checkNeedToBuild(UnitType.Terran_Factory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Barracks).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1)
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 			if (checkNeedToBuild(UnitType.Terran_Starport, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 1)
@@ -228,7 +224,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			// Terran_Armory 건설
 			if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 1) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-			}			
+			}
 
 			if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);

@@ -166,7 +166,7 @@ public class GameCommander {
 		// 평균 소요시간 DP Start
 		long spendTime = (System.currentTimeMillis() - startTime);
 		lTotalSpendTime += spendTime;
-		
+
 		// 예외가 발생할 부분이 아닌데 발생하여 try catch문을 썼다.
 		try {
 			if (spendTime > 55) { // 44ms 초과 시 Inform
@@ -215,7 +215,7 @@ public class GameCommander {
 
 		// 아군 유닛 제거
 		if (unit.getPlayer() == MyBotModule.Broodwar.self() && !unit.getType().isBuilding()) {
-			GroupManager.instance().remove(unit);
+			GroupManager.instance().remove(unit.getType(), unit.getID());
 		}
 
 	}
@@ -292,13 +292,13 @@ public class GameCommander {
 		if (unit.getPlayer() == MyBotModule.Broodwar.self()) {
 			if (!unit.getType().isBuilding()) {
 				if (unit.getType() == UnitType.Terran_SCV) {
-					GroupManager.instance().addToWorkerGroup(unit);
+					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupWorker);
 				} else if (unit.getType() == UnitType.Terran_Wraith) {
-					GroupManager.instance().addToWraithGroup(unit);
+					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupWraith);
 				} else if (unit.getType() == UnitType.Terran_Science_Vessel) {
-					GroupManager.instance().addScanGroup(unit);
+					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupScanUnit);
 				} else if (unit.getType() != UnitType.Terran_Vulture_Spider_Mine) {
-					GroupManager.instance().addToAttackGroup(unit);
+					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupAttack);
 				}
 			} else {
 				if (unit.getType() != UnitType.Terran_Bunker && unit.getType() != UnitType.Terran_Missile_Turret) {

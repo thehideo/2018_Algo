@@ -10,6 +10,8 @@ public abstract class GroupAbstract {
 	// 유닛별로 공격해야할 적유닛
 	HashMap<Integer, Unit> mapTargetUnit = new HashMap<Integer, Unit>();
 
+	// 할당 되어야할 유닛의 총 개수
+	HashMap<UnitType, Integer> mapUnitTotal = new HashMap<UnitType, Integer>();
 	HashMap<UnitType, HashSet<Integer>> mapUnit = new HashMap<UnitType, HashSet<Integer>>();
 
 	// 전체 Target
@@ -18,18 +20,18 @@ public abstract class GroupAbstract {
 	// Unit별 Target
 	protected HashMap<Integer, Position> mapTargetPosition = new HashMap<Integer, Position>();
 
-	public void addUnit(Unit unit) {
-		if (mapUnit.get(unit.getType()) == null) {
-			mapUnit.put(unit.getType(), new HashSet<Integer>());
+	public void addUnit(UnitType unitType, Integer unitID) {
+		if (mapUnit.get(unitType) == null) {
+			mapUnit.put(unitType, new HashSet<Integer>());
 		}
-		mapUnit.get(unit.getType()).add(unit.getID());
+		mapUnit.get(unitType).add(unitID);
 	}
 
-	public void removeUnit(Unit unit) {
-		if (mapUnit.get(unit.getType()) == null) {
-			mapUnit.put(unit.getType(), new HashSet<Integer>());
+	public void removeUnit(UnitType unitType,Integer unitID) {
+		if (mapUnit.get(unitType) == null) {
+			mapUnit.put(unitType, new HashSet<Integer>());
 		}
-		mapUnit.get(unit.getType()).remove(unit.getID());
+		mapUnit.get(unitType).remove(unitID);
 	}
 
 	public Unit getTargetUnit(Unit unit) {

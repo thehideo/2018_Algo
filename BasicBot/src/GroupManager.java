@@ -5,11 +5,12 @@ import bwapi.UnitType;
 
 public class GroupManager {
 	// 그룹 종류
-	GroupAttack groupAttack = new GroupAttack();
-	GroupDefence groupDefence = new GroupDefence();
-	GroupScanUnit groupScanUnit = new GroupScanUnit();
-	GroupWorker groupWorker = new GroupWorker();
-	GroupWraith groupWraith = new GroupWraith();
+	public GroupAttack groupAttack = new GroupAttack();
+	public GroupDefence groupDefence = new GroupDefence();
+	public GroupScanUnit groupScanUnit = new GroupScanUnit();
+	public GroupWorker groupWorker = new GroupWorker();
+	public GroupWraith groupWraith = new GroupWraith();
+	public GroupPatrol groupPatrol = new GroupPatrol();
 
 	// 싱글톤
 	public static GroupManager instance() {
@@ -22,6 +23,9 @@ public class GroupManager {
 	static ControlDefault controlDefault = new ControlDefault();
 
 	HashMap<UnitType, ControlAbstract> mapUnitTypeControl = new HashMap<UnitType, ControlAbstract>();
+
+	// 유닛이 어떤 그룹에 속해있는지 관리
+	HashMap<Integer, GroupAbstract> mapUnitGroup = new HashMap<Integer, GroupAbstract>();
 
 	// 유닛마다 기본 컨트롤 할당
 	public GroupManager() {
@@ -52,46 +56,52 @@ public class GroupManager {
 		groupScanUnit.action();
 		groupWorker.action();
 		groupWraith.action();
+		groupPatrol.action();
 	}
 
-	// 유닛이 어떤 그룹에 속해있는지 관리
-	HashMap<Integer, GroupAbstract> mapUnitGroup = new HashMap<Integer, GroupAbstract>();
+	// 모자라는 그룹에 인원을 채워넛는다.
+	// 항상 Attack 그룹에서 충원한다.
+	void fillGroup() {
+		fillGroup(groupDefence);
+		fillGroup(groupPatrol);
+	}
+
+	void fillGroup(GroupAbstract groupAbstract) {
+		for (UnitType unitType : groupAbstract.mapUnitTotal.keySet()) {
+			int totalCnt = groupAbstract.mapUnitTotal.get(unitType);
+			if (groupAbstract.mapUnit.get(unitType) != null) {
+				if (totalCnt > groupAbstract.mapUnit.get(unitType).size()) {
+					for (Integer unitID : groupAttack.mapUnit.get(unitType)) {
+						if (MyVariable.mapUnitIDUnit.get(unitID).isLoaded() == false) {
+							addToGroup(unitType, unitID, groupAbstract);
+							break;
+						}
+						
+					}
+				}
+			}
+		}
+	}
 
 	GroupAbstract getUnitsGroup(Unit unit) {
 		GroupAbstract result = mapUnitGroup.get(unit.getID());
 		return result;
 	}
-
-	void addToAttackGroup(Unit unit) {
-		mapUnitGroup.put(unit.getID(), groupAttack);
-		groupAttack.addUnit(unit);
-	}
-
-	void addToDefenceGroup(Unit unit) {
-		mapUnitGroup.put(unit.getID(), groupDefence);
-		groupDefence.addUnit(unit);
-	}
 	
-	void addToWraithGroup(Unit unit) {
-		mapUnitGroup.put(unit.getID(), groupWraith);
-		groupWraith.addUnit(unit);
+	void addToGroup(UnitType unitType, Integer unitID, GroupAbstract groupAbstract) {
+		remove(unitType, unitID);
+		mapUnitGroup.put(unitID, groupAbstract);
+		groupAbstract.addUnit(unitType, unitID);
 	}
 
-	void addToWorkerGroup(Unit unit) {
-		mapUnitGroup.put(unit.getID(), groupWorker);
-		groupWorker.addUnit(unit);
-	}
+	
 
-	void addScanGroup(Unit unit) {
-		mapUnitGroup.put(unit.getID(), groupScanUnit);
-		groupScanUnit.addUnit(unit);
-	}
-
-	void remove(Unit unit) {
-		mapUnitGroup.remove(unit.getID());
-		groupAttack.removeUnit(unit);
-		groupDefence.removeUnit(unit);
-		groupScanUnit.removeUnit(unit);
-		groupWraith.removeUnit(unit);
+	void remove(UnitType unitType, Integer unitID) {
+		mapUnitGroup.remove(unitID);
+		groupAttack.removeUnit(unitType, unitID);
+		groupDefence.removeUnit(unitType, unitID);
+		groupScanUnit.removeUnit(unitType, unitID);
+		groupWraith.removeUnit(unitType, unitID);
+		groupPatrol.removeUnit(unitType, unitID);
 	}
 }
