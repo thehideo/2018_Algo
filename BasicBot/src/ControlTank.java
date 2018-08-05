@@ -11,14 +11,14 @@ public class ControlTank extends ControlAbstract {
 		// 방어 모드이면 시즈 모드로 대기
 
 		if (MyVariable.isFullScaleAttackStarted == false) {
-			if (MyUtil.distanceTilePosition(MyUtil.getSaveTilePosition(), unit.getTilePosition()) < 5) {
+			if (unit.getDistance(MyUtil.getSaveTilePosition(12).toPosition()) <= SIEGE_MODE_MAX_RANGE) {
 				result = true;
 			}
 		}
 		if (result == false) {
 			for (Unit enemyUnit : MyVariable.enemyGroundUnit) {
 				int distance = unit.getDistance(enemyUnit);
-				if (distance >= SIEGE_MODE_MIN_RANGE && distance <= SIEGE_MODE_MAX_RANGE) {
+				if (unit.canAttack(enemyUnit) && distance >= SIEGE_MODE_MIN_RANGE && distance <= SIEGE_MODE_MAX_RANGE) {
 					result = true;
 					break;
 				}

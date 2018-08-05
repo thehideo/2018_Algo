@@ -38,7 +38,10 @@ public class GroupAttack extends GroupAbstract {
 				result = mapTargetPosition.get(unit.getID());
 			}
 		} else {
-			result = targetPosition;
+			if(unit.getType()==UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType()==UnitType.Terran_Siege_Tank_Tank_Mode) {
+				result=targetPositionForTank;
+			}else {
+			result = targetPosition;}
 		}
 
 		return result;
@@ -110,10 +113,11 @@ public class GroupAttack extends GroupAbstract {
 		}
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
 		else if (MyVariable.isFullScaleAttackStarted == false || needToWaitVessel == true) {
-			TilePosition saveTilePosition = MyUtil.getSaveTilePosition();
-			targetPosition = MyVariable.myStartLocation.toPosition();
+			// TilePosition saveTilePosition = ;
+			// targetPosition = MyVariable.myStartLocation.toPosition();
 
-			targetPosition = saveTilePosition.toPosition();
+			targetPosition = MyUtil.getSaveTilePosition(0).toPosition();
+			targetPositionForTank = MyUtil.getSaveTilePosition(13).toPosition();
 
 			// 프로토스 공격 조건
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
@@ -208,11 +212,13 @@ public class GroupAttack extends GroupAbstract {
 			// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
 			if (MyVariable.enemyBuildingUnit.size() == 0) {
 				targetPosition = null;
+				targetPositionForTank=null;
 
 			} else {
 				mapTargetUnit.clear();
 				for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 					targetPosition = tilePosition.toPosition();
+					targetPositionForTank = tilePosition.toPosition();
 					break;
 				}
 			}

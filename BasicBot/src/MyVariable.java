@@ -82,6 +82,9 @@ public class MyVariable {
 	// 애드온 지을자리를 기억해둔다.
 	public static HashSet<TilePosition> mapChokePointAround = new HashSet<TilePosition>();
 
+	// 가스 지어진 자리를 기억해둔다.
+	public static HashSet<TilePosition> mapRefineryPosition = new HashSet<TilePosition>();
+
 	// 상대편 command center, neus, 해처리 개수 파악용
 	public static HashSet<TilePosition> mapEnemyMainBuilding = new HashSet<TilePosition>();
 

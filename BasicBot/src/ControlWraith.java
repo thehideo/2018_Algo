@@ -20,14 +20,15 @@ public class ControlWraith extends ControlAbstract {
 			mapMode.put(wraith.getID(), true);
 		}
 
-		//if (wraith.getHitPoints() > wraith.getType().maxHitPoints() * 0.8 || wraith.getEnergy() > wraith.getType().maxEnergy() * 0.8) {
-		//	mapMode.put(wraith.getID(), true);
-		//}
+		// if (wraith.getHitPoints() > wraith.getType().maxHitPoints() * 0.8 ||
+		// wraith.getEnergy() > wraith.getType().maxEnergy() * 0.8) {
+		// mapMode.put(wraith.getID(), true);
+		// }
 
 		boolean mode = mapMode.get(wraith.getID());
 
 		if (mode == false) {
-			CommandUtil.move(wraith, MyUtil.getSaveTilePosition().toPosition());
+			CommandUtil.move(wraith, MyUtil.getSaveTilePosition(0).toPosition());
 		}
 
 		// 적이 근처에 없으면 클로킹 해제
@@ -63,10 +64,10 @@ public class ControlWraith extends ControlAbstract {
 			return;
 		}
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_SCV)) {
-			
-				CommandUtil.attackUnit(wraith, unit);
-				return;
-			
+
+			CommandUtil.attackUnit(wraith, unit);
+			return;
+
 		}
 	}
 

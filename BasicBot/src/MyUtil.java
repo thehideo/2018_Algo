@@ -98,7 +98,7 @@ public class MyUtil {
 
 	// 방어할 ChokePoint를 구한다.
 	// 기본은 첫번째 초크 포인트
-	public static TilePosition getSaveTilePosition() {
+	public static TilePosition getSaveTilePosition(int add) {
 
 		// 전진 위치 초기화
 		if (MyUtil.GetMyTankCnt() == 0 && MyVariable.isFullScaleAttackStarted == true) {
@@ -122,12 +122,11 @@ public class MyUtil {
 				mapShortestPath.put(target, BWTA.getShortestPath(target, InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()).getTilePosition()));
 			}
 			List<TilePosition> shortestPath = mapShortestPath.get(target);
-			target = shortestPath.get(indexToGo);
 
 			// 전진후 일정 시간이 지나면 한칸 더 앞으로 이동한다.
 			if (MyBotModule.Broodwar.getFrameCount() > goTimer + 100) {
 				if (indexToGo >= shortestPath.size() - 30) {
-					MyVariable.isFullScaleAttackStarted=true;
+					MyVariable.isFullScaleAttackStarted = true;
 				} else {
 					indexToGo = indexToGo + 1;
 					goTimer = MyBotModule.Broodwar.getFrameCount();
@@ -139,6 +138,19 @@ public class MyUtil {
 			if (MyVariable.enemyAttactUnit.size() > 0) {
 				goTimer = MyBotModule.Broodwar.getFrameCount();
 			}
+
+			int totalIndexToGo = indexToGo + add;
+
+			if (totalIndexToGo < 0) {
+				totalIndexToGo = 0;
+			}
+			if (totalIndexToGo > shortestPath.size() - 1) {
+				totalIndexToGo = shortestPath.size() - 1;
+			}
+
+			target = shortestPath.get(totalIndexToGo);
+		} else {
+			indexToGo = 0;
 		}
 
 		return target;

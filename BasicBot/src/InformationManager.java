@@ -156,6 +156,10 @@ public class InformationManager {
 				MyVariable.mapSelfMainBuilding.add(unit.getTilePosition());
 			}
 
+			if (unit.getType() == UnitType.Terran_Refinery) {
+				MyVariable.mapRefineryPosition.add(unit.getTilePosition());
+			}
+
 			// 벙커 안에 있는 것은 스킵
 			if (unit.getType() == UnitType.Terran_Vulture_Spider_Mine) {
 				int X = unit.getTilePosition().getX() / 4;

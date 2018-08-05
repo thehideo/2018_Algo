@@ -16,6 +16,8 @@ public abstract class GroupAbstract {
 
 	// 전체 Target
 	protected Position targetPosition = null;
+	// 전체 Target
+	protected Position targetPositionForTank = null;
 
 	// Unit별 Target
 	protected HashMap<Integer, Position> mapTargetPosition = new HashMap<Integer, Position>();
@@ -27,7 +29,7 @@ public abstract class GroupAbstract {
 		mapUnit.get(unitType).add(unitID);
 	}
 
-	public void removeUnit(UnitType unitType,Integer unitID) {
+	public void removeUnit(UnitType unitType, Integer unitID) {
 		if (mapUnit.get(unitType) == null) {
 			mapUnit.put(unitType, new HashSet<Integer>());
 		}
@@ -41,6 +43,9 @@ public abstract class GroupAbstract {
 	public Position getTargetPosition(Unit unit) {
 		if (mapTargetPosition.containsKey(unit.getID())) {
 			return mapTargetPosition.get(unit.getID());
+		}
+		if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+			return targetPositionForTank;
 		}
 		return targetPosition;
 	}

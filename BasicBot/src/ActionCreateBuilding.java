@@ -67,7 +67,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
 			TilePosition tilePosition = ConstructionPlaceFinder.Instance().getRefineryPositionNear(unit.getTilePosition());
-			if (tilePosition != null && BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Refinery) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(UnitType.Terran_Refinery, null) == 0) {
+			if (tilePosition != null && !MyVariable.mapRefineryPosition.contains(tilePosition) && BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Refinery) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(UnitType.Terran_Refinery, null) == 0) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, tilePosition, true);
 			}
 		}
@@ -182,7 +182,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
-		if (checkNeedToBuild(UnitType.Terran_Factory, MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() * 3) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
+		if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
 			TilePosition tp = null;
 			for (Unit commandCenter : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
 				if (commandCenter.getTilePosition() != MyVariable.myStartLocation) {
@@ -301,7 +301,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			// }
 		}
 
-		if (checkNeedToBuild(UnitType.Terran_Factory, MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() * 3) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
+		if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
 			TilePosition tp = null;
 			for (Unit commandCenter : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
 				if (commandCenter.getTilePosition() != MyVariable.myStartLocation) {
