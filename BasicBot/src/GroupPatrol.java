@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import bwapi.TilePosition;
@@ -15,13 +14,10 @@ public class GroupPatrol extends GroupAbstract {
 	@Override
 	public void action() {
 
-		
 		// 정찰은 벌처가 한다.
 		// 마린은 지정하면 안됨
 		this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
-		// if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() > 10) {
-		// this.mapUnitTotal.put(UnitType.Terran_Goliath, 2);
-		// }
+		this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 5);
 
 		if (listTilePosition.size() > 0) {
 			for (UnitType unitType : this.mapUnit.keySet()) {
@@ -33,13 +29,12 @@ public class GroupPatrol extends GroupAbstract {
 				}
 			}
 		}
-		
 
 		BaseLocation bl1 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self());
 		BaseLocation bl2 = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.self());
 		BaseLocation bl3 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy());
 		BaseLocation bl4 = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy());
-		
+
 		// 이미 점유되고 있는 곳이면 제거한다.
 		if (listTilePosition.size() > 0) {
 			TilePosition tilePosition = listTilePosition.get(0);
@@ -47,25 +42,6 @@ public class GroupPatrol extends GroupAbstract {
 				listTilePosition.remove(0);
 			}
 		}
-
-		// 가야할 곳이 0이 되면 다시 가야할 곳 목록을 생성한다.
-		// if (listTilePosition.size() == 0) {
-		// List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
-		// if (bl3 != null && bl4 != null) {
-		// for (BaseLocation bl : listBaseLocation) {
-		// if (!bl.getTilePosition().equals(bl1.getTilePosition()) &&
-		// !bl.getTilePosition().equals(bl2.getTilePosition()) &&
-		// !bl.getTilePosition().equals(bl3.getTilePosition()) &&
-		// !bl.getTilePosition().equals(bl4.getTilePosition()) &&
-		// !MyVariable.mapSelfMainBuilding.contains(bl.getTilePosition()) &&
-		// !MyVariable.mapEnemyMainBuilding.contains(bl.getTilePosition()) &&
-		// !MyVariable.enemyBuildingUnit.contains(bl.getTilePosition())) {
-		// listTilePosition.add(bl.getTilePosition());
-		// }
-		// }
-		// Collections.sort(listTilePosition, new ComparatorBaseLocation());
-		// }
-		// }
 
 		if (listTilePosition.size() == 0) {
 			List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
@@ -79,15 +55,15 @@ public class GroupPatrol extends GroupAbstract {
 				Collections.sort(tmpList, new ComparatorBaseLocation());
 
 				int indexB1 = 0;
-				
-				for(int i=0;i<tmpList.size();i++) {
-					if(tmpList.get(i).equals(bl1.getTilePosition())) {
-						indexB1  = i;
+
+				for (int i = 0; i < tmpList.size(); i++) {
+					if (tmpList.get(i).equals(bl1.getTilePosition())) {
+						indexB1 = i;
 					}
 				}
-				
-				for(int i=tmpList.size()-1;i>=0;i--) {
-					if(tmpList.get(i).getX()>=50 && tmpList.get(i).getX()<=70 && tmpList.get(i).getY()>=50 && tmpList.get(i).getY()<=70) {
+
+				for (int i = tmpList.size() - 1; i >= 0; i--) {
+					if (tmpList.get(i).getX() >= 50 && tmpList.get(i).getX() <= 70 && tmpList.get(i).getY() >= 50 && tmpList.get(i).getY() <= 70) {
 						tmpList.remove(i);
 					}
 				}
@@ -95,7 +71,7 @@ public class GroupPatrol extends GroupAbstract {
 				int index = indexB1;
 				boolean findEneemy = false;
 				while (findEneemy == false) {
-					if (tmpList.get(index).equals(bl3.getTilePosition())|| tmpList.get(index).equals(bl4.getTilePosition())) {
+					if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
 						findEneemy = true;
 						break;
 					}
@@ -108,10 +84,11 @@ public class GroupPatrol extends GroupAbstract {
 					}
 				}
 				index--;
-				if(index<0)index=tmpList.size()-1;
+				if (index < 0)
+					index = tmpList.size() - 1;
 				findEneemy = false;
 				while (findEneemy == false) {
-					if (tmpList.get(index).equals(bl3.getTilePosition()) ||tmpList.get(index).equals(bl4.getTilePosition())) {
+					if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
 						findEneemy = true;
 						break;
 					}
@@ -124,13 +101,13 @@ public class GroupPatrol extends GroupAbstract {
 					}
 				}
 				index++;
-				if(index>tmpList.size()-1) {
-					index=0;
+				if (index > tmpList.size() - 1) {
+					index = 0;
 				}
 
 				boolean findSelf = false;
 				while (findSelf == false) {
-					if (tmpList.get(index).equals(bl1.getTilePosition())|| tmpList.get(index).equals(bl2.getTilePosition())) {
+					if (tmpList.get(index).equals(bl1.getTilePosition()) || tmpList.get(index).equals(bl2.getTilePosition())) {
 						findSelf = true;
 						break;
 					}

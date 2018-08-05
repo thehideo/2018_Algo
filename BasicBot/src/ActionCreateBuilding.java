@@ -43,7 +43,6 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 		}
 
-		
 		// 7000 프레임 마다 확장을 하나씩 추가한다.
 		int needCommandCount = MyBotModule.Broodwar.getFrameCount() / 7000;
 		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() < needCommandCount) {
@@ -181,7 +180,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		// BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 
 		// Terran_Armory 건설
-		if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 2 && (MyUtil.GetMyTankCnt() >= 4 || MyVariable.findWraith)) {
+		if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 2) {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 

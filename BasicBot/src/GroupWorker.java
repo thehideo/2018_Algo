@@ -1,3 +1,4 @@
+import bwapi.Race;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -7,7 +8,8 @@ public class GroupWorker extends GroupAbstract {
 		int selfCnt = MyVariable.attackUnit.size() + MyVariable.defenceUnit.size();
 		int enemyCnt = MyVariable.enemyUnitAroundMyStartPoint.size();
 		// 적의 숫자가 많으면 SCV를 동원한다. (초반에만 동작)
-		if (selfCnt < enemyCnt * 1.5 && selfCnt < 10 && MyBotModule.Broodwar.getFrameCount() < 12000 && MyVariable.distanceOfMostCloseEnemyUnit < MyVariable.distanceOfMostCloseBunker + 3) {
+		// 테란은 사용할일 없다. 사용하다가 다 죽음
+		if (InformationManager.Instance().enemyRace != Race.Terran &&  selfCnt < enemyCnt * 1.5 && selfCnt < 10 && MyBotModule.Broodwar.getFrameCount() < 12000 && MyVariable.distanceOfMostCloseEnemyUnit < MyVariable.distanceOfMostCloseBunker + 3) {
 			int cnt = 0;
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_SCV)) {
 				double distance1 = 50;

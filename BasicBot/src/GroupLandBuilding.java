@@ -9,7 +9,7 @@ public class GroupLandBuilding extends GroupAbstract {
 
 	@Override
 	void action() {
-		targetPosition = MyUtil.getSaveTilePosition(4).toPosition();
+		targetPosition = MyUtil.getSaveTilePosition(5).toPosition();
 	}
 
 }

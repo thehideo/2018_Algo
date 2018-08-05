@@ -1,3 +1,4 @@
+import bwapi.Position;
 import bwapi.Unit;
 
 public class ControlBarrack extends ControlAbstract {
@@ -5,11 +6,14 @@ public class ControlBarrack extends ControlAbstract {
 		if (unit.canLift() == true) {
 			unit.lift();
 		} else {
+			Position target = null;
 			if (unit.isUnderAttack() == true) {
-				unit.move(MyVariable.myStartLocation.toPosition());
+				target = MyVariable.myStartLocation.toPosition();
 			} else {
-				unit.move(groupAbstract.getTargetPosition(unit));
+				target = groupAbstract.getTargetPosition(unit);
 			}
+			target = new Position(target.getX() - 1, target.getY() - 1);
+			unit.move(target);
 		}
 	}
 }
