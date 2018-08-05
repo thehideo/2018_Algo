@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 import bwapi.Player;
 import bwapi.Position;
+import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -301,6 +302,11 @@ public class GameCommander {
 					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupAttack);
 				}
 			} else {
+
+				if (InformationManager.Instance().enemyRace == Race.Terran && unit.getType() == UnitType.Terran_Barracks) {
+					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupLandBuilding);
+				}
+
 				if (unit.getType() != UnitType.Terran_Bunker && unit.getType() != UnitType.Terran_Missile_Turret) {
 					String key = MyUtil.getBuildingSizeKey(unit.getType());
 

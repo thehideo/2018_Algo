@@ -124,7 +124,7 @@ public class MyUtil {
 			List<TilePosition> shortestPath = mapShortestPath.get(target);
 
 			// 전진후 일정 시간이 지나면 한칸 더 앞으로 이동한다.
-			if (MyBotModule.Broodwar.getFrameCount() > goTimer + 100) {
+			if ((MyVariable.enemyAttactUnit.size() == 0 && MyBotModule.Broodwar.getFrameCount() > goTimer + 100) || (MyVariable.enemyAttactUnit.size() > 0 && MyBotModule.Broodwar.getFrameCount() > goTimer + 500)) {
 				if (indexToGo >= shortestPath.size() - 30) {
 					MyVariable.isFullScaleAttackStarted = true;
 				} else {
@@ -135,9 +135,9 @@ public class MyUtil {
 			}
 
 			// 적이 있으면 전진하지 않는다.
-			if (MyVariable.enemyAttactUnit.size() > 0) {
-				goTimer = MyBotModule.Broodwar.getFrameCount();
-			}
+			//if (MyVariable.enemyAttactUnit.size() > 0) {
+			//	goTimer = MyBotModule.Broodwar.getFrameCount();
+			//}
 
 			int totalIndexToGo = indexToGo + add;
 

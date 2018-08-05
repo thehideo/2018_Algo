@@ -11,6 +11,7 @@ public class GroupManager {
 	public GroupWorker groupWorker = new GroupWorker();
 	public GroupWraith groupWraith = new GroupWraith();
 	public GroupPatrol groupPatrol = new GroupPatrol();
+	public GroupLandBuilding groupLandBuilding = new GroupLandBuilding();
 
 	// 싱글톤
 	public static GroupManager instance() {
@@ -39,6 +40,7 @@ public class GroupManager {
 		mapUnitTypeControl.put(UnitType.Terran_Vulture, new ControlVulture());
 		mapUnitTypeControl.put(UnitType.Terran_Wraith, new ControlWraith());
 		mapUnitTypeControl.put(UnitType.Terran_Science_Vessel, new ControlScienceVessel());
+		mapUnitTypeControl.put(UnitType.Terran_Barracks, new ControlBarrack());
 	}
 
 	public ControlAbstract getControlAbstract(UnitType unitType) {
@@ -57,6 +59,7 @@ public class GroupManager {
 		groupWorker.action();
 		groupWraith.action();
 		groupPatrol.action();
+		groupLandBuilding.action();
 	}
 
 	// 모자라는 그룹에 인원을 채워넛는다.
@@ -103,5 +106,6 @@ public class GroupManager {
 		groupScanUnit.removeUnit(unitType, unitID);
 		groupWraith.removeUnit(unitType, unitID);
 		groupPatrol.removeUnit(unitType, unitID);
+		groupLandBuilding.removeUnit(unitType, unitID);
 	}
 }

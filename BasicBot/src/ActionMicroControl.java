@@ -17,8 +17,9 @@ public class ActionMicroControl extends ActionControlAbstract {
 		map.addAll(MyVariable.getSelfUnitKey());
 
 		for (UnitType unitType : map) {
-			if (unitType.isBuilding() == true)
-				continue;
+			//if (unitType.isBuilding() == true)
+			//	continue;
+			
 			ControlAbstract controlAbstract = GroupManager.instance().getControlAbstract(unitType);
 			if (controlAbstract != null) {
 				for (Unit unit : MyVariable.getSelfUnit(unitType)) {

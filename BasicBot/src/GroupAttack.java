@@ -38,10 +38,11 @@ public class GroupAttack extends GroupAbstract {
 				result = mapTargetPosition.get(unit.getID());
 			}
 		} else {
-			if(unit.getType()==UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType()==UnitType.Terran_Siege_Tank_Tank_Mode) {
-				result=targetPositionForTank;
-			}else {
-			result = targetPosition;}
+			if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+				result = targetPositionForTank;
+			} else {
+				result = targetPosition;
+			}
 		}
 
 		return result;
@@ -212,7 +213,7 @@ public class GroupAttack extends GroupAbstract {
 			// 더 이상 발견한 건물이 없다면 아무 곳으로 이동
 			if (MyVariable.enemyBuildingUnit.size() == 0) {
 				targetPosition = null;
-				targetPositionForTank=null;
+				targetPositionForTank = null;
 
 			} else {
 				mapTargetUnit.clear();

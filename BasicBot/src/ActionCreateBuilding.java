@@ -43,6 +43,8 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 		}
 
+		
+		// 7000 프레임 마다 확장을 하나씩 추가한다.
 		int needCommandCount = MyBotModule.Broodwar.getFrameCount() / 7000;
 		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() < needCommandCount) {
 			if (checkNeedToBuild(UnitType.Terran_Command_Center, needCommandCount)) {
@@ -65,6 +67,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			}
 		}
 
+		// Command Center 주위에 가스를 건설할수 있으면 추가한다.
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
 			TilePosition tilePosition = ConstructionPlaceFinder.Instance().getRefineryPositionNear(unit.getTilePosition());
 			if (tilePosition != null && !MyVariable.mapRefineryPosition.contains(tilePosition) && BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Refinery) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(UnitType.Terran_Refinery, null) == 0) {
