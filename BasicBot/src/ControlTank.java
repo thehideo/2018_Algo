@@ -18,7 +18,7 @@ public class ControlTank extends ControlAbstract {
 				}
 			}
 		} else {
-			if (unit.getDistance(MyUtil.getSaveTilePosition(0).toPosition()) <= 5) {
+			if (unit.getDistance(MyUtil.getSaveTilePosition(0).toPosition()) <= 2*32 && MyVariable.isFullScaleAttackStarted==false) {
 				result = true;
 			}
 		}

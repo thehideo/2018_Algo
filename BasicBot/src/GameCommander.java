@@ -297,10 +297,11 @@ public class GameCommander {
 			if (!unit.getType().isBuilding()) {
 				if (unit.getType() == UnitType.Terran_SCV) {
 					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupWorker);
-				} 
-				//else if (unit.getType() == UnitType.Terran_Wraith) {
-				//	GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupWraith);
-				//} 				
+				}
+				// else if (unit.getType() == UnitType.Terran_Wraith) {
+				// GroupManager.instance().addToGroup(unit.getType(), unit.getID(),
+				// GroupManager.instance().groupWraith);
+				// }
 				else if (unit.getType() == UnitType.Terran_Science_Vessel) {
 					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupScanUnit);
 				} else if (unit.getType() != UnitType.Terran_Vulture_Spider_Mine) {
@@ -321,14 +322,16 @@ public class GameCommander {
 					MyVariable.mapBuildingSizeMap.get(key).add(unit);
 				}
 
-				TilePosition tp = unit.getTilePosition();
-				int X = tp.getX();
-				int Y = tp.getY();
-				for (int i = -10; i <= 10; i++) {
-					for (int j = -10; j <= 10; j++) {
-						TilePosition tp2 = new TilePosition(X + i, Y + j);
-						if (MyUtil.distanceTilePosition(tp, tp2) <= 10) {
-							MyVariable.mapMyRegion.add(tp2);
+				if (unit.getType() != UnitType.Terran_Bunker && unit.getType() != UnitType.Terran_Missile_Turret) {
+					TilePosition tp = unit.getTilePosition();
+					int X = tp.getX();
+					int Y = tp.getY();
+					for (int i = -10; i <= 10; i++) {
+						for (int j = -10; j <= 10; j++) {
+							TilePosition tp2 = new TilePosition(X + i, Y + j);
+							if (MyUtil.distanceTilePosition(tp, tp2) <= 10) {
+								MyVariable.mapMyRegion.add(tp2);
+							}
 						}
 					}
 				}

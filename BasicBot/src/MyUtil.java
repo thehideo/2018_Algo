@@ -110,9 +110,14 @@ public class MyUtil {
 		if (InformationManager.Instance().enemyRace == Race.Terran || InformationManager.Instance().enemyRace == Race.Protoss) {
 			target = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition();
 		} else {
-			target = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition()).getPoint().toTilePosition();
+			if (MyVariable.mostCloseBunker != null) {
+				target = MyVariable.mostCloseBunker.getTilePosition();
+			} else {
+				target = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition()).getPoint().toTilePosition();
+			}
+
 			// 확장했으면 확장부분을 지킨다.
-			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 || MyVariable.mapEnemyMainBuilding.size() >= 2 || MyVariable.attackUnit.size() > 30) {
+			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 || MyVariable.mapEnemyMainBuilding.size() >= 2 || MyVariable.attackUnit.size() > 30 || MyBotModule.Broodwar.getFrameCount() >= 14000) {
 				target = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition();
 			}
 		}
@@ -121,9 +126,9 @@ public class MyUtil {
 			mapShortestPath.put(target, BWTA.getShortestPath(target, InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()).getTilePosition()));
 		}
 		List<TilePosition> shortestPath = mapShortestPath.get(target);
-		
-		if(shortestPath==null || shortestPath.size()==0) {
-			shortestPath=new ArrayList<TilePosition> ();
+
+		if (shortestPath == null || shortestPath.size() == 0) {
+			shortestPath = new ArrayList<TilePosition>();
 			shortestPath.add(target);
 		}
 
