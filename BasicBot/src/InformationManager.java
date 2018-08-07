@@ -193,7 +193,7 @@ public class InformationManager {
 				}
 
 				if (target != null) {
-					if (MyUtil.distancePosition(target.toPosition(), unit.getPosition()) < 64) {
+					if (MyUtil.distancePosition(target.toPosition(), unit.getPosition()) < 64 && unit.getType()!=UnitType.Terran_Medic) {
 						MyVariable.enemyBuildingUnit.remove(target);
 					}
 				}

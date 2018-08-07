@@ -17,6 +17,10 @@ public class ControlTank extends ControlAbstract {
 					result = true;
 				}
 			}
+		} else {
+			if (unit.getDistance(MyUtil.getSaveTilePosition(0).toPosition()) <= 5) {
+				result = true;
+			}
 		}
 
 		if (result == false) {
