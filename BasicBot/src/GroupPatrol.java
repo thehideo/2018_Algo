@@ -17,7 +17,14 @@ public class GroupPatrol extends GroupAbstract {
 		// 정찰은 벌처가 한다.
 		// 마린은 지정하면 안됨
 		this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
-		this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 5);
+
+		if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
+			this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
+		}
+
+		if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 40) {
+			this.mapUnitTotal.put(UnitType.Terran_Marine, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
+		}
 
 		if (listTilePosition.size() > 0) {
 			for (UnitType unitType : this.mapUnit.keySet()) {
@@ -38,7 +45,9 @@ public class GroupPatrol extends GroupAbstract {
 		// 이미 점유되고 있는 곳이면 제거한다.
 		if (listTilePosition.size() > 0) {
 			TilePosition tilePosition = listTilePosition.get(0);
-			if (tilePosition.equals(bl1.getTilePosition()) || tilePosition.equals(bl2.getTilePosition()) && tilePosition.equals(bl3.getTilePosition()) || tilePosition.equals(bl4.getTilePosition()) || MyVariable.mapSelfMainBuilding.contains(tilePosition) || MyVariable.mapEnemyMainBuilding.contains(tilePosition) || MyVariable.enemyBuildingUnit.contains(tilePosition)) {
+			if (tilePosition.equals(bl1.getTilePosition()) || tilePosition.equals(bl2.getTilePosition()) && tilePosition.equals(bl3.getTilePosition()) || tilePosition.equals(bl4.getTilePosition()) || MyVariable.mapSelfMainBuilding.contains(tilePosition)) {
+				// || MyVariable.mapEnemyMainBuilding.contains(tilePosition) ||
+				// MyVariable.enemyBuildingUnit.contains(tilePosition)
 				listTilePosition.remove(0);
 			}
 		}

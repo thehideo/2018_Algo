@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -116,13 +117,18 @@ public class MyUtil {
 			}
 		}
 
+		if (!mapShortestPath.containsKey(target) && InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()) != null) {
+			mapShortestPath.put(target, BWTA.getShortestPath(target, InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()).getTilePosition()));
+		}
+		List<TilePosition> shortestPath = mapShortestPath.get(target);
+		
+		if(shortestPath==null || shortestPath.size()==0) {
+			shortestPath=new ArrayList<TilePosition> ();
+			shortestPath.add(target);
+		}
+
 		// 탱크가 4마리 이상이면 앞으로 서서히 전진
 		if (MyUtil.GetMyTankCnt() >= 4) {
-			if (!mapShortestPath.containsKey(target)) {
-				mapShortestPath.put(target, BWTA.getShortestPath(target, InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()).getTilePosition()));
-			}
-			List<TilePosition> shortestPath = mapShortestPath.get(target);
-
 			// 전진후 일정 시간이 지나면 한칸 더 앞으로 이동한다.
 			if ((MyVariable.enemyAttactUnit.size() == 0 && MyBotModule.Broodwar.getFrameCount() > goTimer + 100)) {
 				// || (MyVariable.enemyAttactUnit.size() > 0 &&
@@ -137,24 +143,26 @@ public class MyUtil {
 			}
 
 			// 적이 있으면 전진하지 않는다.
-			// if (MyVariable.enemyAttactUnit.size() > 0) {
-			// goTimer = MyBotModule.Broodwar.getFrameCount();
-			// }
+			if (MyVariable.enemyAttactUnit.size() > 0) {
+				goTimer = MyBotModule.Broodwar.getFrameCount();
+			}
 
+		} else {
+			indexToGo = 0;
+		}
+
+		if (InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()) != null && InformationManager.Instance().enemyRace == Race.Terran) {
 			int totalIndexToGo = indexToGo + add;
-
 			if (totalIndexToGo < 0) {
 				totalIndexToGo = 0;
 			}
 			if (totalIndexToGo > shortestPath.size() - 1) {
 				totalIndexToGo = shortestPath.size() - 1;
 			}
-
 			target = shortestPath.get(totalIndexToGo);
 		} else {
-			indexToGo = 0;
+			target = shortestPath.get(0);
 		}
-
 		return target;
 	}
 

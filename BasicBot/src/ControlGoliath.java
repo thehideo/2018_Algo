@@ -1,3 +1,4 @@
+import bwapi.Position;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -14,6 +15,13 @@ public class ControlGoliath extends ControlAbstract {
 				}
 			}
 		}
-		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
+
+		Position target = groupAbstract.getTargetPosition(unit);
+
+		if (MyUtil.distanceTilePosition(unit.getTilePosition(), target.toTilePosition()) >= 7 && MyVariable.isFullScaleAttackStarted == false) {
+			CommandUtil.move(unit, target);
+		} else {
+			CommandUtil.attackMove(unit, target);
+		}
 	}
 }

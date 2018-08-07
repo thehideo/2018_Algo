@@ -1,3 +1,4 @@
+import bwapi.Race;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -10,11 +11,14 @@ public class ControlTank extends ControlAbstract {
 		boolean result = false;
 		// 방어 모드이면 시즈 모드로 대기
 
-		if (MyVariable.isFullScaleAttackStarted == false) {
-			if (unit.getDistance(MyUtil.getSaveTilePosition(12).toPosition()) <= SIEGE_MODE_MAX_RANGE) {
-				result = true;
+		if (InformationManager.Instance().enemyRace == Race.Terran) {
+			if (MyVariable.isFullScaleAttackStarted == false && MyUtil.indexToGo >= 2) {
+				if (unit.getDistance(MyUtil.getSaveTilePosition(12).toPosition()) <= SIEGE_MODE_MAX_RANGE) {
+					result = true;
+				}
 			}
 		}
+
 		if (result == false) {
 			for (Unit enemyUnit : MyVariable.enemyGroundUnit) {
 				int distance = unit.getDistance(enemyUnit);

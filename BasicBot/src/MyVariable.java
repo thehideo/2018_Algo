@@ -79,6 +79,9 @@ public class MyVariable {
 	// 서플 지을자리를 기억해둔다.
 	public static HashSet<TilePosition> supplyPlace = new HashSet<TilePosition>();
 
+	// 내 영역을 기억해둔다. 본진에 처들어온 적을 판단하기 위해서.
+	public static HashSet<TilePosition> mapMyRegion = new HashSet<TilePosition>();
+
 	// 애드온 지을자리를 기억해둔다.
 	public static HashSet<TilePosition> mapChokePointAround = new HashSet<TilePosition>();
 

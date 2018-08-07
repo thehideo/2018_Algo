@@ -248,6 +248,10 @@ public class InformationManager {
 		MyVariable.clearEnemyUnit();
 
 		for (Unit unit : MyBotModule.Broodwar.enemy().getUnits()) {
+			if (unit.exists() == false) {
+				continue;
+			}
+
 			// UnitData 정보 update(기본 제공된 소스 데이터)
 			updateUnitInfo(unit);
 			// 정상 유닛이면
@@ -282,7 +286,7 @@ public class InformationManager {
 
 				// 내 본진 근처 적유닛
 				double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
-				if (distance < 40 && unit.isDetected() == true) {
+				if (MyVariable.mapMyRegion.contains(unit.getTilePosition()) && unit.isDetected() == true) {
 					MyVariable.enemyUnitAroundMyStartPoint.add(unit);
 				}
 

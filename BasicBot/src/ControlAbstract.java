@@ -31,12 +31,9 @@ public abstract class ControlAbstract {
 		}
 
 		if (groupAbstract == GroupManager.instance().groupAttack) {
-			if (unit == MyVariable.mostFarAttackUnit && MyVariable.mostFarAttackUnit != MyVariable.mostFarTank && MyVariable.isFullScaleAttackStarted == true) {
-				if (MyVariable.mostFarTank != null) {
-					CommandUtil.attackMove(unit, MyVariable.mostFarTank.getPosition());
-				} else {
-					CommandUtil.attackMove(unit, MyVariable.myStartLocation.getPoint().toPosition());
-				}
+			if (MyVariable.isFullScaleAttackStarted == true && unit==MyVariable.mostFarAttackUnit) {
+
+				CommandUtil.attackMove(unit, MyVariable.myStartLocation.getPoint().toPosition());
 
 				mapMoveBackTime.put(unit.getID(), MyBotModule.Broodwar.getFrameCount());
 

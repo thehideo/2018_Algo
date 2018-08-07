@@ -1,6 +1,5 @@
 import java.util.HashMap;
 
-import bwapi.Race;
 import bwapi.TechType;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -10,26 +9,6 @@ public class ControlWraith extends ControlAbstract {
 	HashMap<Integer, Boolean> mapMode = new HashMap<Integer, Boolean>();
 
 	void actionMain(Unit wraith, GroupAbstract groupAbstract) {
-		if (!mapMode.containsKey(wraith.getID())) {
-			mapMode.put(wraith.getID(), false);
-		}
-
-		if (wraith.getHitPoints() < wraith.getType().maxHitPoints() / 2 || wraith.getEnergy() < 25) {
-			mapMode.put(wraith.getID(), false);
-		} else {
-			mapMode.put(wraith.getID(), true);
-		}
-
-		// if (wraith.getHitPoints() > wraith.getType().maxHitPoints() * 0.8 ||
-		// wraith.getEnergy() > wraith.getType().maxEnergy() * 0.8) {
-		// mapMode.put(wraith.getID(), true);
-		// }
-
-		boolean mode = mapMode.get(wraith.getID());
-
-		if (mode == false) {
-			CommandUtil.move(wraith, MyUtil.getSaveTilePosition(0).toPosition());
-		}
 
 		// 적이 근처에 없으면 클로킹 해제
 		if (MyVariable.enemyAttactUnit.size() == 0) {
@@ -45,17 +24,10 @@ public class ControlWraith extends ControlAbstract {
 					CommandUtil.commandHash.add(wraith);
 				}
 			}
-
-			if (InformationManager.Instance().enemyRace == Race.Protoss) {
-				protossAction(wraith, groupAbstract);
-			} else if (InformationManager.Instance().enemyRace == Race.Terran) {
-				terranAction(wraith, groupAbstract);
-			} else if (InformationManager.Instance().enemyRace == Race.Zerg) {
-				zergAction(wraith, groupAbstract);
-			}
 		}
 
 		CommandUtil.attackMove(wraith, groupAbstract.getTargetPosition(wraith));
+
 	}
 
 	void terranAction(Unit wraith, GroupAbstract groupAbstract) {

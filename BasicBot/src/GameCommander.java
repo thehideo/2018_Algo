@@ -134,6 +134,9 @@ public class GameCommander {
 		if (MyBotModule.Broodwar.isPaused() || MyBotModule.Broodwar.self() == null || MyBotModule.Broodwar.self().isDefeated() || MyBotModule.Broodwar.self().leftGame() || MyBotModule.Broodwar.enemy() == null || MyBotModule.Broodwar.enemy().isDefeated() || MyBotModule.Broodwar.enemy().leftGame()) {
 			return;
 		}
+		if (MyBotModule.Broodwar.getFrameCount() % 2000 == 0) {
+			MyBotModule.Broodwar.sendText("FrameCnt=" + MyBotModule.Broodwar.getFrameCount());
+		}
 
 		// Time & Memory check
 		long startTime = System.currentTimeMillis();
@@ -294,9 +297,11 @@ public class GameCommander {
 			if (!unit.getType().isBuilding()) {
 				if (unit.getType() == UnitType.Terran_SCV) {
 					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupWorker);
-				} else if (unit.getType() == UnitType.Terran_Wraith) {
-					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupWraith);
-				} else if (unit.getType() == UnitType.Terran_Science_Vessel) {
+				} 
+				//else if (unit.getType() == UnitType.Terran_Wraith) {
+				//	GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupWraith);
+				//} 				
+				else if (unit.getType() == UnitType.Terran_Science_Vessel) {
 					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupScanUnit);
 				} else if (unit.getType() != UnitType.Terran_Vulture_Spider_Mine) {
 					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupAttack);
@@ -314,6 +319,18 @@ public class GameCommander {
 						MyVariable.mapBuildingSizeMap.put(key, new ArrayList<Unit>());
 					}
 					MyVariable.mapBuildingSizeMap.get(key).add(unit);
+				}
+
+				TilePosition tp = unit.getTilePosition();
+				int X = tp.getX();
+				int Y = tp.getY();
+				for (int i = -10; i <= 10; i++) {
+					for (int j = -10; j <= 10; j++) {
+						TilePosition tp2 = new TilePosition(X + i, Y + j);
+						if (MyUtil.distanceTilePosition(tp, tp2) <= 10) {
+							MyVariable.mapMyRegion.add(tp2);
+						}
+					}
 				}
 			}
 

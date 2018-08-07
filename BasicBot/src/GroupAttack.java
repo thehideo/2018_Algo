@@ -74,7 +74,6 @@ public class GroupAttack extends GroupAbstract {
 	public void action() {
 
 		boolean needToWaitVessel = false;
-
 		// scanner가 모두 소진되었고 베슬도 없으면 본진에 대기해야함 (싸이언스 베슬 생산이 완료될 때 까지)
 		if ((MyVariable.findDarkTempler || MyVariable.findLucker) && MyUtil.canUseScan() == false && !MyUtil.haveCompletedScienceVessle()) {
 			needToWaitVessel = true;
@@ -98,7 +97,6 @@ public class GroupAttack extends GroupAbstract {
 			}
 			// 적이 나보다 적으면 공격한다.
 			else {
-
 				if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.isDetected() == true) {
 					targetPosition = MyVariable.mostCloseEnemyUnit.getPoint();
 				} else {
@@ -109,7 +107,6 @@ public class GroupAttack extends GroupAbstract {
 						}
 					}
 				}
-
 			}
 		}
 		// 공격 모드가 아닐 때에는 전투유닛들을 아군 진영 길목에 집결시켜서 방어
@@ -122,46 +119,23 @@ public class GroupAttack extends GroupAbstract {
 
 			// 프로토스 공격 조건
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
-				// 캐리어를 발견했을 때
-				// if (MyVariable.findCarrier == true) {
-				// if ((MyVariable.attackUnit.size() > 40 &&
-				// MyVariable.getSelfUnit(UnitType.Terran_Ghost).size() > 8)) {
-				// MyVariable.isFullScaleAttackStarted = true;
-				// }
-				// } else
-
-				{
-					if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-						if (MyVariable.attackUnit.size() > 30) {
-							MyVariable.isFullScaleAttackStarted = true;
-						}
+				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
+					if (MyVariable.attackUnit.size() > 30) {
+						MyVariable.isFullScaleAttackStarted = true;
 					}
-					// 확장 기지가 있다면
-					else {
-						if (MyVariable.attackUnit.size() > 30) {
-							MyVariable.isFullScaleAttackStarted = true;
-						}
+				}
+				// 확장 기지가 있다면
+				else {
+					if (MyVariable.attackUnit.size() > 30) {
+						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
 			}
 			// 테란 공격 조건
 			else if (InformationManager.Instance().enemyRace == Race.Terran) {
-
-				if (MyBotModule.Broodwar.self().supplyTotal() >= 360) {
+				if (MyBotModule.Broodwar.self().supplyTotal() >= 300) {
 					MyVariable.isFullScaleAttackStarted = true;
 				}
-
-				// if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-				// if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 6) {
-				// MyVariable.isFullScaleAttackStarted = true;
-				// }
-				// }
-				// 확장 기지가 있다면
-				// else {
-				// if (MyVariable.attackUnit.size() > 50 && MyUtil.GetMyTankCnt() >= 6) {
-				// MyVariable.isFullScaleAttackStarted = true;
-				// }
-				// }
 			}
 			// 저그 공격 조건
 			else {
@@ -214,7 +188,6 @@ public class GroupAttack extends GroupAbstract {
 			if (MyVariable.enemyBuildingUnit.size() == 0) {
 				targetPosition = null;
 				targetPositionForTank = null;
-
 			} else {
 				mapTargetUnit.clear();
 				for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {

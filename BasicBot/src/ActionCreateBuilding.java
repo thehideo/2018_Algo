@@ -66,12 +66,21 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			}
 		}
 
-		// Command Center 주위에 가스를 건설할수 있으면 추가한다.
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
-			TilePosition tilePosition = ConstructionPlaceFinder.Instance().getRefineryPositionNear(unit.getTilePosition());
-			if (tilePosition != null && !MyVariable.mapRefineryPosition.contains(tilePosition) && BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Refinery) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(UnitType.Terran_Refinery, null) == 0) {
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, tilePosition, true);
+		// 초반에 바로 가스를 지으면 안되기 때무에 12마리 보다 크다는 조건을 넣었음
+		if (MyVariable.attackUnit.size() > 8) {
+			// Command Center 주위에 가스를 건설할수 있으면 추가한다.
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
+				TilePosition tilePosition = ConstructionPlaceFinder.Instance().getRefineryPositionNear(unit.getTilePosition());
+				if (tilePosition != null && !MyVariable.mapRefineryPosition.contains(tilePosition) && BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Refinery) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(UnitType.Terran_Refinery, null) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, tilePosition, true);
+				}
 			}
+		}
+
+		// 적이 다 파괴된것 같은데 계속 게임지 지속될 때
+		if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true) {
+			if (checkNeedToBuild(UnitType.Terran_Starport, 2))
+				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Starport, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 		}
 	}
 
@@ -219,16 +228,16 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		}
 
 		// 벙커 건설
-		if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2)
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
+		if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Barracks).size() >= 1)
+			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
 
-		if (checkNeedToBuild(UnitType.Terran_Bunker, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 6)
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
+		if (checkNeedToBuild(UnitType.Terran_Bunker, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 4)
+			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
 
-		if (checkNeedToBuild(UnitType.Terran_Bunker, 3) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 10)
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
+		if (checkNeedToBuild(UnitType.Terran_Bunker, 3) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 8)
+			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
 
-		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2) {
+		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2) {
 			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 		}
 
@@ -241,7 +250,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			}
 		}
 
-		if (checkNeedToBuild(UnitType.Terran_Refinery, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 1)
+		if (checkNeedToBuild(UnitType.Terran_Refinery, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2)
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 
 		if (checkNeedToBuild(UnitType.Terran_Academy, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Missile_Turret).size() >= 1) {

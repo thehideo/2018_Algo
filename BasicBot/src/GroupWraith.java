@@ -4,17 +4,58 @@ import java.util.List;
 import bwapi.Position;
 import bwapi.TilePosition;
 import bwapi.Unit;
+import bwapi.UnitType;
 import bwta.BWTA;
 import bwta.BaseLocation;
 
 public class GroupWraith extends GroupAbstract {
 
+	int minPointX = Integer.MAX_VALUE;
+	int maxPointX = Integer.MIN_VALUE;
+	int minPointY = Integer.MAX_VALUE;
+	int maxPointY = Integer.MIN_VALUE;
+
 	List<TilePosition> tpList = null;
+
+	public Position getTargetPosition(Unit unit) {
+		Position result = null;
+
+		if (targetPosition == null) {
+			if (mapTargetPosition.containsKey(unit.getID())) {
+				Position tmp = mapTargetPosition.get(unit.getID());
+				if (MyUtil.distanceTilePosition(tmp.toTilePosition(), unit.getTilePosition()) < 5) {
+					int x = MyUtil.random.nextInt(maxPointX);
+					int y = MyUtil.random.nextInt(maxPointY);
+					mapTargetPosition.put(unit.getID(), new TilePosition(x, y).toPosition());
+				}
+				result = mapTargetPosition.get(unit.getID());
+			} else {
+
+				int x = MyUtil.random.nextInt(maxPointX);
+				int y = MyUtil.random.nextInt(maxPointY);
+				mapTargetPosition.put(unit.getID(), new TilePosition(x, y).toPosition());
+
+				result = mapTargetPosition.get(unit.getID());
+			}
+		} else {
+			if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+				result = targetPositionForTank;
+			} else {
+				result = targetPosition;
+			}
+		}
+
+		return result;
+	}
 
 	@Override
 	public void action() {
-		
-		if(true) {
+
+		if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true) {
+
+			targetPosition = null;
+			targetPositionForTank = null;
+		} else if (true) {
 			return;
 		}
 		if (tpList == null) {
