@@ -1,89 +1,139 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import bwapi.Position;
 import bwapi.TilePosition;
-import bwapi.Unit;
 import bwapi.UnitType;
 import bwta.BWTA;
 import bwta.BaseLocation;
 
 public class GroupWraith extends GroupAbstract {
 
-	int minPointX = Integer.MAX_VALUE;
-	int maxPointX = Integer.MIN_VALUE;
-	int minPointY = Integer.MAX_VALUE;
-	int maxPointY = Integer.MIN_VALUE;
-
-	List<TilePosition> tpList = null;
-
-	public Position getTargetPosition(Unit unit) {
-		Position result = null;
-
-		if (targetPosition == null) {
-			if (mapTargetPosition.containsKey(unit.getID())) {
-				Position tmp = mapTargetPosition.get(unit.getID());
-				if (MyUtil.distanceTilePosition(tmp.toTilePosition(), unit.getTilePosition()) < 5) {
-					int x = MyUtil.random.nextInt(maxPointX);
-					int y = MyUtil.random.nextInt(maxPointY);
-					mapTargetPosition.put(unit.getID(), new TilePosition(x, y).toPosition());
-				}
-				result = mapTargetPosition.get(unit.getID());
-			} else {
-
-				int x = MyUtil.random.nextInt(maxPointX);
-				int y = MyUtil.random.nextInt(maxPointY);
-				mapTargetPosition.put(unit.getID(), new TilePosition(x, y).toPosition());
-
-				result = mapTargetPosition.get(unit.getID());
-			}
-		} else {
-			if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
-				result = targetPositionForTank;
-			} else {
-				result = targetPosition;
-			}
-		}
-
-		return result;
-	}
+	ArrayList<TilePosition> listTilePosition = new ArrayList<TilePosition>();
 
 	@Override
 	public void action() {
 
-		if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true) {
+		this.mapUnitTotal.put(UnitType.Terran_Wraith, MyVariable.getSelfUnit(UnitType.Terran_Wraith).size());
 
-			targetPosition = null;
-			targetPositionForTank = null;
-		} else if (true) {
-			return;
-		}
-		if (tpList == null) {
-			tpList = new ArrayList<TilePosition>();
-			List<BaseLocation> blList = BWTA.getBaseLocations();
-			for (BaseLocation bl : blList) {
-				TilePosition tp = bl.getTilePosition();
-				TilePosition myStartLocation = MyVariable.myStartLocation;
-				TilePosition myFirstExpansionLocation = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.self()).getTilePosition();
-				if (tp != myStartLocation && tp != myFirstExpansionLocation) {
-					tpList.add(tp);
+		if (listTilePosition.size() > 0) {
+			for (UnitType unitType : this.mapUnit.keySet()) {
+				for (Integer unitID : mapUnit.get(unitType)) {
+					if (MyUtil.distancePosition(MyVariable.mapUnitIDUnit.get(unitID).getPosition(), listTilePosition.get(0).toPosition()) < 32 * 1) {
+						listTilePosition.remove(0);
+						break;
+					}
 				}
 			}
 		}
 
-		TilePosition enemyStartLocation = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()).getTilePosition();
-		TilePosition enemyFirstExpansionLocation = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy()).getTilePosition();
+		BaseLocation bl1 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self());
+		BaseLocation bl2 = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.self());
+		BaseLocation bl3 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy());
+		BaseLocation bl4 = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy());
 
-		targetPosition = enemyStartLocation.toPosition();
-		/*
-		 * Position position = MyUtil.GetMyBunkerPosition();
-		 * 
-		 * if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) { for (Unit enemyUnit
-		 * : MyVariable.enemyUnitAroundMyStartPoint) { targetPosition =
-		 * enemyUnit.getPosition(); break; } } else { if
-		 * (MyVariable.isFullScaleAttackStarted == true || position == null) {
-		 * targetPosition = MyVariable.myStartLocation.toPosition(); } else {
-		 * targetPosition = MyUtil.getSaveChokePoint().getPoint(); } }
-		 */
+		// 이미 점유되고 있는 곳이면 제거한다.
+		if (listTilePosition.size() > 0) {
+			TilePosition tilePosition = listTilePosition.get(0);
+			if (tilePosition.equals(bl1.getTilePosition()) || tilePosition.equals(bl2.getTilePosition()) && tilePosition.equals(bl3.getTilePosition()) || tilePosition.equals(bl4.getTilePosition()) || MyVariable.mapSelfMainBuilding.contains(tilePosition)) {
+				// || MyVariable.mapEnemyMainBuilding.contains(tilePosition) ||
+				// MyVariable.enemyBuildingUnit.contains(tilePosition)
+				listTilePosition.remove(0);
+			}
+		}
+
+		if (listTilePosition.size() == 0) {
+			if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true && mapUnit.containsKey(UnitType.Terran_Wraith) && mapUnit.get(UnitType.Terran_Wraith).size() > 0) {
+				listTilePosition.add(new TilePosition(1, 1));
+				listTilePosition.add(new TilePosition(MyVariable.map_max_x, 1));
+				for (int j = 13; j < MyVariable.map_max_y; j = j + 12) {
+					listTilePosition.add(new TilePosition(1, j));
+					listTilePosition.add(new TilePosition(MyVariable.map_max_x, j));
+				}
+				listTilePosition.add(new TilePosition(1, MyVariable.map_max_y));
+				listTilePosition.add(new TilePosition(MyVariable.map_max_x, MyVariable.map_max_y));
+			} else {
+				List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
+				if (bl3 != null && bl4 != null) {
+
+					ArrayList<TilePosition> tmpList = new ArrayList<TilePosition>();
+
+					for (BaseLocation bl : listBaseLocation) {
+						tmpList.add(bl.getTilePosition());
+					}
+					Collections.sort(tmpList, new ComparatorBaseLocation());
+
+					int indexB1 = 0;
+
+					for (int i = 0; i < tmpList.size(); i++) {
+						if (tmpList.get(i).equals(bl1.getTilePosition())) {
+							indexB1 = i;
+						}
+					}
+
+					for (int i = tmpList.size() - 1; i >= 0; i--) {
+						if (tmpList.get(i).getX() >= 50 && tmpList.get(i).getX() <= 70 && tmpList.get(i).getY() >= 50 && tmpList.get(i).getY() <= 70) {
+							tmpList.remove(i);
+						}
+					}
+
+					int index = indexB1;
+					boolean findEneemy = false;
+					while (findEneemy == false) {
+						if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
+							findEneemy = true;
+							break;
+						}
+						if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
+							listTilePosition.add(tmpList.get(index));
+						}
+						index++;
+						if (index >= tmpList.size()) {
+							index = 0;
+						}
+					}
+					index--;
+					if (index < 0)
+						index = tmpList.size() - 1;
+					findEneemy = false;
+					while (findEneemy == false) {
+						if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
+							findEneemy = true;
+							break;
+						}
+						if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
+							listTilePosition.add(tmpList.get(index));
+						}
+						index--;
+						if (index < 0) {
+							index = tmpList.size() - 1;
+						}
+					}
+					index++;
+					if (index > tmpList.size() - 1) {
+						index = 0;
+					}
+
+					boolean findSelf = false;
+					while (findSelf == false) {
+						if (tmpList.get(index).equals(bl1.getTilePosition()) || tmpList.get(index).equals(bl2.getTilePosition())) {
+							findSelf = true;
+							break;
+						}
+						if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
+							listTilePosition.add(tmpList.get(index));
+						}
+						index++;
+						if (index >= tmpList.size()) {
+							index = 0;
+						}
+					}
+				}
+			}
+		}
+
+		if (listTilePosition.size() > 0) {
+			this.targetPosition = listTilePosition.get(0).toPosition();
+		}
 	}
 }

@@ -11,6 +11,10 @@ public class GroupDefence extends GroupAbstract {
 			this.mapUnitTotal.put(UnitType.Terran_Marine, 8);
 			this.mapUnitTotal.put(UnitType.Terran_Medic, 2);
 		}
+		// 방어 유닛 비율
+		if (MyVariable.findWraith) {
+			this.mapUnitTotal.put(UnitType.Terran_Goliath, 2);
+		}
 
 		Position position = MyUtil.GetMyBunkerPosition();
 		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {

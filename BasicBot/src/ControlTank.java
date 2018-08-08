@@ -1,4 +1,5 @@
 import bwapi.Race;
+import bwapi.TechType;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -11,14 +12,14 @@ public class ControlTank extends ControlAbstract {
 		boolean result = false;
 		// 방어 모드이면 시즈 모드로 대기
 
-		if (InformationManager.Instance().enemyRace == Race.Terran) {
-			if (MyVariable.isFullScaleAttackStarted == false && MyUtil.indexToGo >= 2) {
+		if (InformationManager.Instance().enemyRace == Race.Terran && MyBotModule.Broodwar.self().hasResearched(TechType.Tank_Siege_Mode)) {
+			if (MyVariable.isFullScaleAttackStarted == false) {
 				if (unit.getDistance(MyUtil.getSaveTilePosition(12).toPosition()) <= SIEGE_MODE_MAX_RANGE) {
 					result = true;
 				}
 			}
 		} else {
-			if (unit.getDistance(MyUtil.getSaveTilePosition(0).toPosition()) <= 2*32 && MyVariable.isFullScaleAttackStarted==false) {
+			if (unit.getDistance(MyUtil.getSaveTilePosition(0).toPosition()) <= 2 * 32 && MyVariable.isFullScaleAttackStarted == false) {
 				result = true;
 			}
 		}

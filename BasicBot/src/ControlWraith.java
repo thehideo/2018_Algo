@@ -9,7 +9,6 @@ public class ControlWraith extends ControlAbstract {
 	HashMap<Integer, Boolean> mapMode = new HashMap<Integer, Boolean>();
 
 	void actionMain(Unit wraith, GroupAbstract groupAbstract) {
-
 		// 적이 근처에 없으면 클로킹 해제
 		if (MyVariable.enemyAttactUnit.size() == 0) {
 			if (wraith.isCloaked() == true) {
@@ -18,16 +17,14 @@ public class ControlWraith extends ControlAbstract {
 			}
 		} else {
 			// 전쟁 상황이면 클로킹
-			if (wraith.isAttackFrame() == true) {
+			if (wraith.isUnderAttack() == true) {
 				if (wraith.canUseTech(TechType.Cloaking_Field)) {
 					wraith.useTech(TechType.Cloaking_Field);
 					CommandUtil.commandHash.add(wraith);
 				}
 			}
 		}
-
 		CommandUtil.attackMove(wraith, groupAbstract.getTargetPosition(wraith));
-
 	}
 
 	void terranAction(Unit wraith, GroupAbstract groupAbstract) {
@@ -36,7 +33,6 @@ public class ControlWraith extends ControlAbstract {
 			return;
 		}
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_SCV)) {
-
 			CommandUtil.attackUnit(wraith, unit);
 			return;
 

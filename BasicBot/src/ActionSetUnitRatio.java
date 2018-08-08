@@ -8,8 +8,8 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 	public void action() {
 		MyVariable.clearUnitRaio();
 
-		// 적이 다 파괴된것 같은데 계속 게임지 지속될 때
-		if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true) {
+		// 적이 다 파괴된것 같은데 계속 게임이 지속될 때
+		if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true && MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() <= 10) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 9999);
 		} else {
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
@@ -65,6 +65,9 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);
 			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() <= 15) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
+			}
+			if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() <= 10) {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
 			}
 		}
 	}

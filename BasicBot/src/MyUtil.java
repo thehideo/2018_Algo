@@ -133,11 +133,9 @@ public class MyUtil {
 		}
 
 		// 탱크가 4마리 이상이면 앞으로 서서히 전진
-		if (MyUtil.GetMyTankCnt() >= 4) {
+		if (MyUtil.GetMyTankCnt() >= 3) {
 			// 전진후 일정 시간이 지나면 한칸 더 앞으로 이동한다.
 			if ((MyVariable.enemyAttactUnit.size() == 0 && MyBotModule.Broodwar.getFrameCount() > goTimer + 100)) {
-				// || (MyVariable.enemyAttactUnit.size() > 0 &&
-				// MyBotModule.Broodwar.getFrameCount() > goTimer + 500)) {
 				if (indexToGo >= shortestPath.size() - 30) {
 					MyVariable.isFullScaleAttackStarted = true;
 				} else {
@@ -156,7 +154,7 @@ public class MyUtil {
 			indexToGo = 0;
 		}
 
-		if (InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()) != null && InformationManager.Instance().enemyRace == Race.Terran) {
+		if (InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()) != null && InformationManager.Instance().enemyRace == Race.Terran && MyBotModule.Broodwar.self().hasResearched(TechType.Tank_Siege_Mode)) {
 			int totalIndexToGo = indexToGo + add;
 			if (totalIndexToGo < 0) {
 				totalIndexToGo = 0;

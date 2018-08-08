@@ -198,8 +198,8 @@ public class ConstructionPlaceFinder {
 		if (buildingType.isRefinery()) {
 			return getRefineryPositionNear(desiredPosition);
 		}
-		
-		if(buildingType==UnitType.Terran_Command_Center) {
+
+		if (buildingType == UnitType.Terran_Command_Center) {
 			return desiredPosition;
 		}
 
@@ -245,7 +245,7 @@ public class ConstructionPlaceFinder {
 		ConstructionTask b = new ConstructionTask(buildingType, desiredPosition);
 		if (MyVariable.mapBuildingSizeMap.get(key) != null) {
 			for (Unit unit : MyVariable.mapBuildingSizeMap.get(key)) {
-				if (!noPlaceSupply.contains(unit)) {
+				if (!noPlaceSupply.contains(unit) && unit.isLifted() == false) {
 
 					int X = unit.getTilePosition().getX();
 					int Y = unit.getTilePosition().getY();

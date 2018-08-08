@@ -43,6 +43,20 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 		}
 
+		// 내가 유리하면 배틀크루즈 생산
+		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 4) {
+			if (checkNeedToBuild(UnitType.Terran_Factory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Barracks).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1)
+				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			if (checkNeedToBuild(UnitType.Terran_Starport, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 1)
+				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Starport, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			if (checkNeedToBuild(UnitType.Terran_Control_Tower, 1) && MyVariable.getSelfUnit(UnitType.Terran_Starport).size() >= 1)
+				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Control_Tower, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			if (checkNeedToBuild(UnitType.Terran_Science_Facility, 1) && MyVariable.getSelfUnit(UnitType.Terran_Starport).size() >= 1)
+				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Facility, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			if (checkNeedToBuild(UnitType.Terran_Physics_Lab, 1) && MyVariable.getSelfUnit(UnitType.Terran_Science_Facility).size() >= 1)
+				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Physics_Lab, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+		}
+
 		// 7000 프레임 마다 확장을 하나씩 추가한다.
 		int needCommandCount = MyBotModule.Broodwar.getFrameCount() / 7000;
 		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() < needCommandCount) {
@@ -61,6 +75,20 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 					Collections.sort(listTilePosition, new ComparatorBaseLocationClose());
 				}
 				if (listTilePosition.size() > 0) {
+					// 마인이 박혀있을 수 있어서 터렛을 먼저 건설한다.
+					if (MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1) {
+						ArrayList<Unit> turrets = MyVariable.getSelfUnit(UnitType.Terran_Missile_Turret);
+						boolean hasTurrets = false;
+						for (Unit unit : turrets) {
+							if (MyUtil.distanceTilePosition(unit.getTilePosition(), listTilePosition.get(0)) <= 7) {
+								hasTurrets = true;
+								break;
+							}
+						}
+						if (hasTurrets == false && checkNeedToBuild(UnitType.Terran_Missile_Turret, turrets.size() + 1)) {
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, listTilePosition.get(0), true);
+						}
+					}
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Command_Center, listTilePosition.get(0), true);
 				}
 			}
@@ -178,6 +206,14 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 
 		if (checkNeedToBuild(UnitType.Terran_Factory, 3) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1)
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+
+		if (checkNeedToBuild(UnitType.Terran_Starport, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 1 && MyUtil.GetMyTankCnt() >= 8)
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Starport, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+
+		// Terran_Machine_Shop 건설
+		if (checkNeedToBuild(UnitType.Terran_Control_Tower, MyVariable.getSelfUnit(UnitType.Terran_Starport).size())) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Control_Tower, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		}
 
 		// if (checkNeedToBuild(UnitType.Terran_Starport, 1) &&
 		// MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 3)

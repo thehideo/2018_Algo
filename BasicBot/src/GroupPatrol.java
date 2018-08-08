@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.UnitType;
 import bwta.BWTA;
@@ -13,21 +14,36 @@ public class GroupPatrol extends GroupAbstract {
 
 	@Override
 	public void action() {
-
-		// 정찰은 벌처가 한다.
 		// 마린은 지정하면 안됨
-		this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
+		if (InformationManager.Instance().enemyRace == Race.Terran) {
+			if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
+				this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
+			}
 
-		if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
-			this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
-		}
+			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 40) {
+				this.mapUnitTotal.put(UnitType.Terran_Marine, MyVariable.getSelfUnit(UnitType.Terran_Marine).size() / 10);
+			}
+			// if (MyUtil.indexToGo >= 30) {
+			// this.mapUnitTotal.put(UnitType.Terran_Goliath, 4);
+			// if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
+			// this.mapUnitTotal.put(UnitType.Terran_Goliath,
+			// MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
+			// }
+			//
+			// if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 40) {
+			// this.mapUnitTotal.put(UnitType.Terran_Marine,
+			// MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
+			// }
+			// }
+		} else {
+			this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
+			if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
+				this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
+			}
 
-		if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 40) {
-			this.mapUnitTotal.put(UnitType.Terran_Marine, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
-		}
-
-		if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true) {
-			this.mapUnitTotal.put(UnitType.Terran_Wraith, MyVariable.getSelfUnit(UnitType.Terran_Wraith).size());
+			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 40) {
+				this.mapUnitTotal.put(UnitType.Terran_Marine, MyVariable.getSelfUnit(UnitType.Terran_Marine).size() / 10);
+			}
 		}
 
 		if (listTilePosition.size() > 0) {
@@ -57,93 +73,84 @@ public class GroupPatrol extends GroupAbstract {
 		}
 
 		if (listTilePosition.size() == 0) {
-			if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true && mapUnit.containsKey(UnitType.Terran_Wraith) && mapUnit.get(UnitType.Terran_Wraith).size() > 0) {
-				listTilePosition.add(new TilePosition(1, 1));
-				listTilePosition.add(new TilePosition(MyVariable.map_max_x, 1));
-				for (int j = 13; j < MyVariable.map_max_y; j = j + 12) {
-					listTilePosition.add(new TilePosition(1, j));
-					listTilePosition.add(new TilePosition(MyVariable.map_max_x, j));
+
+			List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
+			if (bl3 != null && bl4 != null) {
+
+				ArrayList<TilePosition> tmpList = new ArrayList<TilePosition>();
+
+				for (BaseLocation bl : listBaseLocation) {
+					tmpList.add(bl.getTilePosition());
 				}
-				listTilePosition.add(new TilePosition(1, MyVariable.map_max_y));
-				listTilePosition.add(new TilePosition(MyVariable.map_max_x, MyVariable.map_max_y));
-			} else {
-				List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
-				if (bl3 != null && bl4 != null) {
+				Collections.sort(tmpList, new ComparatorBaseLocation());
 
-					ArrayList<TilePosition> tmpList = new ArrayList<TilePosition>();
+				int indexB1 = 0;
 
-					for (BaseLocation bl : listBaseLocation) {
-						tmpList.add(bl.getTilePosition());
+				for (int i = 0; i < tmpList.size(); i++) {
+					if (tmpList.get(i).equals(bl1.getTilePosition())) {
+						indexB1 = i;
 					}
-					Collections.sort(tmpList, new ComparatorBaseLocation());
+				}
 
-					int indexB1 = 0;
-
-					for (int i = 0; i < tmpList.size(); i++) {
-						if (tmpList.get(i).equals(bl1.getTilePosition())) {
-							indexB1 = i;
-						}
+				for (int i = tmpList.size() - 1; i >= 0; i--) {
+					if (tmpList.get(i).getX() >= 50 && tmpList.get(i).getX() <= 70 && tmpList.get(i).getY() >= 50 && tmpList.get(i).getY() <= 70) {
+						tmpList.remove(i);
 					}
+				}
 
-					for (int i = tmpList.size() - 1; i >= 0; i--) {
-						if (tmpList.get(i).getX() >= 50 && tmpList.get(i).getX() <= 70 && tmpList.get(i).getY() >= 50 && tmpList.get(i).getY() <= 70) {
-							tmpList.remove(i);
-						}
+				int index = indexB1;
+				boolean findEneemy = false;
+				while (findEneemy == false) {
+					if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
+						findEneemy = true;
+						break;
 					}
-
-					int index = indexB1;
-					boolean findEneemy = false;
-					while (findEneemy == false) {
-						if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
-							findEneemy = true;
-							break;
-						}
-						if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
-							listTilePosition.add(tmpList.get(index));
-						}
-						index++;
-						if (index >= tmpList.size()) {
-							index = 0;
-						}
-					}
-					index--;
-					if (index < 0)
-						index = tmpList.size() - 1;
-					findEneemy = false;
-					while (findEneemy == false) {
-						if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
-							findEneemy = true;
-							break;
-						}
-						if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
-							listTilePosition.add(tmpList.get(index));
-						}
-						index--;
-						if (index < 0) {
-							index = tmpList.size() - 1;
-						}
+					if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
+						listTilePosition.add(tmpList.get(index));
 					}
 					index++;
-					if (index > tmpList.size() - 1) {
+					if (index >= tmpList.size()) {
 						index = 0;
 					}
+				}
+				index--;
+				if (index < 0)
+					index = tmpList.size() - 1;
+				findEneemy = false;
+				while (findEneemy == false) {
+					if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
+						findEneemy = true;
+						break;
+					}
+					if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
+						listTilePosition.add(tmpList.get(index));
+					}
+					index--;
+					if (index < 0) {
+						index = tmpList.size() - 1;
+					}
+				}
+				index++;
+				if (index > tmpList.size() - 1) {
+					index = 0;
+				}
 
-					boolean findSelf = false;
-					while (findSelf == false) {
-						if (tmpList.get(index).equals(bl1.getTilePosition()) || tmpList.get(index).equals(bl2.getTilePosition())) {
-							findSelf = true;
-							break;
-						}
-						if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
-							listTilePosition.add(tmpList.get(index));
-						}
-						index++;
-						if (index >= tmpList.size()) {
-							index = 0;
-						}
+				boolean findSelf = false;
+				while (findSelf == false) {
+					if (tmpList.get(index).equals(bl1.getTilePosition()) || tmpList.get(index).equals(bl2.getTilePosition())) {
+						findSelf = true;
+						break;
+					}
+					if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
+						listTilePosition.add(tmpList.get(index));
+					}
+					index++;
+					if (index >= tmpList.size()) {
+						index = 0;
 					}
 				}
 			}
+
 		}
 
 		if (listTilePosition.size() > 0) {

@@ -19,7 +19,6 @@ public class GroupAttack extends GroupAbstract {
 
 	public Position getTargetPosition(Unit unit) {
 		Position result = null;
-
 		if (targetPosition == null) {
 			if (mapTargetPosition.containsKey(unit.getID())) {
 				Position tmp = mapTargetPosition.get(unit.getID());

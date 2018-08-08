@@ -270,7 +270,6 @@ public class InformationManager {
 					if (unit.getType() == UnitType.Terran_Command_Center || unit.getType() == UnitType.Protoss_Nexus) {
 						MyVariable.mapEnemyMainBuilding.add(unit.getTilePosition());
 					}
-
 				}
 				// 일반 공격
 				else {

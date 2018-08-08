@@ -67,6 +67,7 @@ public class GroupManager {
 	void fillGroup() {
 		fillGroup(groupDefence);
 		fillGroup(groupPatrol);
+		fillGroup(groupWraith);
 	}
 
 	void fillGroup(GroupAbstract groupAbstract) {
