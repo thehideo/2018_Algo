@@ -193,7 +193,7 @@ public class InformationManager {
 				}
 
 				if (target != null) {
-					if (MyUtil.distancePosition(target.toPosition(), unit.getPosition()) < 64 && unit.getType()!=UnitType.Terran_Medic) {
+					if (MyUtil.distancePosition(target.toPosition(), unit.getPosition()) < 64 && unit.getType() != UnitType.Terran_Medic) {
 						MyVariable.enemyBuildingUnit.remove(target);
 					}
 				}
@@ -262,7 +262,8 @@ public class InformationManager {
 				MyVariable.getEnemyUnit(unit.getType()).add(unit);
 				// 건물
 				if (unit.getType().isBuilding()) {
-					if (!unit.getType().isRefinery()) {
+					// lift 체크를 안하면 날아오는 건물 위치가 다 저장된다. 주의
+					if (!unit.getType().isRefinery() && unit.isLifted() == false) {
 						MyVariable.enemyBuildingUnit.add(unit.getTilePosition());
 					}
 

@@ -26,6 +26,10 @@ public class GroupPatrol extends GroupAbstract {
 			this.mapUnitTotal.put(UnitType.Terran_Marine, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
 		}
 
+		if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true) {
+			this.mapUnitTotal.put(UnitType.Terran_Wraith, MyVariable.getSelfUnit(UnitType.Terran_Wraith).size());
+		}
+
 		if (listTilePosition.size() > 0) {
 			for (UnitType unitType : this.mapUnit.keySet()) {
 				for (Integer unitID : mapUnit.get(unitType)) {
@@ -53,79 +57,90 @@ public class GroupPatrol extends GroupAbstract {
 		}
 
 		if (listTilePosition.size() == 0) {
-			List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
-			if (bl3 != null && bl4 != null) {
-
-				ArrayList<TilePosition> tmpList = new ArrayList<TilePosition>();
-
-				for (BaseLocation bl : listBaseLocation) {
-					tmpList.add(bl.getTilePosition());
+			if (MyVariable.enemyBuildingUnit.size() == 0 && MyVariable.isFullScaleAttackStarted == true && mapUnit.containsKey(UnitType.Terran_Wraith) && mapUnit.get(UnitType.Terran_Wraith).size() > 0) {
+				listTilePosition.add(new TilePosition(1, 1));
+				listTilePosition.add(new TilePosition(MyVariable.map_max_x, 1));
+				for (int j = 13; j < MyVariable.map_max_y; j = j + 12) {
+					listTilePosition.add(new TilePosition(1, j));
+					listTilePosition.add(new TilePosition(MyVariable.map_max_x, j));
 				}
-				Collections.sort(tmpList, new ComparatorBaseLocation());
+				listTilePosition.add(new TilePosition(1, MyVariable.map_max_y));
+				listTilePosition.add(new TilePosition(MyVariable.map_max_x, MyVariable.map_max_y));
+			} else {
+				List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
+				if (bl3 != null && bl4 != null) {
 
-				int indexB1 = 0;
+					ArrayList<TilePosition> tmpList = new ArrayList<TilePosition>();
 
-				for (int i = 0; i < tmpList.size(); i++) {
-					if (tmpList.get(i).equals(bl1.getTilePosition())) {
-						indexB1 = i;
+					for (BaseLocation bl : listBaseLocation) {
+						tmpList.add(bl.getTilePosition());
 					}
-				}
+					Collections.sort(tmpList, new ComparatorBaseLocation());
 
-				for (int i = tmpList.size() - 1; i >= 0; i--) {
-					if (tmpList.get(i).getX() >= 50 && tmpList.get(i).getX() <= 70 && tmpList.get(i).getY() >= 50 && tmpList.get(i).getY() <= 70) {
-						tmpList.remove(i);
-					}
-				}
+					int indexB1 = 0;
 
-				int index = indexB1;
-				boolean findEneemy = false;
-				while (findEneemy == false) {
-					if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
-						findEneemy = true;
-						break;
+					for (int i = 0; i < tmpList.size(); i++) {
+						if (tmpList.get(i).equals(bl1.getTilePosition())) {
+							indexB1 = i;
+						}
 					}
-					if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
-						listTilePosition.add(tmpList.get(index));
+
+					for (int i = tmpList.size() - 1; i >= 0; i--) {
+						if (tmpList.get(i).getX() >= 50 && tmpList.get(i).getX() <= 70 && tmpList.get(i).getY() >= 50 && tmpList.get(i).getY() <= 70) {
+							tmpList.remove(i);
+						}
 					}
-					index++;
-					if (index >= tmpList.size()) {
-						index = 0;
-					}
-				}
-				index--;
-				if (index < 0)
-					index = tmpList.size() - 1;
-				findEneemy = false;
-				while (findEneemy == false) {
-					if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
-						findEneemy = true;
-						break;
-					}
-					if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
-						listTilePosition.add(tmpList.get(index));
+
+					int index = indexB1;
+					boolean findEneemy = false;
+					while (findEneemy == false) {
+						if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
+							findEneemy = true;
+							break;
+						}
+						if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
+							listTilePosition.add(tmpList.get(index));
+						}
+						index++;
+						if (index >= tmpList.size()) {
+							index = 0;
+						}
 					}
 					index--;
-					if (index < 0) {
+					if (index < 0)
 						index = tmpList.size() - 1;
-					}
-				}
-				index++;
-				if (index > tmpList.size() - 1) {
-					index = 0;
-				}
-
-				boolean findSelf = false;
-				while (findSelf == false) {
-					if (tmpList.get(index).equals(bl1.getTilePosition()) || tmpList.get(index).equals(bl2.getTilePosition())) {
-						findSelf = true;
-						break;
-					}
-					if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
-						listTilePosition.add(tmpList.get(index));
+					findEneemy = false;
+					while (findEneemy == false) {
+						if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
+							findEneemy = true;
+							break;
+						}
+						if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
+							listTilePosition.add(tmpList.get(index));
+						}
+						index--;
+						if (index < 0) {
+							index = tmpList.size() - 1;
+						}
 					}
 					index++;
-					if (index >= tmpList.size()) {
+					if (index > tmpList.size() - 1) {
 						index = 0;
+					}
+
+					boolean findSelf = false;
+					while (findSelf == false) {
+						if (tmpList.get(index).equals(bl1.getTilePosition()) || tmpList.get(index).equals(bl2.getTilePosition())) {
+							findSelf = true;
+							break;
+						}
+						if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
+							listTilePosition.add(tmpList.get(index));
+						}
+						index++;
+						if (index >= tmpList.size()) {
+							index = 0;
+						}
 					}
 				}
 			}
