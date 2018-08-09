@@ -247,6 +247,16 @@ public class InformationManager {
 	private void updateEnemyUnitMap() {
 		MyVariable.clearEnemyUnit();
 
+		BaseLocation bl = InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().enemyPlayer);
+
+		if (bl != null) {
+			MyVariable.enemyStartLocation = bl.getTilePosition();
+
+			MyVariable.enemyFirstchokePoint = null;
+			if (MyVariable.enemyStartLocation != null) {
+				MyVariable.enemyFirstchokePoint = BWTA.getNearestChokepoint(MyVariable.enemyStartLocation).getPoint().toTilePosition();
+			}
+		}
 		for (Unit unit : MyBotModule.Broodwar.enemy().getUnits()) {
 			if (unit.exists() == false) {
 				continue;

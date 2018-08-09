@@ -61,6 +61,10 @@ public class MyVariable {
 
 	public static TilePosition myFirstchokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition()).getPoint().toTilePosition();
 
+	public static TilePosition enemyStartLocation = null;
+
+	public static TilePosition enemyFirstchokePoint = null;
+
 	public static double distanceOfMostFarTank = 0;
 	public static Unit mostFarTank = null;
 
