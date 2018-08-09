@@ -32,19 +32,16 @@ public class ControlWraith extends ControlAbstract {
 	}
 
 	void terranAction(Unit wraith, GroupAbstract groupAbstract) {
-
-		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_Missile_Turret)) {
+		Unit Terran_Missile_Turret = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Missile_Turret, wraith);
+		if (Terran_Missile_Turret != null && MyUtil.distanceTilePosition(Terran_Missile_Turret.getTilePosition(), wraith.getTilePosition()) < 13) {
 			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 			return;
 		}
-		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_Goliath)) {
+
+		Unit Terran_Goliath = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Goliath, wraith);
+		if (Terran_Goliath != null && MyUtil.distanceTilePosition(Terran_Goliath.getTilePosition(), wraith.getTilePosition()) < 13) {
 			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 			return;
-		}
-		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_SCV)) {
-			CommandUtil.attackUnit(wraith, unit);
-			return;
-
 		}
 	}
 

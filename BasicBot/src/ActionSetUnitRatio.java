@@ -45,6 +45,7 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 				}
 			}
 		}
+		// 12마리까지 골리앗만 뽑지 않으면 캐리어 잡을 수 없음
 	}
 
 	public void unitProtoss() {
