@@ -5,6 +5,7 @@ import bwapi.TechType;
 import bwapi.Unit;
 import bwapi.UnitCommand;
 import bwapi.UnitCommandType;
+import bwapi.UnitType;
 
 public class CommandUtil {
 	// 한 프레임에 여러 명령을 받지 않도록 hash로 관리함
@@ -42,7 +43,48 @@ public class CommandUtil {
 		unit.unsiege();
 	}
 
+	static public void useTech(Unit unit, TechType techType) {
+		if (commandHash.contains(unit)) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+		if (unit.canUseTech(techType)) {
+			unit.useTech(techType);
+
+		}
+	}
+
+	static public void useTech(Unit unit, TechType techType, Unit enemy) {
+		if (commandHash.contains(unit)) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+		if (unit.canUseTech(techType, enemy)) {
+			unit.useTech(techType, enemy);
+		}
+	}
+
+	static public void useTech(Unit unit, TechType techType, Position position) {
+		if (commandHash.contains(unit)) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+		if (unit.canUseTech(techType, position)) {
+			unit.useTech(techType, position);
+		}
+	}
+
 	static public void attackUnit(Unit attacker, Unit target) {
+
+		if (commandHash.contains(attacker) && attacker.getType() != UnitType.Terran_SCV) {
+			return;
+		} else {
+			commandHash.add(attacker);
+		}
+
 		UnitCommand currentCommand = attacker.getLastCommand();
 		if (currentCommand.getTarget() == target && attacker.isIdle() == false) {
 			return;
@@ -52,16 +94,16 @@ public class CommandUtil {
 			return;
 		}
 
-		if (commandHash.contains(attacker)) {
-			return;
-		} else {
-			commandHash.add(attacker);
-		}
-
 		attacker.attack(target);
 	}
 
 	static public void attackMove(Unit attacker, final Position targetPosition) {
+
+		if (commandHash.contains(attacker) && attacker.getType() != UnitType.Terran_SCV) {
+			return;
+		} else {
+			commandHash.add(attacker);
+		}
 		UnitCommand currentCommand = attacker.getLastCommand();
 
 		if (currentCommand.getTargetPosition().equals(targetPosition) && attacker.isIdle() == false) {
@@ -72,16 +114,17 @@ public class CommandUtil {
 			return;
 		}
 
-		if (commandHash.contains(attacker)) {
+		attacker.attack(targetPosition);
+	}
+
+	static public void patrol(Unit attacker, final Position targetPosition) {
+
+		if (commandHash.contains(attacker) && attacker.getType() != UnitType.Terran_SCV) {
 			return;
 		} else {
 			commandHash.add(attacker);
 		}
 
-		attacker.attack(targetPosition);
-	}
-
-	static public void patrol(Unit attacker, final Position targetPosition) {
 		UnitCommand currentCommand = attacker.getLastCommand();
 
 		if (currentCommand.getUnitCommandType() == UnitCommandType.Patrol && currentCommand.getTargetPosition().equals(targetPosition) && attacker.isIdle() == false) {
@@ -92,16 +135,16 @@ public class CommandUtil {
 			return;
 		}
 
-		if (commandHash.contains(attacker)) {
-			return;
-		} else {
-			commandHash.add(attacker);
-		}
-
 		attacker.patrol(targetPosition);
 	}
 
 	static public void move(Unit attacker, final Position targetPosition) {
+
+		if (commandHash.contains(attacker) && attacker.getType() != UnitType.Terran_SCV) {
+			return;
+		} else {
+			commandHash.add(attacker);
+		}
 
 		UnitCommand currentCommand = attacker.getLastCommand();
 
@@ -113,16 +156,17 @@ public class CommandUtil {
 			return;
 		}
 
-		if (commandHash.contains(attacker)) {
-			return;
-		} else {
-			commandHash.add(attacker);
-		}
-
 		attacker.move(targetPosition);
 	}
 
 	static public void rightClick(Unit unit, Unit target) {
+
+		if (commandHash.contains(unit) && unit.getType() != UnitType.Terran_SCV) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+
 		UnitCommand currentCommand = unit.getLastCommand();
 
 		if (currentCommand.getTarget() == target && unit.isIdle() == false) {
@@ -131,18 +175,18 @@ public class CommandUtil {
 
 		if (unit == null || target == null) {
 			return;
-		}
-
-		if (commandHash.contains(unit)) {
-			return;
-		} else {
-			commandHash.add(unit);
 		}
 
 		unit.rightClick(target);
 	}
 
 	static public void repair(Unit unit, Unit target) {
+		if (commandHash.contains(unit) && unit.getType() != UnitType.Terran_SCV) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+
 		UnitCommand currentCommand = unit.getLastCommand();
 
 		if (currentCommand.getTarget() == target && unit.isIdle() == false) {
@@ -150,12 +194,6 @@ public class CommandUtil {
 		}
 		if (unit == null || target == null) {
 			return;
-		}
-
-		if (commandHash.contains(unit)) {
-			return;
-		} else {
-			commandHash.add(unit);
 		}
 
 		unit.repair(target);

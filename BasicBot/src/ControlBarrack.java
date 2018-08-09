@@ -13,7 +13,8 @@ public class ControlBarrack extends ControlAbstract {
 				target = groupAbstract.getTargetPosition(unit);
 			}
 			target = new Position(target.getX() - 1, target.getY() - 1);
-			unit.move(target);
+		
+			CommandUtil.move(unit, target);
 		}
 	}
 }

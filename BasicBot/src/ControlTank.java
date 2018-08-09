@@ -14,7 +14,7 @@ public class ControlTank extends ControlAbstract {
 
 		if (InformationManager.Instance().enemyRace == Race.Terran && MyBotModule.Broodwar.self().hasResearched(TechType.Tank_Siege_Mode)) {
 			if (MyVariable.isFullScaleAttackStarted == false) {
-				if (unit.getDistance(MyUtil.getSaveTilePosition(12).toPosition()) <= SIEGE_MODE_MAX_RANGE) {
+				if (unit.getDistance(MyUtil.getSaveTilePosition(13).toPosition()) <= SIEGE_MODE_MAX_RANGE) {
 					result = true;
 				}
 			}

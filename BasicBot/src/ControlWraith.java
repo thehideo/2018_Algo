@@ -1,5 +1,6 @@
 import java.util.HashMap;
 
+import bwapi.Race;
 import bwapi.TechType;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -19,16 +20,24 @@ public class ControlWraith extends ControlAbstract {
 			// 전쟁 상황이면 클로킹
 			if (wraith.isUnderAttack() == true) {
 				if (wraith.canUseTech(TechType.Cloaking_Field)) {
-					wraith.useTech(TechType.Cloaking_Field);
-					CommandUtil.commandHash.add(wraith);
+					CommandUtil.useTech(wraith, TechType.Cloaking_Field);
 				}
 			}
 		}
+		if (InformationManager.Instance().enemyRace == Race.Terran) {
+			terranAction(wraith, groupAbstract);
+		}
+
 		CommandUtil.attackMove(wraith, groupAbstract.getTargetPosition(wraith));
 	}
 
 	void terranAction(Unit wraith, GroupAbstract groupAbstract) {
+
 		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_Missile_Turret)) {
+			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+			return;
+		}
+		for (Unit unit : MyVariable.getEnemyUnit(UnitType.Terran_Goliath)) {
 			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 			return;
 		}

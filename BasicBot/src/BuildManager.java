@@ -177,22 +177,7 @@ public class BuildManager {
 							else {
 								producer.train(t.getUnitType());
 							}
-						}
-						// 프로토스 지상유닛 / 공중유닛
-						else if (t.getUnitType().getRace() == Race.Protoss) {
-							// 프로토스 종족 유닛 중 Protoss_Archon 은 기존
-							// Protoss_High_Templar 두 유닛을 합체시키는 기술을 써서 만든다
-							if (t.getUnitType() == UnitType.Protoss_Archon) {
-								producer.useTech(TechType.Archon_Warp, secondProducer);
-							}
-							// 프로토스 종족 유닛 중 Protoss_Dark_Archon 은 기존
-							// Protoss_Dark_Templar 두 유닛을 합체시키는 기술을 써서 만든다
-							else if (t.getUnitType() == UnitType.Protoss_Dark_Archon) {
-								producer.useTech(TechType.Dark_Archon_Meld, secondProducer);
-							} else {
-								producer.train(t.getUnitType());
-							}
-						}
+						}						
 						// 테란 지상유닛 / 공중유닛
 						else {
 							producer.train(t.getUnitType());

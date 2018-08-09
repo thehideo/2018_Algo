@@ -138,12 +138,15 @@ public class ActionUpgrade extends ActionControlAbstract {
 					break;
 				}
 			}
-			//if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
-			//	if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters) == 0) {
-			//		BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters, false);
-			//		break;
-			//	}
-			//}
+			// if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
+			// if
+			// (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters)
+			// == 0) {
+			// BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters,
+			// false);
+			// break;
+			// }
+			// }
 		}
 
 		// 시즈 모드
@@ -241,6 +244,17 @@ public class ActionUpgrade extends ActionControlAbstract {
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
 					break;
 				}
+			}
+		}
+
+		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Science_Facility)) {
+			if (unit.canResearch(TechType.Irradiate)) {
+				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Irradiate) == 0) {
+					{
+						BuildManager.Instance().buildQueue.queueAsHighestPriority(TechType.Irradiate, true);
+					}
+				}
+				break;
 			}
 		}
 	}

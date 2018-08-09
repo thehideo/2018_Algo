@@ -100,20 +100,17 @@ public class ScoutManager {
 					// 1) 첫 번째 정찰일꾼이 적기지를 찾은 후 적 기지 주변을 도는 모드로 변경
 					if (currentScoutStatus == ScoutStatus.MovingToAnotherBaseLocation.ordinal())
 						currentScoutStatus = ScoutStatus.MoveAroundEnemyBaseLocation.ordinal();
-				} 
+				}
 				/*
-				else {
-					// 2) 첫 번째 정찰일꾼이 죽은 후 두 번째 정찰일꾼 새로 할당 후 적의 첫번째 확장기지로 이동.
-					// firstChoke point 에서 가장 가까운 곳의 일꾼선정
-					Unit unit = WorkerManager.Instance().getClosestMineralWorkerTo(InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.self()).getCenter());
-
-					if (unit != null) {
-						// set unit as scout unit
-						currentScoutUnit = unit;
-						WorkerManager.Instance().setScoutWorker(currentScoutUnit);
-						currentScoutStatus = ScoutManager.ScoutStatus.MoveAroundEnemyExpansionLocation.ordinal();
-					}
-				}*/
+				 * else { // 2) 첫 번째 정찰일꾼이 죽은 후 두 번째 정찰일꾼 새로 할당 후 적의 첫번째 확장기지로 이동. // firstChoke
+				 * point 에서 가장 가까운 곳의 일꾼선정 Unit unit =
+				 * WorkerManager.Instance().getClosestMineralWorkerTo(InformationManager.
+				 * Instance().getFirstChokePoint(MyBotModule.Broodwar.self()).getCenter());
+				 * 
+				 * if (unit != null) { // set unit as scout unit currentScoutUnit = unit;
+				 * WorkerManager.Instance().setScoutWorker(currentScoutUnit); currentScoutStatus
+				 * = ScoutManager.ScoutStatus.MoveAroundEnemyExpansionLocation.ordinal(); } }
+				 */
 			} else {
 				// 초기 정찰 이후의 정찰 임무 수행
 				// 스캐너가 200이 꽉찬 상태면 스캔을 한 번 뿌려준다.(구현 필요)

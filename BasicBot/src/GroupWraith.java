@@ -32,6 +32,10 @@ public class GroupWraith extends GroupAbstract {
 		BaseLocation bl3 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy());
 		BaseLocation bl4 = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy());
 
+		if (bl1 == null | bl2 == null || bl3 == null || bl4 == null) {
+			return;
+		}
+
 		// 이미 점유되고 있는 곳이면 제거한다.
 		if (listTilePosition.size() > 0) {
 			TilePosition tilePosition = listTilePosition.get(0);

@@ -38,15 +38,13 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() / 4 > MyUtil.GetMyTankCnt()) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 			}
-		}
-
-		if (MyBotModule.Broodwar.self().minerals() > 400) {
-			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
+			if (MyBotModule.Broodwar.self().minerals() > 400) {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
+				if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
+					MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
+				}
 			}
 		}
-
 	}
 
 	public void unitProtoss() {
@@ -59,7 +57,7 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 	}
 
 	public void unitTerran() {
-		if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 6 && MyUtil.GetMyTankCnt() <= 4) {
+		if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 8 && MyUtil.GetMyTankCnt() <= 4) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
 		} else {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);
@@ -70,6 +68,10 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
 			}
 		}
+
+		if (MyVariable.getSelfUnit(UnitType.Terran_Physics_Lab).size() > 0) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Battlecruiser, 1);
+		}
 	}
 
 	public void unitZerg() {
@@ -79,6 +81,9 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 2);
 		}
 		if (MyVariable.findMutal) {
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Science_Vessel).size() < 3) {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Science_Vessel, 1);
+			}
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 		} else {
 			if (MyUtil.GetMyTankCnt() * 4 < MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {

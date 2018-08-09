@@ -28,10 +28,8 @@ public class ControlGhost extends ControlAbstract {
 		// 공격 받고 있으면 클로킹 사용
 		if (ghost.isUnderAttack() == true && ghost.isCloaked() == false) {
 			if (ghost.canUseTech(TechType.Personnel_Cloaking)) {
-				if (!CommandUtil.commandHash.contains(ghost)) {
-					CommandUtil.commandHash.add(ghost);
-					ghost.useTech(TechType.Personnel_Cloaking);
-				}
+				CommandUtil.useTech(ghost, TechType.Personnel_Cloaking);
+
 			}
 		}
 
@@ -46,12 +44,11 @@ public class ControlGhost extends ControlAbstract {
 		// 락다운 사용할 캐리어가 있으면 락다운 사용
 		Unit carrier = getMostCloseCarrierLockDown(ghost);
 		if (carrier != null && ghost.canUseTech(TechType.Lockdown, carrier)) {
-			if (!CommandUtil.commandHash.contains(ghost)) {
-				CommandUtil.commandHash.add(ghost);
-				ghost.useTech(TechType.Lockdown, carrier);
-				mapLockDown.put(carrier, MyBotModule.Broodwar.getFrameCount());
-				setSpecialAction(ghost);
-			}
+
+			CommandUtil.useTech(ghost, TechType.Lockdown, carrier);
+			setSpecialAction(ghost);
+			mapLockDown.put(carrier, MyBotModule.Broodwar.getFrameCount());
+
 		}
 
 		if (ghost.isIdle() && MyVariable.mostFarTank != null) {

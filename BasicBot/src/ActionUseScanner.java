@@ -118,7 +118,7 @@ public class ActionUseScanner extends ActionControlAbstract {
 		ArrayList<Unit> units = MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station);
 		for (int i = 0; i < units.size(); i++) {
 			if (units.get(i).canUseTech(TechType.Scanner_Sweep, unit) && MyBotModule.Broodwar.getFrameCount() - beforeTime > 24 * 3) {
-				units.get(i).useTech(TechType.Scanner_Sweep, unit);
+				CommandUtil.useTech(units.get(i), TechType.Scanner_Sweep, unit);
 				beforeTime = MyBotModule.Broodwar.getFrameCount();
 				break;
 			}
@@ -130,7 +130,7 @@ public class ActionUseScanner extends ActionControlAbstract {
 		ArrayList<Unit> units = MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station);
 		for (int i = 0; i < units.size(); i++) {
 			if (units.get(i).canUseTechPosition(TechType.Scanner_Sweep, position) && MyBotModule.Broodwar.getFrameCount() - beforeTime > 24 * 3) {
-				units.get(i).useTech(TechType.Scanner_Sweep, position);
+				CommandUtil.useTech(units.get(i), TechType.Scanner_Sweep, position);
 				use = true;
 				beforeTime = MyBotModule.Broodwar.getFrameCount();
 				break;
@@ -141,7 +141,7 @@ public class ActionUseScanner extends ActionControlAbstract {
 
 	static void useScanner_Sweep(Unit scanner, TilePosition tilePosition) {
 		if (scanner.canUseTechPosition(TechType.Scanner_Sweep, tilePosition.toPosition())) {
-			scanner.useTech(TechType.Scanner_Sweep, tilePosition.toPosition());
+			CommandUtil.useTech(scanner, TechType.Scanner_Sweep, tilePosition.toPosition());
 		}
 
 	}

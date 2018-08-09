@@ -175,7 +175,7 @@ public class InformationManager {
 				if (unit.isAttackFrame() == true) {
 					double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation);
 					if (distance > 20) {
-						unit.move(MyVariable.myStartLocation.toPosition());
+						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
 					}
 				}
 			} else if (unit.getType() == UnitType.Terran_Wraith) {
@@ -316,6 +316,7 @@ public class InformationManager {
 		if (InformationManager.Instance().enemyRace == Race.Zerg) {
 			if (MyVariable.getEnemyUnit(UnitType.Zerg_Mutalisk).size() > 0) {
 				MyVariable.findMutal = true;
+				MyVariable.needTerran_Science_Vessel = true;
 			}
 			if (MyVariable.getEnemyUnit(UnitType.Zerg_Lurker).size() > 0) {
 				MyVariable.findLucker = true;
@@ -333,6 +334,12 @@ public class InformationManager {
 		} else if (InformationManager.Instance().enemyRace == Race.Terran) {
 			if (MyVariable.getEnemyUnit(UnitType.Terran_Wraith).size() > 0) {
 				MyVariable.findWraith = true;
+			}
+			if (MyVariable.getEnemyUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() > 0) {
+				MyVariable.findTank = true;
+			}
+			if (MyVariable.getEnemyUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() > 0) {
+				MyVariable.findTank = true;
 			}
 		}
 	}
