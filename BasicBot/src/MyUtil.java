@@ -49,6 +49,10 @@ public class MyUtil {
 		return GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Tank_Mode).size() + GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Siege_Mode).size();
 	}
 
+	static int GetEnemyTankCnt() {
+		return MyVariable.getEnemyUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getEnemyUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size();
+	}
+
 	static Position GetMyBunkerDonthaveTurretPosition() {
 		Position bunkerPosition = null;
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
@@ -145,8 +149,8 @@ public class MyUtil {
 
 			}
 
-			// 적이 있으면 전진하지 않는다.
-			if (MyVariable.enemyAttactUnit.size() > 0) {
+			// 적이 탱크가 있으면 있으면 전진하지 않는다.
+			if (GetEnemyTankCnt() > 0) {
 				goTimer = MyBotModule.Broodwar.getFrameCount();
 			}
 

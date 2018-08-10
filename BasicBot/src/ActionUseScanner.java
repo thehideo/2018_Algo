@@ -59,23 +59,30 @@ public class ActionUseScanner extends ActionControlAbstract {
 				break;
 			}
 			if (unit.getEnergy() >= ScanPoint) {
-				// 적 확장 기지를 스캔함
-				if (useIndex % 2 == 0) {
-					Chokepoint bl = InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.enemy());
-					if (bl != null) {
-						if (useScanner_Sweep(bl.getPoint())) {
-							use = true;
-						}
-
+				if (InformationManager.Instance().enemyRace == Race.Terran) {
+					TilePosition tilePosition = MyUtil.getSaveTilePosition(5);
+					if (tilePosition != null && useScanner_Sweep(tilePosition.toPosition())) {
+						use = true;
 					}
-				}
-				// 적 본진과 확장 중간을 스캔
-				else if (useIndex % 2 == 1) {
-					Chokepoint bl = InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.enemy());
-					BaseLocation bl2 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy());
-					if (bl != null && bl2 != null) {
-						if (useScanner_Sweep(new Position((bl.getPoint().getX() + bl2.getPoint().getX()) / 2, (bl.getPoint().getY() + bl2.getPoint().getY()) / 2))) {
-							use = true;
+				} else {
+					// 적 확장 기지를 스캔함
+					if (useIndex % 2 == 0) {
+						Chokepoint bl = InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.enemy());
+						if (bl != null) {
+							if (useScanner_Sweep(bl.getPoint())) {
+								use = true;
+							}
+
+						}
+					}
+					// 적 본진과 확장 중간을 스캔
+					else if (useIndex % 2 == 1) {
+						Chokepoint bl = InformationManager.Instance().getFirstChokePoint(MyBotModule.Broodwar.enemy());
+						BaseLocation bl2 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy());
+						if (bl != null && bl2 != null) {
+							if (useScanner_Sweep(new Position((bl.getPoint().getX() + bl2.getPoint().getX()) / 2, (bl.getPoint().getY() + bl2.getPoint().getY()) / 2))) {
+								use = true;
+							}
 						}
 					}
 				}

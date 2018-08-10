@@ -6,9 +6,9 @@ public class ControlBarrack extends ControlAbstract {
 			unit.lift();
 		} else {
 			if (unit.isUnderAttack() == true) {
-				unit.move(MyVariable.myStartLocation.toPosition());
+				CommandUtil.move(unit, myStartLocation.toPosition());	
 			} else {
-				unit.move(groupAbstract.getTargetPosition(unit));
+				CommandUtil.move(unit, groupAbstract.getTargetPosition(unit));
 			}
 		}
 	}

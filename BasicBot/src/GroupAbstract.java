@@ -22,6 +22,13 @@ public abstract class GroupAbstract {
 	// Unit별 Target
 	protected HashMap<Integer, Position> mapTargetPosition = new HashMap<Integer, Position>();
 
+	public int getUnitTypeCnt(UnitType unitType) {
+		if(!mapUnit.containsKey(unitType)) {
+			return 0;
+		}
+		return mapUnit.get(unitType).size();
+	}
+	
 	public void addUnit(UnitType unitType, Integer unitID) {
 		if (mapUnit.get(unitType) == null) {
 			mapUnit.put(unitType, new HashSet<Integer>());
