@@ -8,11 +8,11 @@ public class ControlTank extends ControlAbstract {
 	public static final int SIEGE_MODE_MIN_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().minRange(); // 64
 	public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
 
-	boolean needSiege(Unit unit) {
+	boolean needSiege(Unit unit, GroupAbstract groupAbstract) {
 		boolean result = false;
 		// 방어 모드이면 시즈 모드로 대기
 
-		if (InformationManager.Instance().enemyRace == Race.Terran && MyBotModule.Broodwar.self().hasResearched(TechType.Tank_Siege_Mode)) {
+		if (GroupManager.instance().groupAttack == groupAbstract && InformationManager.Instance().enemyRace == Race.Terran && MyBotModule.Broodwar.self().hasResearched(TechType.Tank_Siege_Mode)) {
 			if (MyVariable.isFullScaleAttackStarted == false) {
 				if (unit.getDistance(MyUtil.getSaveTilePosition(13).toPosition()) <= SIEGE_MODE_MAX_RANGE) {
 					result = true;
@@ -41,13 +41,12 @@ public class ControlTank extends ControlAbstract {
 	}
 
 	public void actionMain(Unit unit, GroupAbstract groupAbstract) {
-		if (needSiege(unit) == false && unit.isSieged()) {
+		boolean need=needSiege(unit, groupAbstract);
+		if (need == false && unit.isSieged()) {
 			CommandUtil.unsiege(unit);
-
 		}
-		if (needSiege(unit) == true && !unit.isSieged()) {
+		if (need == true && !unit.isSieged()) {
 			CommandUtil.siege(unit);
-
 		}
 		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
 	}

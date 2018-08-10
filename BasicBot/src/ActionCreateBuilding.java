@@ -58,7 +58,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		}
 
 		// 7000 프레임 마다 확장을 하나씩 추가한다.
-		int needCommandCount = MyBotModule.Broodwar.getFrameCount() / 7000;
+		int needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 7000;
 		if (MyBotModule.Broodwar.self().minerals() > 600) {
 			needCommandCount = MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() + 1;
 		}
@@ -78,10 +78,11 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 					Collections.sort(listTilePosition, new ComparatorBaseLocationClose());
 				}
 				if (listTilePosition.size() > 0) {
+					boolean hasTurrets = false;
 					// 마인이 박혀있을 수 있어서 터렛을 먼저 건설한다.
 					if (MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1) {
 						ArrayList<Unit> turrets = MyVariable.getSelfUnit(UnitType.Terran_Missile_Turret);
-						boolean hasTurrets = false;
+
 						for (Unit unit : turrets) {
 							if (MyUtil.distanceTilePosition(unit.getTilePosition(), listTilePosition.get(0)) <= 7) {
 								hasTurrets = true;
@@ -92,7 +93,21 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 							BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Missile_Turret, listTilePosition.get(0), true);
 						}
 					}
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Command_Center, listTilePosition.get(0), true);
+					if (hasTurrets == true) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Command_Center, listTilePosition.get(0), true);
+					}
+					// 먼저 내 지역으로 표시함, 이 구역에 적이 들어오면 방어하러 온다.
+					TilePosition tp = listTilePosition.get(0);
+					int X = tp.getX();
+					int Y = tp.getY();
+					for (int i = -10; i <= 10; i++) {
+						for (int j = -10; j <= 10; j++) {
+							TilePosition tp2 = new TilePosition(X + i, Y + j);
+							if (MyUtil.distanceTilePosition(tp, tp2) <= 10) {
+								MyVariable.mapMyRegion.add(tp2);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -217,7 +232,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		if (checkNeedToBuild(UnitType.Terran_Factory, 3) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1)
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 
-		// Terran_Machine_Shop 건설
+		// Terran_Control_Tower 건설
 		if (checkNeedToBuild(UnitType.Terran_Control_Tower, MyVariable.getSelfUnit(UnitType.Terran_Starport).size())) {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Control_Tower, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
@@ -234,6 +249,10 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		// Terran_Armory 건설
 		if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() > 2) {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		}
+
+		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2) {
+			MyVariable.needTerran_Science_Vessel = true;
 		}
 
 		if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {

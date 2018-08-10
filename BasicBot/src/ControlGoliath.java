@@ -18,10 +18,8 @@ public class ControlGoliath extends ControlAbstract {
 
 		Position target = groupAbstract.getTargetPosition(unit);
 
-		if (MyUtil.distanceTilePosition(unit.getTilePosition(), target.toTilePosition()) >= 7 && MyVariable.isFullScaleAttackStarted == false) {
-			CommandUtil.move(unit, target);
-		} else {
+		
 			CommandUtil.attackMove(unit, target);
-		}
+		
 	}
 }

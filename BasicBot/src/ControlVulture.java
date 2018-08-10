@@ -49,7 +49,6 @@ public class ControlVulture extends ControlAbstract {
 				for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 					if (unit.getHitPoints() == UnitType.Terran_Vulture.maxHitPoints()) {
 						CommandUtil.attackMove(unit, tilePosition.toPosition());
-						setSpecialAction(unit);
 					}
 					break;
 				}
