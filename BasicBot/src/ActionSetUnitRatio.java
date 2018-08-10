@@ -38,14 +38,13 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() / 4 > MyUtil.GetMyTankCnt()) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 			}
-			if (MyBotModule.Broodwar.self().minerals() > 400) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
-				if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
-					MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
-				}
+		}
+		if (MyBotModule.Broodwar.self().minerals() > 400) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
 			}
 		}
-		// 12마리까지 골리앗만 뽑지 않으면 캐리어 잡을 수 없음
 	}
 
 	public void unitProtoss() {
