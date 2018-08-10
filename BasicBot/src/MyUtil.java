@@ -133,7 +133,7 @@ public class MyUtil {
 		}
 
 		// 탱크가 4마리 이상이면 앞으로 서서히 전진
-		if (MyUtil.GetMyTankCnt() >= 3) {
+		if (MyUtil.GetMyTankCnt() >= 4) {
 			// 전진후 일정 시간이 지나면 한칸 더 앞으로 이동한다.
 			if ((MyVariable.enemyAttactUnit.size() == 0 && MyBotModule.Broodwar.getFrameCount() > goTimer + 100)) {
 				if (indexToGo >= shortestPath.size() - 30) {
@@ -195,6 +195,19 @@ public class MyUtil {
 		double minDistance = Double.MAX_VALUE;
 		for (Unit enemyUnit : MyVariable.getEnemyUnit(unitType)) {
 			double distance = MyUtil.distanceTilePosition(myUnit.getTilePosition(), enemyUnit.getTilePosition());
+			if (minDistance > distance) {
+				minDistance = distance;
+				mostCloseEnemyUnit = enemyUnit;
+			}
+		}
+		return mostCloseEnemyUnit;
+	}
+
+	public static Unit getMostCloseEnemyUnit(Unit unit, ArrayList<Unit> enemyUnitList) {
+		Unit mostCloseEnemyUnit = null;
+		double minDistance = Double.MAX_VALUE;
+		for (Unit enemyUnit : enemyUnitList) {
+			double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), enemyUnit.getTilePosition());
 			if (minDistance > distance) {
 				minDistance = distance;
 				mostCloseEnemyUnit = enemyUnit;

@@ -23,18 +23,6 @@ public class GroupPatrol extends GroupAbstract {
 			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 40) {
 				this.mapUnitTotal.put(UnitType.Terran_Marine, MyVariable.getSelfUnit(UnitType.Terran_Marine).size() / 10);
 			}
-			// if (MyUtil.indexToGo >= 30) {
-			// this.mapUnitTotal.put(UnitType.Terran_Goliath, 4);
-			// if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
-			// this.mapUnitTotal.put(UnitType.Terran_Goliath,
-			// MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
-			// }
-			//
-			// if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 40) {
-			// this.mapUnitTotal.put(UnitType.Terran_Marine,
-			// MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
-			// }
-			// }
 		} else {
 			this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
 			if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {

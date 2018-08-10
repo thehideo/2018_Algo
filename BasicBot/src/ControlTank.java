@@ -28,7 +28,7 @@ public class ControlTank extends ControlAbstract {
 			for (Unit enemyUnit : MyVariable.enemyGroundUnit) {
 				int distance = unit.getDistance(enemyUnit);
 				// 적 유닛이 시즈 탱크이면 좀더 멀리 대기 한다.
-				if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode && distance <= SIEGE_MODE_MAX_RANGE + 32) {
+				if (enemyUnit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode && distance <= SIEGE_MODE_MAX_RANGE + 32) {
 					result = true;
 					break;
 				} else if (unit.canAttack(enemyUnit) && distance >= SIEGE_MODE_MIN_RANGE && distance <= SIEGE_MODE_MAX_RANGE) {

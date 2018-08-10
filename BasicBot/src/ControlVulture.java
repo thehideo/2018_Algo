@@ -20,8 +20,8 @@ public class ControlVulture extends ControlAbstract {
 			if (MyUtil.distanceTilePosition(MyVariable.enemyStartLocation, unit.getTilePosition()) < MyUtil.distanceTilePosition(MyVariable.enemyFirstchokePoint, MyVariable.enemyStartLocation) + 10) {
 				useSpider_Mines = true;
 			}
-
-			if ((unit.getSpiderMineCount() == 3 || MyVariable.findTank || findEnemy.contains(unit.getID())) && MyUtil.distanceTilePosition(MyVariable.myStartLocation, unit.getTilePosition()) > MyUtil.distanceTilePosition(MyVariable.myStartLocation, MyVariable.myFirstchokePoint)) {
+			//((unit.getSpiderMineCount() == 3 || 
+			if(( MyVariable.findTank || findEnemy.contains(unit.getID())) && MyUtil.distanceTilePosition(MyVariable.myStartLocation, unit.getTilePosition()) > MyUtil.distanceTilePosition(MyVariable.myStartLocation, MyVariable.myFirstchokePoint)) {
 				useSpider_Mines = true;
 			}
 

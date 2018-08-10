@@ -61,16 +61,13 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
 		} else {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() <= 15) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
-			}
-			if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() <= 10) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
-			}
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
 		}
-
 		if (MyVariable.getSelfUnit(UnitType.Terran_Physics_Lab).size() > 0) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Battlecruiser, 1);
+		}
+		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Science_Vessel).size() < 3) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Science_Vessel, 1);
 		}
 	}
 

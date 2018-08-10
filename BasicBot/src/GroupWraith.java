@@ -13,8 +13,9 @@ public class GroupWraith extends GroupAbstract {
 
 	@Override
 	public void action() {
-
-		this.mapUnitTotal.put(UnitType.Terran_Wraith, MyVariable.getSelfUnit(UnitType.Terran_Wraith).size());
+		if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() > 6) {
+			this.mapUnitTotal.put(UnitType.Terran_Wraith, 4);
+		}
 
 		if (listTilePosition.size() > 0) {
 			for (UnitType unitType : this.mapUnit.keySet()) {
