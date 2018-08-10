@@ -80,16 +80,17 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 < MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 2);
 		}
+		if (MyUtil.GetMyTankCnt() * 4 < MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
+		}
+
 		if (MyVariable.findMutal) {
 			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Science_Vessel).size() < 3) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Science_Vessel, 1);
 			}
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
-		} else {
-			if (MyUtil.GetMyTankCnt() * 4 < MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
-			}
 		}
+
 	}
 
 }

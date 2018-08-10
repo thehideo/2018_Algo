@@ -251,7 +251,8 @@ public class ConstructionPlaceFinder {
 					int Y = unit.getTilePosition().getY();
 
 					TilePosition tilePositionUp = new TilePosition(X, Y + buildingType.tileHeight() * MyVariable.yy);
-					if (canBuildHereWithSpace(tilePositionUp, b, 0)) {
+					TilePosition tilePositionUp2 = new TilePosition(X, Y + buildingType.tileHeight() * MyVariable.yy + MyVariable.yy);
+					if (canBuildHereWithSpace(tilePositionUp, b, 0) && canBuildHereWithSpace(tilePositionUp2, b, 0)) {
 						return tilePositionUp;
 					}
 
@@ -268,7 +269,8 @@ public class ConstructionPlaceFinder {
 					}
 
 					TilePosition tilePositionDown = new TilePosition(X, Y - buildingType.tileHeight() * MyVariable.yy);
-					if (canBuildHereWithSpace(tilePositionDown, b, 0)) {
+					TilePosition tilePositionDown2 = new TilePosition(X, Y - buildingType.tileHeight() * MyVariable.yy - MyVariable.yy);
+					if (canBuildHereWithSpace(tilePositionDown, b, 0) && canBuildHereWithSpace(tilePositionDown2, b, 0)) {
 						return tilePositionDown;
 					}
 					noPlaceSupply.add(unit);

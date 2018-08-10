@@ -265,13 +265,13 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 
 		// 벙커 건설
 		if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Barracks).size() >= 1)
-			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
+			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Bunker, MyUtil.GetMyBunkerBuildPosition().toTilePosition(), false);
 
 		if (checkNeedToBuild(UnitType.Terran_Bunker, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 4)
-			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
+			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Bunker, MyUtil.GetMyBunkerBuildPosition().toTilePosition(), false);
 
-		if (checkNeedToBuild(UnitType.Terran_Bunker, 3) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 8)
-			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
+		//if (checkNeedToBuild(UnitType.Terran_Bunker, 3) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 8)
+		//	BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Bunker, InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition(), false);
 
 		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2) {
 			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);

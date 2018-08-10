@@ -145,7 +145,7 @@ public class GroupAttack extends GroupAbstract {
 				}
 				// 확장 기지가 있다면
 				else {
-					if (MyVariable.attackUnit.size() > 40 && MyUtil.GetMyTankCnt() >= 3) {
+					if (MyVariable.attackUnit.size() > 40) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}

@@ -107,7 +107,7 @@ public class MyUtil {
 		}
 
 		TilePosition target = null;
-		if (InformationManager.Instance().enemyRace == Race.Terran || InformationManager.Instance().enemyRace == Race.Protoss) {
+		if (InformationManager.Instance().enemyRace == Race.Terran) {
 			target = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition();
 		} else {
 			if (MyVariable.mostCloseBunker != null) {
