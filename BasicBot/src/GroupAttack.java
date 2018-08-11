@@ -132,7 +132,10 @@ public class GroupAttack extends GroupAbstract {
 			}
 			// 테란 공격 조건
 			else if (InformationManager.Instance().enemyRace == Race.Terran) {
-				if (MyBotModule.Broodwar.self().supplyTotal() >= 380) {
+				//if (MyBotModule.Broodwar.self().supplyTotal() >= 380) {
+				//	MyVariable.isFullScaleAttackStarted = true;
+				//}
+				if (MyVariable.attackUnit.size() > 30) {
 					MyVariable.isFullScaleAttackStarted = true;
 				}
 			}

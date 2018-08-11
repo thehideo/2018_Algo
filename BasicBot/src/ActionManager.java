@@ -27,6 +27,7 @@ public class ActionManager {
 		addAction(new ActionCreateBuilding(), 5);
 		addAction(new ActionSetUnitRatio(), 6);
 		addAction(new ActionControlBunker(), 6);
+		addAction(new ActionControlDropShip(), 6);
 		addAction(new ActionControlGroup(), 7);
 		addAction(new ActionSupplyManagement(), 8);
 

@@ -24,6 +24,18 @@ public class ControlGoliath extends ControlAbstract {
 			}
 		}
 
+		if (groupAbstract == GroupManager.instance().groupAttack) {
+			if (ActionControlDropShip.needDropShipMember == true) {
+				for (Unit dropship : MyVariable.getSelfUnit(UnitType.Terran_Dropship)) {
+					if (dropship.isCompleted() && MyVariable.mapMyRegion.contains(dropship.getTilePosition())) {
+						if (dropship.getSpaceRemaining() > 0 && ControlDropShip.mapPatrol.get(dropship.getID()).size()==0  && ControlDropShip.mapBackPath.get(dropship.getID()).size()==0  ) {
+							CommandUtil.rightClick(unit, dropship);
+						}
+					}
+				}
+			}
+		}
+
 		if (groupAbstract == GroupManager.instance().groupPatrol) {
 			patrolGroupAction(unit, groupAbstract);
 		}

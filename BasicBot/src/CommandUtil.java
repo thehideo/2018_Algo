@@ -43,6 +43,15 @@ public class CommandUtil {
 		unit.unsiege();
 	}
 
+	static public void unloadAll(Unit unit) {
+		if (commandHash.contains(unit)) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+		unit.unloadAll();
+	}
+
 	static public void useTech(Unit unit, TechType techType) {
 		if (commandHash.contains(unit)) {
 			return;
@@ -160,13 +169,6 @@ public class CommandUtil {
 	}
 
 	static public void rightClick(Unit unit, Unit target) {
-
-		if (commandHash.contains(unit) && unit.getType() != UnitType.Terran_SCV) {
-			return;
-		} else {
-			commandHash.add(unit);
-		}
-
 		UnitCommand currentCommand = unit.getLastCommand();
 
 		if (currentCommand.getTarget() == target && unit.isIdle() == false) {
@@ -181,12 +183,7 @@ public class CommandUtil {
 	}
 
 	static public void repair(Unit unit, Unit target) {
-		if (commandHash.contains(unit) && unit.getType() != UnitType.Terran_SCV) {
-			return;
-		} else {
-			commandHash.add(unit);
-		}
-
+	
 		UnitCommand currentCommand = unit.getLastCommand();
 
 		if (currentCommand.getTarget() == target && unit.isIdle() == false) {

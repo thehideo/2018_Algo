@@ -12,6 +12,7 @@ public class GroupManager {
 	public GroupWraith groupWraith = new GroupWraith();
 	public GroupPatrol groupPatrol = new GroupPatrol();
 	public GroupLandBuilding groupLandBuilding = new GroupLandBuilding();
+	public GroupDropShip groupDropShip = new GroupDropShip();
 
 	// 싱글톤
 	public static GroupManager instance() {
@@ -41,6 +42,8 @@ public class GroupManager {
 		mapUnitTypeControl.put(UnitType.Terran_Wraith, new ControlWraith());
 		mapUnitTypeControl.put(UnitType.Terran_Science_Vessel, new ControlScienceVessel());
 		mapUnitTypeControl.put(UnitType.Terran_Barracks, new ControlBarrack());
+		mapUnitTypeControl.put(UnitType.Terran_Dropship, new ControlDropShip());
+		mapUnitTypeControl.put(UnitType.Terran_Battlecruiser, new ControlBattleCruiser());
 	}
 
 	public ControlAbstract getControlAbstract(UnitType unitType) {
@@ -60,6 +63,7 @@ public class GroupManager {
 		groupWraith.action();
 		groupPatrol.action();
 		groupLandBuilding.action();
+		groupDropShip.action();
 	}
 
 	// 모자라는 그룹에 인원을 채워넛는다.
@@ -68,6 +72,7 @@ public class GroupManager {
 		fillGroup(groupDefence);
 		fillGroup(groupPatrol);
 		fillGroup(groupWraith);
+		fillGroup(groupDropShip);
 	}
 
 	void fillGroup(GroupAbstract groupAbstract) {
@@ -80,7 +85,7 @@ public class GroupManager {
 							addToGroup(unitType, unitID, groupAbstract);
 							break;
 						}
-						
+
 					}
 				}
 			}
@@ -91,14 +96,12 @@ public class GroupManager {
 		GroupAbstract result = mapUnitGroup.get(unit.getID());
 		return result;
 	}
-	
+
 	void addToGroup(UnitType unitType, Integer unitID, GroupAbstract groupAbstract) {
 		remove(unitType, unitID);
 		mapUnitGroup.put(unitID, groupAbstract);
 		groupAbstract.addUnit(unitType, unitID);
 	}
-
-	
 
 	void remove(UnitType unitType, Integer unitID) {
 		mapUnitGroup.remove(unitID);
@@ -108,5 +111,6 @@ public class GroupManager {
 		groupWraith.removeUnit(unitType, unitID);
 		groupPatrol.removeUnit(unitType, unitID);
 		groupLandBuilding.removeUnit(unitType, unitID);
+		groupDropShip.removeUnit(unitType, unitID);
 	}
 }

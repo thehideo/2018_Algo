@@ -310,6 +310,8 @@ public class GameCommander {
 				// Wraith가 attackGroup에 있어야 patrolGroup에 들어가고 알고부장 일 때 검색한다.
 				else if (unit.getType() == UnitType.Terran_Science_Vessel) {
 					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupScanUnit);
+				} else if (unit.getType() == UnitType.Terran_Dropship) {
+					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupDropShip);
 				} else if (unit.getType() != UnitType.Terran_Vulture_Spider_Mine) {
 					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupAttack);
 				}

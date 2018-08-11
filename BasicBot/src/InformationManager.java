@@ -289,6 +289,9 @@ public class InformationManager {
 				if (unit.isFlying() == false) {
 					MyVariable.enemyGroundUnit.add(unit);
 				}
+				
+				
+
 
 				if (unit.isAttacking()) {
 					MyVariable.enemyAttactingUnit.add(unit);
