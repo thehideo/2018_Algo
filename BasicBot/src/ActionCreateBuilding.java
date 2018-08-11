@@ -71,7 +71,14 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 				BaseLocation bl4 = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy());
 				if (bl3 != null && bl4 != null) {
 					for (BaseLocation bl : listBaseLocation) {
-						if (!bl.getTilePosition().equals(bl1.getTilePosition()) && !bl.getTilePosition().equals(bl3.getTilePosition()) && !bl.getTilePosition().equals(bl4.getTilePosition()) && !MyVariable.mapSelfMainBuilding.contains(bl.getTilePosition()) && !MyVariable.mapEnemyMainBuilding.contains(bl.getTilePosition()) && !MyVariable.enemyBuildingUnit.contains(bl.getTilePosition())) {
+						boolean hasCommandCenterThere = false;
+						for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
+							if (MyUtil.distanceTilePosition(unit.getTilePosition(), bl.getTilePosition()) < 5) {
+								hasCommandCenterThere = true;
+								break;
+							}
+						}
+						if (hasCommandCenterThere == false && !bl.getTilePosition().equals(bl1.getTilePosition()) && !bl.getTilePosition().equals(bl3.getTilePosition()) && !bl.getTilePosition().equals(bl4.getTilePosition()) && !MyVariable.mapSelfMainBuilding.contains(bl.getTilePosition()) && !MyVariable.mapEnemyMainBuilding.contains(bl.getTilePosition()) && !MyVariable.enemyBuildingUnit.contains(bl.getTilePosition())) {
 							listTilePosition.add(bl.getTilePosition());
 						}
 					}
@@ -84,7 +91,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 						ArrayList<Unit> turrets = MyVariable.getSelfUnit(UnitType.Terran_Missile_Turret);
 
 						for (Unit unit : turrets) {
-							if (MyUtil.distanceTilePosition(unit.getTilePosition(), listTilePosition.get(0)) <= 7) {
+							if (MyUtil.distanceTilePosition(unit.getTilePosition(), listTilePosition.get(0)) <= 8) {
 								hasTurrets = true;
 								break;
 							}
@@ -113,12 +120,12 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		}
 
 		// 초반에 바로 가스를 지으면 안되기 때무에 12마리 보다 크다는 조건을 넣었음
-		if (MyVariable.attackUnit.size() > 8) {
+		if (MyVariable.attackUnit.size() > 8 || MyBotModule.Broodwar.getFrameCount() > 5000) {
 			// Command Center 주위에 가스를 건설할수 있으면 추가한다.
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
 				TilePosition tilePosition = ConstructionPlaceFinder.Instance().getRefineryPositionNear(unit.getTilePosition());
 				if (tilePosition != null && !MyVariable.mapRefineryPosition.contains(tilePosition) && BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Refinery) == 0 && ConstructionManager.Instance().getConstructionQueueItemCount(UnitType.Terran_Refinery, null) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, tilePosition, true);
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Refinery, tilePosition, true);
 				}
 			}
 		}
@@ -252,7 +259,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		}
 
 		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2) {
-			MyVariable.needTerran_Science_Vessel = true;
+			//MyVariable.needTerran_Science_Vessel = true;
 		}
 
 		if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {

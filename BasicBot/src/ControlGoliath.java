@@ -1,5 +1,9 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import bwapi.Position;
 import bwapi.Race;
+import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -19,27 +23,30 @@ public class ControlGoliath extends ControlAbstract {
 				}
 			}
 		}
-		
-	
 
-		if (MyVariable.isFullScaleAttackStarted == false && GroupManager.instance().groupAttack == groupAbstract && InformationManager.Instance().enemyRace == Race.Terran) {
-			if (MyUtil.getSaveTilePosition(13) != null && unit.getDistance(MyUtil.getSaveTilePosition(13).toPosition()) <= SIEGE_MODE_MAX_RANGE + 1) {
-				CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
-			}		
-			
-			if (MyVariable.getEnemyUnit(UnitType.Terran_Wraith).size() > 0) {
-				Unit mostCloseCarrier = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Wraith, unit);
-				if (mostCloseCarrier != null) {
-					if (mostCloseCarrier.getDistance(unit) < 32*20) {
-						CommandUtil.attackMove(unit, mostCloseCarrier.getPosition());
-						//setSpecialAction(unit);
-					}
-				}
-			}
+		if (groupAbstract == GroupManager.instance().groupPatrol) {
+			patrolGroupAction(unit, groupAbstract);
 		}
 
 		Position target = groupAbstract.getTargetPosition(unit);
 		CommandUtil.attackMove(unit, target);
 
+	}
+
+	static HashMap<Integer, ArrayList<TilePosition>> mapPatrol = new HashMap<Integer, ArrayList<TilePosition>>();
+
+	void patrolGroupAction(Unit wraith, GroupAbstract groupAbstract) {
+		if (!mapPatrol.containsKey(wraith.getID()) || mapPatrol.get(wraith.getID()).size() == 0) {
+			mapPatrol.put(wraith.getID(), GroupWraith.makeNewList());
+		}
+		ArrayList<TilePosition> targetList = mapPatrol.get(wraith.getID());
+		if (targetList.size() > 0) {
+			TilePosition target = targetList.get(0);
+			if (MyUtil.distanceTilePosition(target, wraith.getTilePosition()) <= 2) {
+				targetList.remove(0);
+			} else {
+				CommandUtil.attackMove(wraith, target.toPosition());
+			}
+		}
 	}
 }

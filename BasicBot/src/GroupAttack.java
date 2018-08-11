@@ -114,7 +114,7 @@ public class GroupAttack extends GroupAbstract {
 			// targetPosition = MyVariable.myStartLocation.toPosition();
 
 			targetPosition = MyUtil.getSaveTilePosition(0).toPosition();
-			targetPositionForTank = MyUtil.getSaveTilePosition(13).toPosition();
+			targetPositionForTank = MyUtil.getSaveTilePosition(MyVariable.tankLineDistance).toPosition();
 
 			// 프로토스 공격 조건
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {

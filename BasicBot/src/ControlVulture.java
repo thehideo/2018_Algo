@@ -20,7 +20,7 @@ public class ControlVulture extends ControlAbstract {
 			if (MyUtil.distanceTilePosition(MyVariable.enemyStartLocation, unit.getTilePosition()) < MyUtil.distanceTilePosition(MyVariable.enemyFirstchokePoint, MyVariable.enemyStartLocation) + 10) {
 				useSpider_Mines = true;
 			}
-			//((unit.getSpiderMineCount() == 3 || 
+
 			if(( MyVariable.findTank || findEnemy.contains(unit.getID())) && MyUtil.distanceTilePosition(MyVariable.myStartLocation, unit.getTilePosition()) > MyUtil.distanceTilePosition(MyVariable.myStartLocation, MyVariable.myFirstchokePoint)) {
 				useSpider_Mines = true;
 			}
@@ -45,7 +45,8 @@ public class ControlVulture extends ControlAbstract {
 		}
 
 		if (groupAbstract == GroupManager.instance().groupAttack && MyVariable.findTank == false) {
-			if (MyVariable.isFullScaleAttackStarted == false && unit.getSpiderMineCount() > 0 && unit.canUseTech(TechType.Spider_Mines, unit.getPosition()) && MyVariable.enemyAttactUnit.size() == 0) {
+			//if (MyVariable.isFullScaleAttackStarted == false && unit.getSpiderMineCount() > 0 && unit.canUseTech(TechType.Spider_Mines, unit.getPosition()) && MyVariable.enemyAttactUnit.size() == 0) {
+			if (MyVariable.isFullScaleAttackStarted == false) {
 				for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
 					if (unit.getHitPoints() == UnitType.Terran_Vulture.maxHitPoints()) {
 						CommandUtil.attackMove(unit, tilePosition.toPosition());

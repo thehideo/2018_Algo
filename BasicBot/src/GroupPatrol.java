@@ -16,13 +16,7 @@ public class GroupPatrol extends GroupAbstract {
 	public void action() {
 		// 마린은 지정하면 안됨
 		if (InformationManager.Instance().enemyRace == Race.Terran) {
-			if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
-				this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
-			}
-
-			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 40) {
-				this.mapUnitTotal.put(UnitType.Terran_Marine, MyVariable.getSelfUnit(UnitType.Terran_Marine).size() / 10);
-			}
+			this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size());
 		} else {
 			this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
 			if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {

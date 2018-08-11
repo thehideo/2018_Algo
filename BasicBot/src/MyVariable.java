@@ -104,6 +104,9 @@ public class MyVariable {
 
 	// 전체
 	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
+	
+	
+	public static int tankLineDistance = 13;
 
 	public static Set<UnitType> getSelfUnitKey() {
 		return mapSelfUnit.keySet();

@@ -14,7 +14,7 @@ public class GroupDefence extends GroupAbstract {
 			this.mapUnitTotal.put(UnitType.Terran_Wraith, GroupManager.instance().groupAttack.getUnitTypeCnt(UnitType.Terran_Wraith) / 3);
 			this.mapUnitTotal.put(UnitType.Terran_Vulture, GroupManager.instance().groupAttack.getUnitTypeCnt(UnitType.Terran_Vulture) / 3);
 		} else {
-			this.mapUnitTotal.clear();
+			//this.mapUnitTotal.clear();
 
 			// 많이 할당 된것은 다시 attack Group으로 이동한다.
 			for (UnitType unitType : this.mapUnit.keySet()) {
