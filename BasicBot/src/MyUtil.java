@@ -169,7 +169,7 @@ public class MyUtil {
 			}
 
 			// 적이 있으면 있으면 전진하지 않는다.
-			if (MyVariable.enemyAttactUnit.size() > 0) {
+			if (MyUtil.GetEnemyTankCnt() > 0) {
 				goTimer = MyBotModule.Broodwar.getFrameCount();
 			}
 
@@ -232,6 +232,19 @@ public class MyUtil {
 		for (Unit enemyUnit : enemyUnitList) {
 			double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), enemyUnit.getTilePosition());
 			if (minDistance > distance) {
+				minDistance = distance;
+				mostCloseEnemyUnit = enemyUnit;
+			}
+		}
+		return mostCloseEnemyUnit;
+	}
+
+	public static Unit getMostCloseEnemyUnit(Unit unit, ArrayList<Unit> enemyUnitList, int radius) {
+		Unit mostCloseEnemyUnit = null;
+		double minDistance = Double.MAX_VALUE;
+		for (Unit enemyUnit : enemyUnitList) {
+			double distance = MyUtil.distanceTilePosition(unit.getTilePosition(), enemyUnit.getTilePosition());
+			if (minDistance > distance && distance < radius) {
 				minDistance = distance;
 				mostCloseEnemyUnit = enemyUnit;
 			}

@@ -204,7 +204,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		}
 
 		// Terran_Machine_Shop 건설
-		if (checkNeedToBuild(UnitType.Terran_Machine_Shop, MyVariable.getSelfUnit(UnitType.Terran_Factory).size()) && MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() >= 4) {
+		if (checkNeedToBuild(UnitType.Terran_Machine_Shop, MyVariable.getSelfUnit(UnitType.Terran_Factory).size()) && (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() >= 4 || MyUtil.GetMyTankCnt()>=1)) {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 

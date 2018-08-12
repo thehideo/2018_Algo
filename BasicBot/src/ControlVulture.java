@@ -57,6 +57,7 @@ public class ControlVulture extends ControlAbstract {
 				List<Unit> ourUnits = MyBotModule.Broodwar.getUnitsInRadius(unit.getPosition(), 32 * 7);
 				int enemyVultureCnt = 0;
 				int selfVultureCnt = 0;
+
 				for (Unit u : ourUnits) {
 					if (u.getType() == UnitType.Terran_Vulture) {
 						if (u.getPlayer() == MyBotModule.Broodwar.enemy()) {
@@ -68,25 +69,29 @@ public class ControlVulture extends ControlAbstract {
 					}
 				}
 
-				// 내가 상대방 보다 많으면 공격하고
-				if (enemyVultureCnt>0 && selfVultureCnt > enemyVultureCnt) {
-					Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseEnemyUnit(unit, MyVariable.enemyAttactUnit);
-					if (mostCloseEnemyAttackUnit != null) {
-						CommandUtil.attackUnit(unit, mostCloseEnemyAttackUnit);
-						return;
+				// 적이 있을 때
+				if (enemyVultureCnt > 0)
+				{
+					// 내가 상대방 보다 많으면 공격하고
+					if (selfVultureCnt > enemyVultureCnt) {
+						Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseEnemyUnit(unit, MyVariable.enemyAttactUnit);
+						if (mostCloseEnemyAttackUnit != null) {
+							CommandUtil.attackUnit(unit, mostCloseEnemyAttackUnit);
+							return;
+						}
 					}
-				}
-				// 그렇지 않으면 도망간다.
-				else {
-					if (MyUtil.distanceTilePosition(MyVariable.myStartLocation, unit.getTilePosition()) >= 5) {
-						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
-						return;
+					// 그렇지 않으면 도망간다.
+					else {
+						if (MyUtil.distanceTilePosition(MyVariable.myStartLocation, unit.getTilePosition()) >= 5) {
+							CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+							return;
+						}
 					}
 				}
 
 				// 주위에 적군이 없으면
 				// 그렇지 않으면 상대 본진으로 가면서 마인을 심고 돌아온다.
-				
+
 				// 탱크나 벙커가 안보이면 마인을 심고 가서 적 본진 앞에 대기하고
 				if (MyVariable.findTank == false && MyVariable.findBunker == false) {
 					CommandUtil.attackMove(unit, InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy()).getPoint());
@@ -94,7 +99,7 @@ public class ControlVulture extends ControlAbstract {
 				// 그렇지 않으면 마인만 심는다.
 				else if (unit.getSpiderMineCount() > 0) {
 					CommandUtil.attackMove(unit, InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy()).getPoint());
-				}else {
+				} else {
 					CommandUtil.attackMove(unit, MyUtil.getSaveTilePosition(0).toPosition());
 				}
 
