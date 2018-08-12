@@ -23,7 +23,7 @@ public class ControlWraith extends ControlAbstract {
 			terranAction(wraith, groupAbstract);
 		}
 
-		if (groupAbstract == GroupManager.instance().groupWraith) {
+		if (groupAbstract == GroupManager.instance().groupWraithPatrol) {
 			wraithGroupAction(wraith, groupAbstract);
 		}
 
@@ -120,33 +120,35 @@ public class ControlWraith extends ControlAbstract {
 
 	void terranAction(Unit wraith, GroupAbstract groupAbstract) {
 		Unit Terran_Missile_Turret = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Missile_Turret, wraith);
-		if (Terran_Missile_Turret != null && Terran_Missile_Turret.isCompleted() && MyUtil.distanceTilePosition(Terran_Missile_Turret.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Missile_Turret.airWeapon().maxRange() + 1) {
+		if (Terran_Missile_Turret != null && Terran_Missile_Turret.isCompleted() && MyUtil.distanceTilePosition(Terran_Missile_Turret.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Missile_Turret.airWeapon().maxRange() / 32 + 1) {
 			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 			return;
 		}
 
-		Unit Terran_Goliath = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Goliath, wraith);
-		if (Terran_Goliath != null && MyUtil.distanceTilePosition(Terran_Goliath.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Goliath.airWeapon().maxRange() + 1) {
-			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-			return;
-		}
+		if (wraith.isDetected() == false && wraith.getEnergy() < 5) {
+			Unit Terran_Goliath = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Goliath, wraith);
+			if (Terran_Goliath != null && MyUtil.distanceTilePosition(Terran_Goliath.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Goliath.airWeapon().maxRange() / 32 + 1) {
+				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+				return;
+			}
 
-		Unit Terran_Marine = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Marine, wraith);
-		if (Terran_Marine != null && MyUtil.distanceTilePosition(Terran_Marine.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Marine.airWeapon().maxRange() + 1) {
-			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-			return;
-		}
+			Unit Terran_Marine = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Marine, wraith);
+			if (Terran_Marine != null && MyUtil.distanceTilePosition(Terran_Marine.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Marine.airWeapon().maxRange() / 32 + 1) {
+				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+				return;
+			}
 
-		Unit Terran_Bunker = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Bunker, wraith);
-		if (Terran_Bunker != null && MyUtil.distanceTilePosition(Terran_Bunker.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Bunker.airWeapon().maxRange() + 1) {
-			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-			return;
-		}
+			Unit Terran_Bunker = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Bunker, wraith);
+			if (Terran_Bunker != null && MyUtil.distanceTilePosition(Terran_Bunker.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Bunker.airWeapon().maxRange() / 32 + 1) {
+				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+				return;
+			}
 
-		Unit Terran_Valkyrie = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Valkyrie, wraith);
-		if (Terran_Valkyrie != null && MyUtil.distanceTilePosition(Terran_Valkyrie.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Valkyrie.airWeapon().maxRange() + 1) {
-			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-			return;
+			Unit Terran_Valkyrie = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Valkyrie, wraith);
+			if (Terran_Valkyrie != null && MyUtil.distanceTilePosition(Terran_Valkyrie.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Valkyrie.airWeapon().maxRange() / 32 + 1) {
+				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+				return;
+			}
 		}
 	}
 
