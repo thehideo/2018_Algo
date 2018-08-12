@@ -9,8 +9,8 @@ public abstract class ControlAbstract {
 
 	HashMap<Integer, Integer> mapSpecialActionTime = new HashMap<Integer, Integer>();
 
-	void setSpecialAction(Unit unit) {
-		mapSpecialActionTime.put(unit.getID(), MyBotModule.Broodwar.getFrameCount());
+	void setSpecialAction(Unit unit, int addTime) {
+		mapSpecialActionTime.put(unit.getID(), MyBotModule.Broodwar.getFrameCount() + addTime);
 	}
 
 	void action(Unit unit, GroupAbstract groupAbstract) {
@@ -31,7 +31,7 @@ public abstract class ControlAbstract {
 		}
 
 		if (groupAbstract == GroupManager.instance().groupAttack) {
-			if (MyVariable.isFullScaleAttackStarted == true && unit==MyVariable.mostFarAttackUnit) {
+			if (MyVariable.isFullScaleAttackStarted == true && unit == MyVariable.mostFarAttackUnit) {
 
 				CommandUtil.attackMove(unit, MyVariable.myStartLocation.getPoint().toPosition());
 

@@ -1,6 +1,4 @@
-import java.util.HashMap;
-
-import bwapi.Position;
+import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -15,7 +13,6 @@ public class GroupDefence extends GroupAbstract {
 			this.mapUnitTotal.put(UnitType.Terran_Vulture, GroupManager.instance().groupAttack.getUnitTypeCnt(UnitType.Terran_Vulture) / 3);
 		} else {
 			this.mapUnitTotal.clear();
-
 			// 많이 할당 된것은 다시 attack Group으로 이동한다.
 			for (UnitType unitType : this.mapUnit.keySet()) {
 				Integer cnt = 0;
@@ -42,7 +39,14 @@ public class GroupDefence extends GroupAbstract {
 			this.mapUnitTotal.put(UnitType.Terran_Goliath, 2);
 		}
 
-		if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
+		if (MyVariable.isFullScaleAttackStarted == true) {
+			mapTargetUnit.clear();
+			for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
+				targetPosition = tilePosition.toPosition();
+				targetPositionForTank = tilePosition.toPosition();
+				break;
+			}
+		} else if (MyVariable.enemyUnitAroundMyStartPoint.size() > 0) {
 			for (Unit enemyUnit : MyVariable.enemyUnitAroundMyStartPoint) {
 				targetPosition = enemyUnit.getPosition();
 				targetPositionForTank = enemyUnit.getPosition();

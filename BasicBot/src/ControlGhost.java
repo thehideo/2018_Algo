@@ -44,11 +44,9 @@ public class ControlGhost extends ControlAbstract {
 		// 락다운 사용할 캐리어가 있으면 락다운 사용
 		Unit carrier = getMostCloseCarrierLockDown(ghost);
 		if (carrier != null && ghost.canUseTech(TechType.Lockdown, carrier)) {
-
 			CommandUtil.useTech(ghost, TechType.Lockdown, carrier);
-			setSpecialAction(ghost);
+			setSpecialAction(ghost, 0);
 			mapLockDown.put(carrier, MyBotModule.Broodwar.getFrameCount());
-
 		}
 
 		if (ghost.isIdle() && MyVariable.mostFarTank != null) {

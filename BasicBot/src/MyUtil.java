@@ -49,6 +49,13 @@ public class MyUtil {
 		return GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Tank_Mode).size() + GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Siege_Mode).size();
 	}
 
+	static int GetMyTankSiegeCnt() {
+		if (GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Tank_Mode) == null) {
+			GroupManager.instance().groupAttack.mapUnit.put(UnitType.Terran_Siege_Tank_Tank_Mode, new HashSet<Integer>());
+		}
+		return GroupManager.instance().groupAttack.mapUnit.get(UnitType.Terran_Siege_Tank_Siege_Mode).size();
+	}
+
 	static int GetEnemyTankCnt() {
 		return MyVariable.getEnemyUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() + MyVariable.getEnemyUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size();
 	}
@@ -131,13 +138,25 @@ public class MyUtil {
 		}
 		List<TilePosition> shortestPath = mapShortestPath.get(target);
 
+		if (shortestPath != null && shortestPath.size() > 0 && GetMyTankCnt() > 2) {
+			for (int i = indexToGo; i < shortestPath.size(); i++) {
+				TilePosition tp = shortestPath.get(i);
+				TilePosition tp2 = new TilePosition(tp.getX() / 4, tp.getY() / 4);
+				if (MyVariable.spinderMinePosition.contains(tp2)) {
+					if (indexToGo < i - 13) {
+						indexToGo = i - 13;
+					}
+				}
+			}
+		}
+
 		if (shortestPath == null || shortestPath.size() == 0) {
 			shortestPath = new ArrayList<TilePosition>();
 			shortestPath.add(target);
 		}
 
 		// 탱크가 4마리 이상이면 앞으로 서서히 전진
-		if (MyUtil.GetMyTankCnt() >= 4) {
+		if (MyUtil.GetMyTankCnt() >= 2) {
 			// 전진후 일정 시간이 지나면 한칸 더 앞으로 이동한다.
 			if ((MyVariable.enemyAttactUnit.size() == 0 && MyBotModule.Broodwar.getFrameCount() > goTimer + 100)) {
 				if (indexToGo >= shortestPath.size() - 30) {
@@ -149,7 +168,7 @@ public class MyUtil {
 
 			}
 
-			// 적이 탱크가 있으면 있으면 전진하지 않는다.
+			// 적이 있으면 있으면 전진하지 않는다.
 			if (MyVariable.enemyAttactUnit.size() > 0) {
 				goTimer = MyBotModule.Broodwar.getFrameCount();
 			}

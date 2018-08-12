@@ -15,12 +15,18 @@ public class GroupPatrol extends GroupAbstract {
 	@Override
 	public void action() {
 		// 마린은 지정하면 안됨
+
 		if (InformationManager.Instance().enemyRace == Race.Terran) {
-			if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
-				this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
-			}
-			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 40) {
-				this.mapUnitTotal.put(UnitType.Terran_Marine, MyVariable.getSelfUnit(UnitType.Terran_Marine).size() / 10);
+			if (MyUtil.indexToGo >= 20) {
+				int Terran_Goliath = GroupManager.instance().groupAttack.getUnitTypeCnt(UnitType.Terran_Goliath) / 2;
+				if (Terran_Goliath >= 0) {
+					this.mapUnitTotal.put(UnitType.Terran_Goliath, Terran_Goliath);
+				}
+
+				int Terran_Vulture = GroupManager.instance().groupAttack.getUnitTypeCnt(UnitType.Terran_Vulture) / 2;
+				if (Terran_Vulture >= 0) {
+					this.mapUnitTotal.put(UnitType.Terran_Vulture, Terran_Vulture);
+				}
 			}
 		} else {
 			this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
@@ -140,7 +146,14 @@ public class GroupPatrol extends GroupAbstract {
 
 		}
 
-		if (listTilePosition.size() > 0) {
+		if (MyVariable.isFullScaleAttackStarted == true) {
+			mapTargetUnit.clear();
+			for (TilePosition tilePosition : MyVariable.enemyBuildingUnit) {
+				targetPosition = tilePosition.toPosition();
+				targetPositionForTank = tilePosition.toPosition();
+				break;
+			}
+		} else if (listTilePosition.size() > 0) {
 			this.targetPosition = listTilePosition.get(0).toPosition();
 		}
 	}

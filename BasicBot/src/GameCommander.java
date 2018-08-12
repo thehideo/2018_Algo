@@ -102,20 +102,7 @@ public class GameCommander {
 					MyVariable.addonPlace.add(tp2);
 				}
 			}
-		}
-
-		int cp_range = 3;
-		for (Chokepoint cp : BWTA.getChokepoints()) {
-			TilePosition tp = cp.getPoint().toTilePosition();
-			for (int i = -cp_range; i <= cp_range; i++) {
-				for (int j = -cp_range; j <= cp_range; j++) {
-					int X = tp.getX();
-					int Y = tp.getY();
-					TilePosition t2 = new TilePosition(X + i, Y + j);
-					MyVariable.mapChokePointAround.add(t2);
-				}
-			}
-		}
+		}	
 
 		StrategyManager.Instance().onStart();
 		ActionManager.Instance().onStart();

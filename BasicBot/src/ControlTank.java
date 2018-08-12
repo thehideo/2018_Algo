@@ -41,7 +41,7 @@ public class ControlTank extends ControlAbstract {
 	}
 
 	public void actionMain(Unit unit, GroupAbstract groupAbstract) {
-		boolean need=needSiege(unit, groupAbstract);
+		boolean need = needSiege(unit, groupAbstract);
 		if (need == false && unit.isSieged()) {
 			CommandUtil.unsiege(unit);
 		}

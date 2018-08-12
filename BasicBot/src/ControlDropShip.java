@@ -29,21 +29,19 @@ public class ControlDropShip extends ControlAbstract {
 			mapPatrol.put(unit.getID(), new ArrayList<TilePosition>());
 		}
 
-		// 근처에 적 기지가 있는지 확인
+		// 근처에 적이 있는지 확인
 		List<Unit> units = MyBotModule.Broodwar.getUnitsInRadius(unit.getPoint(), 32 * 10);
-		boolean findEnemyBuilding = false;
+		boolean findEnemy = false;
 		for (Unit enemy : units) {
-			if (enemy.getPlayer() == InformationManager.Instance().enemyPlayer) {
-				if (enemy.getType().isBuilding()) {
-					findEnemyBuilding = true;
-				}
+			if (enemy.getPlayer() == InformationManager.Instance().enemyPlayer && enemy.exists() == true) {
+				findEnemy = true;
 			}
 		}
 
-		// 적기지를 발견하면 유닛을 모두 내린다
-		if (findEnemyBuilding == true && unit.canUnloadAllPosition(unit.getPosition())) {
+		// 적을 발견하면 유닛을 모두 내린다
+		if (findEnemy == true && unit.canUnloadAllPosition(unit.getPosition())) {
 			CommandUtil.unloadAll(unit);
-			setSpecialAction(unit);
+			setSpecialAction(unit,100);
 			return;
 		}
 		// 다 채웠으면 적 기지로 날아간다.

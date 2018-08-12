@@ -259,7 +259,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		}
 
 		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2) {
-			//MyVariable.needTerran_Science_Vessel = true;
+			// MyVariable.needTerran_Science_Vessel = true;
 		}
 
 		if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {

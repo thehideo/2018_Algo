@@ -10,7 +10,7 @@ import bwta.BaseLocation;
 public class GroupWraith extends GroupAbstract {
 	@Override
 	public void action() {
-		this.mapUnitTotal.put(UnitType.Terran_Wraith, MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() / 2);
+		this.mapUnitTotal.put(UnitType.Terran_Wraith, MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() / 3);
 	}
 
 	static ArrayList<TilePosition> makeNewList() {

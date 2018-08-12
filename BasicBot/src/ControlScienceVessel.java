@@ -11,7 +11,7 @@ public class ControlScienceVessel extends ControlAbstract {
 			if (mostCloseMutalisk != null) {
 				if (mostCloseMutalisk.getDistance(unit) < 1200 && unit.canUseTech(TechType.Irradiate, mostCloseMutalisk)) {
 					CommandUtil.useTech(unit, TechType.Irradiate, mostCloseMutalisk);
-					setSpecialAction(unit);
+					setSpecialAction(unit,0);
 				}
 			}
 		}

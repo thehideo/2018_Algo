@@ -12,14 +12,13 @@ public class ControlGoliath extends ControlAbstract {
 	public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
 
 	void actionMain(Unit unit, GroupAbstract groupAbstract) {
-
 		// 주위에 캐리어가 있고, 각 골리앗 마다 가장 가까운 녀석을 공격한다.
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
 			Unit mostCloseCarrier = MyUtil.getMostCloseEnemyUnit(UnitType.Protoss_Carrier, unit);
 			if (mostCloseCarrier != null) {
 				if (mostCloseCarrier.getDistance(unit) < 1200) {
 					CommandUtil.attackUnit(unit, mostCloseCarrier);
-					setSpecialAction(unit);
+					setSpecialAction(unit,0);
 				}
 			}
 		}
@@ -39,6 +38,13 @@ public class ControlGoliath extends ControlAbstract {
 		if (groupAbstract == GroupManager.instance().groupPatrol) {
 			patrolGroupAction(unit, groupAbstract);
 		}
+		
+		// 적이 탱크가 없으면 일단 전진
+		if (groupAbstract == GroupManager.instance().groupAttack && MyVariable.findTank == false && MyVariable.findBunker == false) {
+			if (MyVariable.isFullScaleAttackStarted == false) {
+				CommandUtil.attackMove(unit, InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy()).getPoint());
+			}
+		}		
 
 		Position target = groupAbstract.getTargetPosition(unit);
 		CommandUtil.attackMove(unit, target);

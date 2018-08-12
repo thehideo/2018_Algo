@@ -149,6 +149,10 @@ public class InformationManager {
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
 			MyVariable.mapUnitIDUnit.put(unit.getID(), unit);
 
+			if (unit.exists() == false) {
+				continue;
+			}
+
 			// UnitData 정보 update(기본 제공된 소스 데이터)
 			updateUnitInfo(unit);
 
@@ -289,9 +293,6 @@ public class InformationManager {
 				if (unit.isFlying() == false) {
 					MyVariable.enemyGroundUnit.add(unit);
 				}
-				
-				
-
 
 				if (unit.isAttacking()) {
 					MyVariable.enemyAttactingUnit.add(unit);
@@ -343,6 +344,12 @@ public class InformationManager {
 			}
 			if (MyVariable.getEnemyUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() > 0) {
 				MyVariable.findTank = true;
+			}
+			if (MyVariable.getEnemyUnit(UnitType.Terran_Missile_Turret).size() > 0) {
+				MyVariable.findTurret = true;
+			}
+			if (MyVariable.getEnemyUnit(UnitType.Terran_Bunker).size() > 0) {
+				MyVariable.findBunker = true;
 			}
 		}
 	}

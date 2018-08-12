@@ -9,7 +9,7 @@ public class GroupManager {
 	public GroupDefence groupDefence = new GroupDefence();
 	public GroupScanUnit groupScanUnit = new GroupScanUnit();
 	public GroupWorker groupWorker = new GroupWorker();
-	public GroupWraith groupWraith = new GroupWraith();
+	public GroupWraith groupWraithPatrol = new GroupWraith();
 	public GroupPatrol groupPatrol = new GroupPatrol();
 	public GroupLandBuilding groupLandBuilding = new GroupLandBuilding();
 	public GroupDropShip groupDropShip = new GroupDropShip();
@@ -60,7 +60,7 @@ public class GroupManager {
 		groupDefence.action();
 		groupScanUnit.action();
 		groupWorker.action();
-		groupWraith.action();
+		groupWraithPatrol.action();
 		groupPatrol.action();
 		groupLandBuilding.action();
 		groupDropShip.action();
@@ -71,7 +71,7 @@ public class GroupManager {
 	void fillGroup() {
 		fillGroup(groupDefence);
 		fillGroup(groupPatrol);
-		fillGroup(groupWraith);
+		fillGroup(groupWraithPatrol);
 		fillGroup(groupDropShip);
 	}
 
@@ -108,9 +108,10 @@ public class GroupManager {
 		groupAttack.removeUnit(unitType, unitID);
 		groupDefence.removeUnit(unitType, unitID);
 		groupScanUnit.removeUnit(unitType, unitID);
-		groupWraith.removeUnit(unitType, unitID);
+		groupWraithPatrol.removeUnit(unitType, unitID);
 		groupPatrol.removeUnit(unitType, unitID);
 		groupLandBuilding.removeUnit(unitType, unitID);
 		groupDropShip.removeUnit(unitType, unitID);
+		groupWorker.removeUnit(unitType, unitID);
 	}
 }
