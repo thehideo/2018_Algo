@@ -49,10 +49,12 @@ public class MyVariable {
 	public static boolean findWraith = false;
 
 	public static boolean findTank = false;
-	
-	public static boolean findTurret=false;
-	
-	public static boolean findBunker=false;
+
+	public static boolean findTurret = false;
+
+	public static boolean findBunker = false;
+
+	public static boolean findThreeGoliat = false;
 
 	// 초당(1000ms) 프레임수(game speed 에 따라 다름)s
 	public static int nFrameCntPerMin = Math.round(1000 / Config.SetLocalSpeed);
@@ -93,7 +95,8 @@ public class MyVariable {
 	public static HashSet<TilePosition> mapMyRegion = new HashSet<TilePosition>();
 
 	// 애드온 지을자리를 기억해둔다.
-	//public static HashSet<TilePosition> mapChokePointAround = new HashSet<TilePosition>();
+	// public static HashSet<TilePosition> mapChokePointAround = new
+	// HashSet<TilePosition>();
 
 	// 가스 지어진 자리를 기억해둔다.
 	public static HashSet<TilePosition> mapRefineryPosition = new HashSet<TilePosition>();
@@ -108,8 +111,7 @@ public class MyVariable {
 
 	// 전체
 	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
-	
-	
+
 	public static int tankLineDistance = 13;
 
 	public static Set<UnitType> getSelfUnitKey() {

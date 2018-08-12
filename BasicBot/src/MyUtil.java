@@ -169,7 +169,7 @@ public class MyUtil {
 			}
 
 			// 적이 있으면 있으면 전진하지 않는다.
-			if (MyUtil.GetEnemyTankCnt() > 0) {
+			if (MyVariable.enemyAttactUnit.size() > 0) {
 				goTimer = MyBotModule.Broodwar.getFrameCount();
 			}
 

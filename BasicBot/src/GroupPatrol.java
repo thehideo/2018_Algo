@@ -22,7 +22,6 @@ public class GroupPatrol extends GroupAbstract {
 				if (Terran_Goliath >= 0) {
 					this.mapUnitTotal.put(UnitType.Terran_Goliath, Terran_Goliath);
 				}
-
 				int Terran_Vulture = GroupManager.instance().groupAttack.getUnitTypeCnt(UnitType.Terran_Vulture) / 2;
 				if (Terran_Vulture >= 0) {
 					this.mapUnitTotal.put(UnitType.Terran_Vulture, Terran_Vulture);

@@ -138,15 +138,12 @@ public class ActionUpgrade extends ActionControlAbstract {
 					break;
 				}
 			}
-			// if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
-			// if
-			// (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters)
-			// == 0) {
-			// BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters,
-			// false);
-			// break;
-			// }
-			// }
+//			if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
+//				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters) == 0) {
+//					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters, false);
+//					break;
+//				}
+//			}
 		}
 
 		// 시즈 모드
