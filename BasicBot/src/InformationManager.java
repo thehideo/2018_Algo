@@ -252,13 +252,15 @@ public class InformationManager {
 		MyVariable.clearEnemyUnit();
 
 		// 빈 자리이면 탱크를 초기화 한다.
-		ArrayList<TilePosition> tpList = new ArrayList<TilePosition>();
-		tpList.addAll(MyVariable.mapPositionTank.keySet());
-		for (TilePosition tp : tpList) {
-			if (MyBotModule.Broodwar.isVisible(tp)) {
-				List<Unit> unit = MyBotModule.Broodwar.getUnitsOnTile(tp);
-				if (unit == null || unit.size() == 0) {
-					MyVariable.removeTankPosition(tp);
+		if (MyBotModule.Broodwar.self().supplyTotal() >= 380) {
+			ArrayList<TilePosition> tpList = new ArrayList<TilePosition>();
+			tpList.addAll(MyVariable.mapPositionTank.keySet());
+			for (TilePosition tp : tpList) {
+				if (MyBotModule.Broodwar.isVisible(tp)) {
+					List<Unit> unit = MyBotModule.Broodwar.getUnitsOnTile(tp);
+					if (unit == null || unit.size() == 0) {
+						MyVariable.removeTankPosition(tp);
+					}
 				}
 			}
 		}
