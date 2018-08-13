@@ -94,10 +94,6 @@ public class MyVariable {
 	// 내 영역을 기억해둔다. 본진에 처들어온 적을 판단하기 위해서.
 	public static HashSet<TilePosition> mapMyRegion = new HashSet<TilePosition>();
 
-	// 애드온 지을자리를 기억해둔다.
-	// public static HashSet<TilePosition> mapChokePointAround = new
-	// HashSet<TilePosition>();
-
 	// 가스 지어진 자리를 기억해둔다.
 	public static HashSet<TilePosition> mapRefineryPosition = new HashSet<TilePosition>();
 
@@ -222,6 +218,102 @@ public class MyVariable {
 
 	// 본진 근처 적유닛
 	public static ArrayList<Unit> enemyUnitAroundMyStartPoint = new ArrayList<>();
+
+	// 적 탱크
+	public static HashMap<Integer, TilePosition> mapTankPosition = new HashMap<Integer, TilePosition>();
+	public static HashMap<TilePosition, Integer> mapPositionTank = new HashMap<TilePosition, Integer>();
+
+	public static void updateTankPosition(Unit unit) {
+		Integer unitID = unit.getID();
+		TilePosition tpNow = unit.getTilePosition();
+		TilePosition tpOld = mapTankPosition.get(unitID);
+		if (tpOld != null && !tpOld.equals(tpNow)) {
+			mapPositionTank.remove(tpOld);
+		}
+		mapTankPosition.put(unitID, tpNow);
+		mapPositionTank.put(tpNow, unit.getID());
+	}
+
+	public static void removeTankPosition(Unit unit) {
+		Integer unitID = unit.getID();
+		TilePosition tpOld = mapTankPosition.get(unitID);
+		if (tpOld != null) {
+			mapPositionTank.remove(tpOld);
+		}
+		mapTankPosition.remove(unitID);
+	}
+
+	public static void removeTankPosition(TilePosition tp) {
+		Integer tankID = mapPositionTank.get(tp);
+		if (tankID != null) {
+			mapTankPosition.remove(tankID);
+			mapPositionTank.remove(tp);
+		}
+	}
+
+	// 적 터렛
+	public static HashMap<Integer, TilePosition> mapTurretPosition = new HashMap<Integer, TilePosition>();
+	public static HashMap<TilePosition, Integer> mapPositionTurret = new HashMap<TilePosition, Integer>();
+
+	public static void updateTurretPosition(Unit unit) {
+		Integer unitID = unit.getID();
+		TilePosition tpNow = unit.getTilePosition();
+		TilePosition tpOld = mapTurretPosition.get(unitID);
+		if (tpOld != null && !tpOld.equals(tpNow)) {
+			mapPositionTurret.remove(tpOld);
+		}
+		mapTurretPosition.put(unitID, tpNow);
+		mapPositionTurret.put(tpNow, unit.getID());
+	}
+
+	public static void removeTurretPosition(Unit unit) {
+		Integer unitID = unit.getID();
+		TilePosition tpOld = mapTurretPosition.get(unitID);
+		if (tpOld != null) {
+			mapPositionTurret.remove(tpOld);
+		}
+		mapTurretPosition.remove(unitID);
+	}
+
+	public static void removeTurretPosition(TilePosition tp) {
+		Integer TurretID = mapPositionTurret.get(tp);
+		if (TurretID != null) {
+			mapTurretPosition.remove(TurretID);
+			mapPositionTurret.remove(tp);
+		}
+	}
+
+	// 적 곳리앗
+	public static HashMap<Integer, TilePosition> mapGoliatPosition = new HashMap<Integer, TilePosition>();
+	public static HashMap<TilePosition, Integer> mapPositionGoliat = new HashMap<TilePosition, Integer>();
+
+	public static void updateGoliatPosition(Unit unit) {
+		Integer unitID = unit.getID();
+		TilePosition tpNow = unit.getTilePosition();
+		TilePosition tpOld = mapGoliatPosition.get(unitID);
+		if (tpOld != null && !tpOld.equals(tpNow)) {
+			mapPositionGoliat.remove(tpOld);
+		}
+		mapGoliatPosition.put(unitID, tpNow);
+		mapPositionGoliat.put(tpNow, unit.getID());
+	}
+
+	public static void removeGoliatPosition(Unit unit) {
+		Integer unitID = unit.getID();
+		TilePosition tpOld = mapGoliatPosition.get(unitID);
+		if (tpOld != null) {
+			mapPositionGoliat.remove(tpOld);
+		}
+		mapGoliatPosition.remove(unitID);
+	}
+
+	public static void removeGoliatPosition(TilePosition tp) {
+		Integer GoliatID = mapPositionGoliat.get(tp);
+		if (GoliatID != null) {
+			mapGoliatPosition.remove(GoliatID);
+			mapPositionGoliat.remove(tp);
+		}
+	}
 
 	public static void clearEnemyUnit() {
 		MyVariable.mapEnemyUnit.clear();

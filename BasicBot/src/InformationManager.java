@@ -251,6 +251,18 @@ public class InformationManager {
 	private void updateEnemyUnitMap() {
 		MyVariable.clearEnemyUnit();
 
+		// 빈 자리이면 탱크를 초기화 한다.
+		ArrayList<TilePosition> tpList = new ArrayList<TilePosition>();
+		tpList.addAll(MyVariable.mapPositionTank.keySet());
+		for (TilePosition tp : tpList) {
+			if (MyBotModule.Broodwar.isVisible(tp)) {
+				List<Unit> unit = MyBotModule.Broodwar.getUnitsOnTile(tp);
+				if (unit == null || unit.size() == 0) {
+					MyVariable.removeTankPosition(tp);
+				}
+			}
+		}
+
 		BaseLocation bl = InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().enemyPlayer);
 
 		if (bl != null) {
@@ -289,6 +301,7 @@ public class InformationManager {
 				else {
 					MyVariable.enemyAttactUnit.add(unit);
 				}
+
 				// 지상
 				if (unit.isFlying() == false) {
 					MyVariable.enemyGroundUnit.add(unit);
@@ -296,6 +309,14 @@ public class InformationManager {
 
 				if (unit.isAttacking()) {
 					MyVariable.enemyAttactingUnit.add(unit);
+				}
+
+				if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+					MyVariable.updateTankPosition(unit);
+				} else if (unit.getType() == UnitType.Terran_Missile_Turret) {
+					MyVariable.updateTurretPosition(unit);
+				} else if (unit.getType() == UnitType.Terran_Goliath) {
+					MyVariable.updateGoliatPosition(unit);
 				}
 
 				// 내 본진 근처 적유닛

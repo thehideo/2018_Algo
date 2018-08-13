@@ -16,13 +16,6 @@ public class ControlVulture extends ControlAbstract {
 		if (MyVariable.enemyStartLocation != null) {
 			boolean useSpider_Mines = false;
 
-			// if (MyUtil.distanceTilePosition(MyVariable.enemyStartLocation,
-			// unit.getTilePosition()) <
-			// MyUtil.distanceTilePosition(MyVariable.enemyFirstchokePoint,
-			// MyVariable.enemyStartLocation) + 10) {
-			// useSpider_Mines = true;
-			// }
-
 			// 내 본진 밖에 Mine을 심는다.
 			if (MyUtil.distanceTilePosition(MyVariable.myStartLocation, unit.getTilePosition()) > MyUtil.distanceTilePosition(MyVariable.myStartLocation, MyVariable.myFirstchokePoint)) {
 				useSpider_Mines = true;

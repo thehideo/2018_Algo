@@ -18,7 +18,7 @@ public class GroupPatrol extends GroupAbstract {
 
 		if (InformationManager.Instance().enemyRace == Race.Terran) {
 			if (MyUtil.indexToGo >= 20) {
-				int Terran_Goliath = GroupManager.instance().groupAttack.getUnitTypeCnt(UnitType.Terran_Goliath) / 2;
+				int Terran_Goliath = GroupManager.instance().groupAttack.getUnitTypeCnt(UnitType.Terran_Goliath) / 4;
 				if (Terran_Goliath >= 0) {
 					this.mapUnitTotal.put(UnitType.Terran_Goliath, Terran_Goliath);
 				}

@@ -1,5 +1,6 @@
 import bwapi.Race;
 import bwapi.TechType;
+import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -25,6 +26,13 @@ public class ControlTank extends ControlAbstract {
 		}
 
 		if (result == false) {
+			for (Integer tankID : MyVariable.mapTankPosition.keySet()) {
+				TilePosition tp = MyVariable.mapTankPosition.get(tankID);
+				if (MyUtil.distancePosition(unit.getPosition(), tp.toPosition()) <= SIEGE_MODE_MAX_RANGE + 32) {
+					result = true;
+					break;
+				}
+			}
 			for (Unit enemyUnit : MyVariable.enemyGroundUnit) {
 				int distance = unit.getDistance(enemyUnit);
 				// 적 유닛이 시즈 탱크이면 좀더 멀리 대기 한다.

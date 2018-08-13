@@ -102,7 +102,7 @@ public class GameCommander {
 					MyVariable.addonPlace.add(tp2);
 				}
 			}
-		}	
+		}
 
 		StrategyManager.Instance().onStart();
 		ActionManager.Instance().onStart();
@@ -218,6 +218,12 @@ public class GameCommander {
 			GroupManager.instance().remove(unit.getType(), unit.getID());
 		}
 
+		// 적군 유닛 메모리에서 제거
+		if (unit.getPlayer() == MyBotModule.Broodwar.enemy()) {
+			MyVariable.removeTankPosition(unit);
+			MyVariable.removeTurretPosition(unit);
+			MyVariable.removeGoliatPosition(unit);
+		}
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Morph 될 때 발생하는 이벤트를 처리합니다<br>

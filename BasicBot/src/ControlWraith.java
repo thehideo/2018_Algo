@@ -131,10 +131,28 @@ public class ControlWraith extends ControlAbstract {
 	}
 
 	void terranAction(Unit wraith, GroupAbstract groupAbstract) {
-		Unit Terran_Missile_Turret = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Missile_Turret, wraith);
-		if (Terran_Missile_Turret != null && Terran_Missile_Turret.isCompleted() && MyUtil.distanceTilePosition(Terran_Missile_Turret.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Missile_Turret.airWeapon().maxRange() / 32 + 5) {
-			CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-			return;
+		/*
+		 * Unit Terran_Missile_Turret =
+		 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Missile_Turret, wraith); if
+		 * (Terran_Missile_Turret != null && Terran_Missile_Turret.isCompleted() &&
+		 * MyUtil.distanceTilePosition(Terran_Missile_Turret.getTilePosition(),
+		 * wraith.getTilePosition()) <=
+		 * UnitType.Terran_Missile_Turret.airWeapon().maxRange() / 32 + 5) {
+		 * CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition()); return; }
+		 */
+
+		for (Integer turretID : MyVariable.mapTurretPosition.keySet()) {
+			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapTurretPosition.get(turretID)) < UnitType.Terran_Missile_Turret.airWeapon().maxRange() / 32 + 4) {
+				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+				return;
+			}
+		}
+
+		for (Integer GoliatID : MyVariable.mapGoliatPosition.keySet()) {
+			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapGoliatPosition.get(GoliatID)) < UnitType.Terran_Goliath.airWeapon().maxRange() / 32 + 4) {
+				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+				return;
+			}
 		}
 
 		if (wraith.isDetected() == false && wraith.getEnergy() < 5) {

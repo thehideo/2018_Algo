@@ -64,7 +64,7 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() < 4 && MyVariable.getSelfAttackUnit(UnitType.Terran_Wraith).size() * 4 <= MyUtil.GetMyTankCnt()) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
 			}
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() * 4 <= MyUtil.GetMyTankCnt()) {
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() * 2 <= MyUtil.GetMyTankCnt()) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 2);
 			}
 		}

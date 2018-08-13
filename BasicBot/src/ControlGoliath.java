@@ -39,6 +39,17 @@ public class ControlGoliath extends ControlAbstract {
 			patrolGroupAction(unit, groupAbstract);
 		}
 		
+		
+		// 어택 그룹에 속해 있을 때 내 탱크가 많으면 적으로 갈 필요가 없다.
+		if(groupAbstract == GroupManager.instance().groupAttack &&  MyUtil.GetMyTankCnt()>=4) {			
+			for (Integer TankID : MyVariable.mapTankPosition.keySet()) {
+				if (MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.mapTankPosition.get(TankID)) < UnitType.Terran_Siege_Tank_Siege_Mode.airWeapon().maxRange() / 32 + 4) {
+					CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+					return;
+				}
+			}			
+		}
+		
 		// 적이 탱크가 없으면 일단 전진
 		if (groupAbstract == GroupManager.instance().groupAttack && MyVariable.findTank == false && MyVariable.findBunker == false) {
 			if (MyVariable.isFullScaleAttackStarted == false) {

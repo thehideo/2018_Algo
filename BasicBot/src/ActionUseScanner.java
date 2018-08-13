@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import bwapi.Position;
 import bwapi.Race;
@@ -20,6 +21,7 @@ public class ActionUseScanner extends ActionControlAbstract {
 	int index = 0;
 
 	List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
+	Random r = new Random();
 
 	@Override
 	public void action() {
@@ -60,7 +62,17 @@ public class ActionUseScanner extends ActionControlAbstract {
 			}
 			if (unit.getEnergy() >= ScanPoint) {
 				if (InformationManager.Instance().enemyRace == Race.Terran) {
-					TilePosition tilePosition = MyUtil.getSaveTilePosition(5);
+					TilePosition tilePosition = MyUtil.getSaveTilePosition(5);					
+					if (MyVariable.mapPositionTank.size() > 0) {
+						int index=r.nextInt(MyVariable.mapPositionTank.size());
+						int i=0;						
+						for(TilePosition tp : MyVariable.mapPositionTank.keySet()){
+							if(i==index) {
+								tilePosition=tp;
+							}
+							i++;
+						}
+					}					
 					if (tilePosition != null && useScanner_Sweep(tilePosition.toPosition())) {
 						use = true;
 					}
