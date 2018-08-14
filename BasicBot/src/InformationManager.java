@@ -59,7 +59,6 @@ public class InformationManager {
 	/// 객체
 	private Map<Player, UnitData> unitData = new HashMap<Player, UnitData>();
 
-	
 	static boolean findMineral = false;
 
 	/// static singleton 객체를 리턴합니다
@@ -249,8 +248,9 @@ public class InformationManager {
 	private void updateEnemyUnitMap() {
 		MyVariable.clearEnemyUnit();
 
+		
+		// if (MyBotModule.Broodwar.self().supplyTotal() >= 380)
 		// 빈 자리이면 탱크를 초기화 한다.
-		//if (MyBotModule.Broodwar.self().supplyTotal() >= 380) 
 		{
 			Iterator<TilePosition> TilePositions = MyVariable.mapPositionTank.keySet().iterator();
 			while (TilePositions.hasNext()) {
