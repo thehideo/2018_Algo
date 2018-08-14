@@ -1,7 +1,6 @@
 import java.awt.Point;
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Deque;
 
 import bwapi.TechType;
@@ -12,8 +11,8 @@ import bwapi.UpgradeType;
 /// 빌드 오더 목록 자료구조 class
 public class BuildOrderQueue {
 	
-	private enum SeedPositionStrategy { MainBaseLocation, MainBaseBackYard, FirstChokePoint, FirstExpansionLocation, SecondChokePoint, SeedPositionSpecified };
-	private SeedPositionStrategy seedLocationStrategy;
+	//private enum SeedPositionStrategy { MainBaseLocation, MainBaseBackYard, FirstChokePoint, FirstExpansionLocation, SecondChokePoint, SeedPositionSpecified };
+	//private SeedPositionStrategy seedLocationStrategy;
 
 	private int highestPriority;
 	private int lowestPriority;

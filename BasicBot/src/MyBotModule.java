@@ -25,8 +25,6 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import bwapi.Color;
 import bwapi.DefaultBWListener;
 import bwapi.Game;
 import bwapi.Mirror;
@@ -442,7 +440,7 @@ public class MyBotModule extends DefaultBWListener {
 	{
 		// Make sure to use %s and pass the text as a parameter,
 		// otherwise you may run into problems when you use the %(percent) character!
-		Player self = Broodwar.self();
+		//Player self = Broodwar.self();
 
 		if ("afap".equals(commandString)) {
 			Broodwar.setLocalSpeed(0);

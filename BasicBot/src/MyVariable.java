@@ -1,14 +1,10 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
-
-import bwapi.Position;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 import bwta.BWTA;
-import bwta.Chokepoint;
 
 public class MyVariable {
 
@@ -106,13 +102,9 @@ public class MyVariable {
 	public static HashMap<String, ArrayList<Unit>> mapBuildingSizeMap = new HashMap<String, ArrayList<Unit>>();
 
 	// 전체
-	private static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
+	public static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
 
 	public static int tankLineDistance = 13;
-
-	public static Set<UnitType> getSelfUnitKey() {
-		return mapSelfUnit.keySet();
-	}
 
 	public static ArrayList<Unit> getSelfUnit(UnitType unitType) {
 		if (!mapSelfUnit.containsKey(unitType)) {

@@ -13,7 +13,6 @@ import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
-import bwapi.Unitset;
 import bwapi.WeaponType;
 import bwta.BWTA;
 import bwta.BaseLocation;
@@ -60,8 +59,7 @@ public class InformationManager {
 	/// 객체
 	private Map<Player, UnitData> unitData = new HashMap<Player, UnitData>();
 
-	// 내 본진 위치 저장
-	private int refreshIndex = 0;
+	
 	static boolean findMineral = false;
 
 	/// static singleton 객체를 리턴합니다
@@ -80,8 +78,8 @@ public class InformationManager {
 
 		occupiedBaseLocations.put(selfPlayer, new ArrayList<BaseLocation>());
 		occupiedBaseLocations.put(enemyPlayer, new ArrayList<BaseLocation>());
-		occupiedRegions.put(selfPlayer, new HashSet());
-		occupiedRegions.put(enemyPlayer, new HashSet());
+		occupiedRegions.put(selfPlayer, new HashSet<Region>());
+		occupiedRegions.put(enemyPlayer, new HashSet<Region>());
 
 		mainBaseLocations.put(selfPlayer, BWTA.getStartLocation(MyBotModule.Broodwar.self()));
 		mainBaseLocationChanged.put(selfPlayer, new Boolean(true));
@@ -253,9 +251,9 @@ public class InformationManager {
 
 		// 빈 자리이면 탱크를 초기화 한다.
 		if (MyBotModule.Broodwar.self().supplyTotal() >= 380) {
-			ArrayList<TilePosition> tpList = new ArrayList<TilePosition>();
-			tpList.addAll(MyVariable.mapPositionTank.keySet());
-			for (TilePosition tp : tpList) {
+			Iterator<TilePosition> TilePositions = MyVariable.mapPositionTank.keySet().iterator();
+			while (TilePositions.hasNext()) {
+				TilePosition tp = TilePositions.next();
 				if (MyBotModule.Broodwar.isVisible(tp)) {
 					List<Unit> unit = MyBotModule.Broodwar.getUnitsOnTile(tp);
 					if (unit == null || unit.size() == 0) {

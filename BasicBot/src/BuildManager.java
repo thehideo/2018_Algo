@@ -3,7 +3,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import bwapi.Pair;
 import bwapi.Position;
 import bwapi.Race;
 import bwapi.TechType;
@@ -177,7 +176,7 @@ public class BuildManager {
 							else {
 								producer.train(t.getUnitType());
 							}
-						}						
+						}
 						// 테란 지상유닛 / 공중유닛
 						else {
 							producer.train(t.getUnitType());
@@ -257,7 +256,7 @@ public class BuildManager {
 				// if the type requires an addon and the producer doesn't have
 				// one
 				// C++ : typedef std::pair<BWAPI::UnitType, int> ReqPair;
-				Pair<UnitType, Integer> ReqPair = null;
+				// Pair<UnitType, Integer> ReqPair = null;
 
 				Map<UnitType, Integer> requiredUnitsMap = t.getUnitType().requiredUnits();
 				if (requiredUnitsMap != null) {
@@ -365,8 +364,6 @@ public class BuildManager {
 	public Unit getAnotherProducer(Unit producer, Position closestTo) {
 		if (producer == null)
 			return null;
-
-		Unit closestUnit = null;
 
 		List<Unit> candidateProducers = new ArrayList<Unit>();
 		for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
@@ -709,12 +706,13 @@ public class BuildManager {
 				seedPosition = tempChokePoint.getCenter();
 			}
 			break;
-
 		case SecondChokePoint:
 			tempChokePoint = InformationManager.Instance().getSecondChokePoint(MyBotModule.Broodwar.self());
 			if (tempChokePoint != null) {
 				seedPosition = tempChokePoint.getCenter();
 			}
+			break;
+		default:
 			break;
 		}
 
@@ -824,7 +822,7 @@ public class BuildManager {
 					UnitType unitType = currentItem.metaType.getUnitType();
 					TechType requiredTechType = unitType.requiredTech();
 					final Map<UnitType, Integer> requiredUnits = unitType.requiredUnits();
-					int requiredSupply = unitType.supplyRequired();
+					// int requiredSupply = unitType.supplyRequired();
 
 					/*
 					 * std::cout + "To make " + unitType.getName() + ", producerType " +

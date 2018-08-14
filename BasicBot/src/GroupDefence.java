@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -14,7 +16,11 @@ public class GroupDefence extends GroupAbstract {
 		} else {
 			this.mapUnitTotal.clear();
 			// 많이 할당 된것은 다시 attack Group으로 이동한다.
-			for (UnitType unitType : this.mapUnit.keySet()) {
+
+			Iterator<UnitType> unitTypes = this.mapUnit.keySet().iterator();
+
+			while (unitTypes.hasNext()) {
+				UnitType unitType = unitTypes.next();
 				Integer cnt = 0;
 				if (this.mapUnitTotal.get(unitType) != null) {
 					cnt = this.mapUnitTotal.get(unitType);

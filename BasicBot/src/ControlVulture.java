@@ -1,4 +1,3 @@
-import java.util.HashSet;
 import java.util.List;
 
 import bwapi.TechType;
@@ -67,7 +66,7 @@ public class ControlVulture extends ControlAbstract {
 				{
 					// 내가 상대방 보다 많으면 공격하고
 					if (selfVultureCnt > enemyVultureCnt) {
-						Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseEnemyUnit(unit, MyVariable.enemyAttactUnit);
+						Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseUnit(unit, MyVariable.enemyAttactUnit);
 						if (mostCloseEnemyAttackUnit != null) {
 							CommandUtil.attackUnit(unit, mostCloseEnemyAttackUnit);
 							return;

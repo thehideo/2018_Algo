@@ -510,7 +510,7 @@ public class ConstructionPlaceFinder {
 		for (Unit geyser : MyBotModule.Broodwar.getStaticGeysers()) {
 			// geyser->getPosition() 을 하면, Unknown 으로 나올 수 있다.
 			// 반드시 geyser->getInitialPosition() 을 사용해야 한다
-			Position geyserPos = geyser.getInitialPosition();
+			//Position geyserPos = geyser.getInitialPosition();
 			TilePosition geyserTilePos = geyser.getInitialTilePosition();
 
 			// 이미 예약되어있는가
@@ -760,7 +760,7 @@ public class ConstructionPlaceFinder {
 				int mx0 = closeMineralPosition.getX();
 				int my0 = closeMineralPosition.getY();
 				int mx2 = mx0 + 2;
-				int my1 = my0 + 1;
+				//int my1 = my0 + 1;
 
 				for (int i = bx0; i < bx4; i++) {
 					for (int j = by0; j < by3; j++) {

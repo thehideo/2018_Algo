@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import bwapi.Race;
 import bwapi.TechType;
@@ -12,42 +13,38 @@ public class ControlWraith extends ControlAbstract {
 	HashMap<Integer, Boolean> mapMode = new HashMap<Integer, Boolean>();
 
 	void actionMain(Unit wraith, GroupAbstract groupAbstract) {
-		if (groupAbstract == GroupManager.instance().groupAttack) {
-			attackGroupAction(wraith, groupAbstract);
-		}
-
-		commonAction(wraith, groupAbstract);
 
 		if (InformationManager.Instance().enemyRace == Race.Terran) {
+			// 터렛,골리앗,벙커,발키리를 만나면 뒤로 도망간다.
 			terranAction(wraith, groupAbstract);
-		}
-
-		if (groupAbstract == GroupManager.instance().groupWraithPatrol) {
-			wraithGroupAction(wraith, groupAbstract);
-		}
-
-		// 공격 당하고 있는 유닛 쪽으로 이동
-		if (groupAbstract == GroupManager.instance().groupAttack && MyVariable.attackedUnit.size() > 0 && !CommandUtil.commandHash.contains(wraith)) {
-			Unit mostCloseEnemy = MyUtil.getMostCloseEnemyUnit(wraith, MyVariable.attackedUnit);
-			if (mostCloseEnemy != null) {
-				CommandUtil.attackUnit(wraith, mostCloseEnemy);
+			// 주위에 베슬이 보이면 바로 공격
+			Unit Terran_Science_Vessel = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Science_Vessel, wraith);
+			if (Terran_Science_Vessel != null && wraith.getDistance(Terran_Science_Vessel) < 400) {
+				CommandUtil.attackUnit(wraith, Terran_Science_Vessel);
 				return;
 			}
 		}
 
-		if (groupAbstract == GroupManager.instance().groupAttack) {
-			Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseEnemyUnit(wraith, MyVariable.enemyAttactUnit);
+		// 클로킹 관련 액션
+		cloakingAction(wraith, groupAbstract);
+
+		if (groupAbstract == GroupManager.instance().groupWraithPatrol) {
+			wraithGroupAction(wraith, groupAbstract);
+		} else if (groupAbstract == GroupManager.instance().groupAttack) {
+			// 공격 당하고 있는 유닛 쪽으로 이동
+			if (MyVariable.attackedUnit.size() > 0 && !CommandUtil.commandHash.contains(wraith)) {
+				Unit mostCloseEnemy = MyUtil.getMostCloseUnit(wraith, MyVariable.attackedUnit);
+				if (mostCloseEnemy != null) {
+					CommandUtil.attackUnit(wraith, mostCloseEnemy);
+					return;
+				}
+			}
+			// 적 유닛에게 공격
+			Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseUnit(wraith, MyVariable.enemyAttactUnit);
 			if (mostCloseEnemyAttackUnit != null && wraith.getDistance(mostCloseEnemyAttackUnit) < 400) {
 				CommandUtil.attackUnit(wraith, mostCloseEnemyAttackUnit);
 			}
 		}
-
-		if (groupAbstract == GroupManager.instance().groupAttack && MyVariable.findTurret == false && wraith.getEnergy() > 3) {
-			if (MyVariable.isFullScaleAttackStarted == false && MyVariable.findTurret == false && MyVariable.findBunker == false && MyBotModule.Broodwar.getFrameCount() <= 14000) {
-				CommandUtil.attackMove(wraith, InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy()).getPoint());
-			}
-		}
-
 		CommandUtil.attackMove(wraith, groupAbstract.getTargetPosition(wraith));
 	}
 
@@ -67,51 +64,41 @@ public class ControlWraith extends ControlAbstract {
 			}
 		}
 	}
+	/*
+	 * void attackGroupAction(Unit unit, GroupAbstract groupAbstract) { int
+	 * sizeEnemy = MyVariable.getEnemyUnit(UnitType.Terran_Valkyrie).size() +
+	 * MyVariable.getEnemyUnit(UnitType.Terran_Goliath).size() +
+	 * MyVariable.getEnemyUnit(UnitType.Terran_Missile_Turret).size() +
+	 * MyVariable.getEnemyUnit(UnitType.Terran_Marine).size() +
+	 * MyVariable.getEnemyUnit(UnitType.Terran_Bunker).size() * 3 +
+	 * MyVariable.getEnemyUnit(UnitType.Terran_Battlecruiser).size() * 2; int
+	 * sizeSelf = groupAbstract.mapUnit.get(UnitType.Terran_Wraith).size(); if
+	 * (sizeEnemy * 5 < sizeSelf) { Unit Terran_Missile_Turret =
+	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Missile_Turret, unit); if
+	 * (Terran_Missile_Turret != null) { CommandUtil.attackUnit(unit,
+	 * Terran_Missile_Turret); return; } Unit Terran_Goliath =
+	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Goliath, unit); if
+	 * (Terran_Goliath != null && unit.getDistance(Terran_Goliath) < 400) {
+	 * CommandUtil.attackUnit(unit, Terran_Goliath); return; } Unit Terran_Marine =
+	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Marine, unit); if (Terran_Marine
+	 * != null && unit.getDistance(Terran_Marine) < 400) {
+	 * CommandUtil.attackUnit(unit, Terran_Marine); return; } Unit Terran_Wraith =
+	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Wraith, unit); if (Terran_Wraith
+	 * != null && unit.getDistance(Terran_Wraith) < 400) {
+	 * CommandUtil.attackUnit(unit, Terran_Wraith); return; } Unit Terran_Bunker =
+	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Bunker, unit); if (Terran_Bunker
+	 * != null && unit.getDistance(Terran_Bunker) < 400) {
+	 * CommandUtil.attackUnit(unit, Terran_Bunker); return; } Unit
+	 * Terran_Battlecruiser =
+	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Battlecruiser, unit); if
+	 * (Terran_Battlecruiser != null && unit.getDistance(Terran_Battlecruiser) <
+	 * 400) { CommandUtil.attackUnit(unit, Terran_Battlecruiser); return; } Unit
+	 * Terran_Valkyrie = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Valkyrie,
+	 * unit); if (Terran_Valkyrie != null && unit.getDistance(Terran_Valkyrie) <
+	 * 400) { CommandUtil.attackUnit(unit, Terran_Valkyrie); return; } } }
+	 */
 
-	void attackGroupAction(Unit unit, GroupAbstract groupAbstract) {
-		int sizeEnemy = MyVariable.getEnemyUnit(UnitType.Terran_Valkyrie).size() + MyVariable.getEnemyUnit(UnitType.Terran_Goliath).size() + MyVariable.getEnemyUnit(UnitType.Terran_Missile_Turret).size() + MyVariable.getEnemyUnit(UnitType.Terran_Marine).size() + MyVariable.getEnemyUnit(UnitType.Terran_Bunker).size() * 3 + MyVariable.getEnemyUnit(UnitType.Terran_Battlecruiser).size() * 2;
-		int sizeSelf = groupAbstract.mapUnit.get(UnitType.Terran_Wraith).size();
-		if (sizeEnemy * 5 < sizeSelf) {
-			Unit Terran_Missile_Turret = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Missile_Turret, unit);
-			if (Terran_Missile_Turret != null) {
-				CommandUtil.attackUnit(unit, Terran_Missile_Turret);
-				return;
-			}
-			Unit Terran_Goliath = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Goliath, unit);
-			if (Terran_Goliath != null && unit.getDistance(Terran_Goliath) < 400) {
-				CommandUtil.attackUnit(unit, Terran_Goliath);
-				return;
-			}
-
-			Unit Terran_Marine = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Marine, unit);
-			if (Terran_Marine != null && unit.getDistance(Terran_Marine) < 400) {
-				CommandUtil.attackUnit(unit, Terran_Marine);
-				return;
-			}
-			Unit Terran_Wraith = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Wraith, unit);
-			if (Terran_Wraith != null && unit.getDistance(Terran_Wraith) < 400) {
-				CommandUtil.attackUnit(unit, Terran_Wraith);
-				return;
-			}
-			Unit Terran_Bunker = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Bunker, unit);
-			if (Terran_Bunker != null && unit.getDistance(Terran_Bunker) < 400) {
-				CommandUtil.attackUnit(unit, Terran_Bunker);
-				return;
-			}
-			Unit Terran_Battlecruiser = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Battlecruiser, unit);
-			if (Terran_Battlecruiser != null && unit.getDistance(Terran_Battlecruiser) < 400) {
-				CommandUtil.attackUnit(unit, Terran_Battlecruiser);
-				return;
-			}
-			Unit Terran_Valkyrie = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Valkyrie, unit);
-			if (Terran_Valkyrie != null && unit.getDistance(Terran_Valkyrie) < 400) {
-				CommandUtil.attackUnit(unit, Terran_Valkyrie);
-				return;
-			}
-		}
-	}
-
-	void commonAction(Unit wraith, GroupAbstract groupAbstract) {
+	void cloakingAction(Unit wraith, GroupAbstract groupAbstract) {
 		// 적이 근처에 없으면 클로킹 해제
 		if (MyVariable.enemyAttactUnit.size() == 0) {
 			if (wraith.isCloaked() == true) {
@@ -131,43 +118,23 @@ public class ControlWraith extends ControlAbstract {
 	}
 
 	void terranAction(Unit wraith, GroupAbstract groupAbstract) {
-		/*
-		 * Unit Terran_Missile_Turret =
-		 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Missile_Turret, wraith); if
-		 * (Terran_Missile_Turret != null && Terran_Missile_Turret.isCompleted() &&
-		 * MyUtil.distanceTilePosition(Terran_Missile_Turret.getTilePosition(),
-		 * wraith.getTilePosition()) <=
-		 * UnitType.Terran_Missile_Turret.airWeapon().maxRange() / 32 + 5) {
-		 * CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition()); return; }
-		 */
-
-		for (Integer turretID : MyVariable.mapTurretPosition.keySet()) {
+		Iterator<Integer> turretIDs = MyVariable.mapTurretPosition.keySet().iterator();
+		while (turretIDs.hasNext()) {
+			Integer turretID = turretIDs.next();
 			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapTurretPosition.get(turretID)) < UnitType.Terran_Missile_Turret.airWeapon().maxRange() / 32 + 4) {
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 				return;
 			}
 		}
-
-		for (Integer GoliatID : MyVariable.mapGoliatPosition.keySet()) {
+		Iterator<Integer> GoliatIDs = MyVariable.mapGoliatPosition.keySet().iterator();
+		while (GoliatIDs.hasNext()) {
+			Integer GoliatID = GoliatIDs.next();
 			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapGoliatPosition.get(GoliatID)) < UnitType.Terran_Goliath.airWeapon().maxRange() / 32 + 4) {
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 				return;
 			}
 		}
-
 		if (wraith.isDetected() == false && wraith.getEnergy() < 5) {
-			Unit Terran_Goliath = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Goliath, wraith);
-			if (Terran_Goliath != null && MyUtil.distanceTilePosition(Terran_Goliath.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Goliath.airWeapon().maxRange() / 32 + 5) {
-				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-				return;
-			}
-
-			Unit Terran_Marine = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Marine, wraith);
-			if (Terran_Marine != null && MyUtil.distanceTilePosition(Terran_Marine.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Marine.airWeapon().maxRange() / 32 + 5) {
-				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-				return;
-			}
-
 			Unit Terran_Bunker = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Bunker, wraith);
 			if (Terran_Bunker != null && MyUtil.distanceTilePosition(Terran_Bunker.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Bunker.airWeapon().maxRange() / 32 + 5) {
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -65,8 +66,11 @@ public class ActionUseScanner extends ActionControlAbstract {
 					TilePosition tilePosition = MyUtil.getSaveTilePosition(5);					
 					if (MyVariable.mapPositionTank.size() > 0) {
 						int index=r.nextInt(MyVariable.mapPositionTank.size());
-						int i=0;						
-						for(TilePosition tp : MyVariable.mapPositionTank.keySet()){
+						int i=0;	
+						
+						Iterator<TilePosition> mapPositionTankKeys=MyVariable.mapPositionTank.keySet().iterator();						
+						while (mapPositionTankKeys.hasNext()){
+							TilePosition tp =mapPositionTankKeys.next();
 							if(i==index) {
 								tilePosition=tp;
 							}

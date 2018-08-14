@@ -556,7 +556,7 @@ public class ConstructionManager {
 
 	/// constructionQueue 내 ConstructionTask 갯수를 리턴합니다
 	public Vector<UnitType> buildingsQueued() {
-		Vector<UnitType> buildingsQueued = null;
+		Vector<UnitType> buildingsQueued = new Vector<UnitType>();
 
 		for (final ConstructionTask b : constructionQueue) {
 			if (b.getStatus() == ConstructionTask.ConstructionStatus.Unassigned.ordinal() || b.getStatus() == ConstructionTask.ConstructionStatus.Assigned.ordinal()) {

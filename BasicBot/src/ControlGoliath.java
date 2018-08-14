@@ -1,8 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Iterator;
 import bwapi.Position;
-import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -12,22 +11,37 @@ public class ControlGoliath extends ControlAbstract {
 	public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
 
 	void actionMain(Unit unit, GroupAbstract groupAbstract) {
+		// 어텍 그룹일 때는 탱크를 피해서 움직인다.
+		if (groupAbstract == GroupManager.instance().groupAttack) {
+			if (MyUtil.GetMyTankCnt() >= 1) {
+				Iterator<Integer> tankIDs = MyVariable.mapTankPosition.keySet().iterator();
+				while (tankIDs.hasNext()) {
+					Integer TankID = tankIDs.next();
+					if (MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.mapTankPosition.get(TankID)) < UnitType.Terran_Siege_Tank_Siege_Mode.airWeapon().maxRange() / 32 + 4) {
+						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+						return;
+					}
+				}
+			}
+		}
+		
 		// 주위에 캐리어가 있고, 각 골리앗 마다 가장 가까운 녀석을 공격한다.
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
 			Unit mostCloseCarrier = MyUtil.getMostCloseEnemyUnit(UnitType.Protoss_Carrier, unit);
 			if (mostCloseCarrier != null) {
 				if (mostCloseCarrier.getDistance(unit) < 1200) {
 					CommandUtil.attackUnit(unit, mostCloseCarrier);
-					setSpecialAction(unit,0);
+					setSpecialAction(unit, 0);
 				}
 			}
 		}
 
+		// 드랍 멤버가 필요한 경우 드랍쉽으로 이동
 		if (groupAbstract == GroupManager.instance().groupAttack) {
 			if (ActionControlDropShip.needDropShipMember == true) {
 				for (Unit dropship : MyVariable.getSelfUnit(UnitType.Terran_Dropship)) {
 					if (dropship.isCompleted() && MyVariable.mapMyRegion.contains(dropship.getTilePosition())) {
-						if (dropship.getSpaceRemaining() > 0 && ControlDropShip.mapPatrol.get(dropship.getID()).size()==0  && ControlDropShip.mapBackPath.get(dropship.getID()).size()==0  ) {
+						if (dropship.getSpaceRemaining() > 0 && ControlDropShip.mapPatrol.get(dropship.getID()).size() == 0 && ControlDropShip.mapBackPath.get(dropship.getID()).size() == 0) {
 							CommandUtil.rightClick(unit, dropship);
 						}
 					}
@@ -38,25 +52,8 @@ public class ControlGoliath extends ControlAbstract {
 		if (groupAbstract == GroupManager.instance().groupPatrol) {
 			patrolGroupAction(unit, groupAbstract);
 		}
-		
-		
-		// 어택 그룹에 속해 있을 때 내 탱크가 많으면 적으로 갈 필요가 없다.
-		if(groupAbstract == GroupManager.instance().groupAttack &&  MyUtil.GetMyTankCnt()>=4) {			
-			for (Integer TankID : MyVariable.mapTankPosition.keySet()) {
-				if (MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.mapTankPosition.get(TankID)) < UnitType.Terran_Siege_Tank_Siege_Mode.airWeapon().maxRange() / 32 + 4) {
-					CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
-					return;
-				}
-			}			
-		}
-		
-		// 적이 탱크가 없으면 일단 전진
-		if (groupAbstract == GroupManager.instance().groupAttack && MyVariable.findTank == false && MyVariable.findBunker == false) {
-			if (MyVariable.isFullScaleAttackStarted == false) {
-				CommandUtil.attackMove(unit, InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy()).getPoint());
-			}
-		}		
 
+	
 		Position target = groupAbstract.getTargetPosition(unit);
 		CommandUtil.attackMove(unit, target);
 

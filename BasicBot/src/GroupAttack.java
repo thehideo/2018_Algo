@@ -3,7 +3,6 @@ import bwapi.Race;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
-import bwta.Chokepoint;
 
 public class GroupAttack extends GroupAbstract {
 	int minPointX = Integer.MAX_VALUE;
@@ -132,10 +131,7 @@ public class GroupAttack extends GroupAbstract {
 			}
 			// 테란 공격 조건
 			else if (InformationManager.Instance().enemyRace == Race.Terran) {
-				//if (MyBotModule.Broodwar.self().supplyTotal() >= 380) {
-				//	MyVariable.isFullScaleAttackStarted = true;
-				//}
-				if (MyVariable.attackUnit.size() > 30) {
+				if (MyBotModule.Broodwar.self().supplyTotal() >= 380) {
 					MyVariable.isFullScaleAttackStarted = true;
 				}
 			}

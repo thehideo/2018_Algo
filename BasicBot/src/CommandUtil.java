@@ -99,7 +99,7 @@ public class CommandUtil {
 			return;
 		}
 
-		if (attacker == null || target == null || target.isDetected() == false) {
+		if (attacker == null || target == null || target.isDetected() == false || target.getPlayer() == MyBotModule.Broodwar.self()) {
 			return;
 		}
 
@@ -183,7 +183,7 @@ public class CommandUtil {
 	}
 
 	static public void repair(Unit unit, Unit target) {
-	
+
 		UnitCommand currentCommand = unit.getLastCommand();
 
 		if (currentCommand.getTarget() == target && unit.isIdle() == false) {

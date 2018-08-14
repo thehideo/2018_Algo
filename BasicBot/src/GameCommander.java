@@ -8,7 +8,6 @@ import bwapi.Unit;
 import bwapi.UnitType;
 import bwta.BWTA;
 import bwta.BaseLocation;
-import bwta.Chokepoint;
 
 /// 실제 봇프로그램의 본체가 되는 class<br>
 /// 스타크래프트 경기 도중 발생하는 이벤트들이 적절하게 처리되도록 해당 Manager 객체에게 이벤트를 전달하는 관리자 Controller 역할을 합니다
@@ -116,68 +115,59 @@ public class GameCommander {
 		System.out.println("[Info] 평균 소요시간 : " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
 	}
 
-	Object object = new Object();
-
 	/// 경기 진행 중 매 프레임마다 발생하는 이벤트를 처리합니다
 
 	public void onFrame() {
 
-		synchronized (object) {
+		if (MyBotModule.Broodwar.isPaused() || MyBotModule.Broodwar.self() == null || MyBotModule.Broodwar.self().isDefeated() || MyBotModule.Broodwar.self().leftGame() || MyBotModule.Broodwar.enemy() == null || MyBotModule.Broodwar.enemy().isDefeated() || MyBotModule.Broodwar.enemy().leftGame()) {
+			return;
+		}
+		if (MyBotModule.Broodwar.getFrameCount() % 2000 == 0) {
+			MyBotModule.Broodwar.sendText("FrameCnt=" + MyBotModule.Broodwar.getFrameCount() + " index=" + MyUtil.indexToGo);
+		}
 
-			if (MyBotModule.Broodwar.isPaused() || MyBotModule.Broodwar.self() == null || MyBotModule.Broodwar.self().isDefeated() || MyBotModule.Broodwar.self().leftGame() || MyBotModule.Broodwar.enemy() == null || MyBotModule.Broodwar.enemy().isDefeated() || MyBotModule.Broodwar.enemy().leftGame()) {
-				return;
-			}
-			if (MyBotModule.Broodwar.getFrameCount() % 2000 == 0) {
-				MyBotModule.Broodwar.sendText("FrameCnt=" + MyBotModule.Broodwar.getFrameCount() + " index=" + MyUtil.indexToGo);
-			}
+		// Time & Memory check
+		long startTime = System.currentTimeMillis();
+		// long s_memory= Runtime.getRuntime().freeMemory();
 
-			// Time & Memory check
-			long startTime = System.currentTimeMillis();
-			// long s_memory= Runtime.getRuntime().freeMemory();
+		// 아군 베이스 위치. 적군 베이스 위치. 각 유닛들의 상태정보 등을 Map 자료구조에 저장/업데이트
+		InformationManager.Instance().update();
 
-			// 아군 베이스 위치. 적군 베이스 위치. 각 유닛들의 상태정보 등을 Map 자료구조에 저장/업데이트
-			InformationManager.Instance().update();
+		// 각 유닛의 위치를 자체 MapGrid 자료구조에 저장
+		MapGrid.Instance().update();
 
-			// 각 유닛의 위치를 자체 MapGrid 자료구조에 저장
-			MapGrid.Instance().update();
+		// economy and base managers
+		// 일꾼 유닛에 대한 명령 (자원 채취, 이동 정도) 지시 및 정리
+		WorkerManager.Instance().update();
 
-			// economy and base managers
-			// 일꾼 유닛에 대한 명령 (자원 채취, 이동 정도) 지시 및 정리
-			WorkerManager.Instance().update();
+		// 빌드오더큐를 관리하며, 빌드오더에 따라 실제 실행(유닛 훈련, 테크 업그레이드 등)을 지시한다.
+		BuildManager.Instance().update();
 
-			// 빌드오더큐를 관리하며, 빌드오더에 따라 실제 실행(유닛 훈련, 테크 업그레이드 등)을 지시한다.
-			BuildManager.Instance().update();
+		// 빌드오더 중 건물 빌드에 대해서는, 일꾼유닛 선정, 위치선정, 건설 실시, 중단된 건물 빌드 재개를 지시한다
+		ConstructionManager.Instance().update();
 
-			// 빌드오더 중 건물 빌드에 대해서는, 일꾼유닛 선정, 위치선정, 건설 실시, 중단된 건물 빌드 재개를 지시한다
-			ConstructionManager.Instance().update();
+		// 게임 초기 정찰 유닛 지정 및 정찰 유닛 컨트롤을 실행한다
+		ScoutManager.Instance().update();
 
-			// 게임 초기 정찰 유닛 지정 및 정찰 유닛 컨트롤을 실행한다
-			ScoutManager.Instance().update();
+		// 전략적 판단 및 유닛 컨트롤
+		StrategyManager.Instance().update();
 
-			// 전략적 판단 및 유닛 컨트롤
-			StrategyManager.Instance().update();
+		// JohnVer만의 추가 Action
+		ActionManager.Instance().update();
 
-			// JohnVer만의 추가 Action
-			ActionManager.Instance().update();
+		// 평균 소요시간 DP Start
+		long spendTime = (System.currentTimeMillis() - startTime);
+		lTotalSpendTime += spendTime;
 
-			// 평균 소요시간 DP Start
-			long spendTime = (System.currentTimeMillis() - startTime);
-			lTotalSpendTime += spendTime;
-
-			// 예외가 발생할 부분이 아닌데 발생하여 try catch문을 썼다.
-			try {
-				if (MyBotModule.Broodwar.getFrameCount() > 0) {
-					if (spendTime > 55) { // 44ms 초과 시 Inform
-						System.out.println("[Warning][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
-					} else {
-						if (MyBotModule.Broodwar.getFrameCount() > 0 && bTimeDPFlg) // 1 프레임 부터 계산시작
-							System.out.println("[Info][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
-					}
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
+		if (MyBotModule.Broodwar.getFrameCount() > 0) {
+			if (spendTime > 55) { // 44ms 초과 시 Inform
+				System.out.println("[Warning][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
+			} else {
+				if (MyBotModule.Broodwar.getFrameCount() > 0 && bTimeDPFlg) // 1 프레임 부터 계산시작
+					System.out.println("[Info][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
 			}
 		}
+
 		// 평균 소요시간 DP End
 	}
 
@@ -220,9 +210,13 @@ public class GameCommander {
 
 		// 적군 유닛 메모리에서 제거
 		if (unit.getPlayer() == MyBotModule.Broodwar.enemy()) {
-			MyVariable.removeTankPosition(unit);
-			MyVariable.removeTurretPosition(unit);
-			MyVariable.removeGoliatPosition(unit);
+			if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+				MyVariable.removeTankPosition(unit);
+			} else if (unit.getType() == UnitType.Terran_Missile_Turret) {
+				MyVariable.removeTurretPosition(unit);
+			} else if (unit.getType() == UnitType.Terran_Goliath) {
+				MyVariable.removeGoliatPosition(unit);
+			}
 		}
 	}
 

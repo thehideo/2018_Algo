@@ -11,7 +11,6 @@ import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
 import bwta.BWTA;
-import bwta.Chokepoint;
 
 public class MyUtil {
 
@@ -226,7 +225,7 @@ public class MyUtil {
 		return mostCloseEnemyUnit;
 	}
 
-	public static Unit getMostCloseEnemyUnit(Unit unit, ArrayList<Unit> enemyUnitList) {
+	public static Unit getMostCloseUnit(Unit unit, ArrayList<Unit> enemyUnitList) {
 		Unit mostCloseEnemyUnit = null;
 		double minDistance = Double.MAX_VALUE;
 		for (Unit enemyUnit : enemyUnitList) {

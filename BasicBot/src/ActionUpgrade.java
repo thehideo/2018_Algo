@@ -27,17 +27,6 @@ public class ActionUpgrade extends ActionControlAbstract {
 					break;
 				}
 			}
-
-			// if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
-			// if
-			// (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters)
-			// == 0) {
-			// BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters,
-			// false);
-			// break;
-			// }
-			// }
-
 		}
 
 		// Marine 사거리/스팀팩 업그레이드
@@ -138,12 +127,15 @@ public class ActionUpgrade extends ActionControlAbstract {
 					break;
 				}
 			}
-//			if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
-//				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters) == 0) {
-//					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters, false);
-//					break;
-//				}
-//			}
+			// if (unit.canUpgrade(UpgradeType.Ion_Thrusters)) {
+			// if
+			// (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Ion_Thrusters)
+			// == 0) {
+			// BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ion_Thrusters,
+			// false);
+			// break;
+			// }
+			// }
 		}
 
 		// 시즈 모드
@@ -167,16 +159,12 @@ public class ActionUpgrade extends ActionControlAbstract {
 		}
 
 		// 골리앗 사거리
-		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() > 4 || MyVariable.findCarrier == true) {
+		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() > 4) {
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
 				if (unit.canUpgrade(UpgradeType.Charon_Boosters)) {
 					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Charon_Boosters) == 0) {
 						{
-							if (MyVariable.findCarrier == false) {
-								BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Charon_Boosters, false);
-							} else {
-								BuildManager.Instance().buildQueue.queueAsHighestPriority(UpgradeType.Charon_Boosters, true);
-							}
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Charon_Boosters, false);
 							break;
 						}
 					}

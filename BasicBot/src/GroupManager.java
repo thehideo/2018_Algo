@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Iterator;
 
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -76,7 +77,10 @@ public class GroupManager {
 	}
 
 	void fillGroup(GroupAbstract groupAbstract) {
-		for (UnitType unitType : groupAbstract.mapUnitTotal.keySet()) {
+		Iterator<UnitType> UnitTypes = groupAbstract.mapUnitTotal.keySet().iterator();
+
+		while (UnitTypes.hasNext()) {
+			UnitType unitType = UnitTypes.next();
 			int totalCnt = groupAbstract.mapUnitTotal.get(unitType);
 			if (groupAbstract.mapUnit.get(unitType) != null) {
 				if (totalCnt > groupAbstract.mapUnit.get(unitType).size()) {

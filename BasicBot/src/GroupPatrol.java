@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import bwapi.Race;
@@ -27,6 +28,11 @@ public class GroupPatrol extends GroupAbstract {
 					this.mapUnitTotal.put(UnitType.Terran_Vulture, Terran_Vulture);
 				}
 			}
+			if (MyVariable.getSelfUnit(UnitType.Terran_Battlecruiser).size() > 4) {
+				this.mapUnitTotal.put(UnitType.Terran_Battlecruiser, MyVariable.getSelfUnit(UnitType.Terran_Battlecruiser).size() / 4);
+			} else {
+				this.mapUnitTotal.put(UnitType.Terran_Battlecruiser, 0);
+			}
 		} else {
 			this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
 			if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
@@ -39,7 +45,9 @@ public class GroupPatrol extends GroupAbstract {
 		}
 
 		if (listTilePosition.size() > 0) {
-			for (UnitType unitType : this.mapUnit.keySet()) {
+			Iterator<UnitType> unitTypes = this.mapUnit.keySet().iterator();
+			while (unitTypes.hasNext()) {
+				UnitType unitType = unitTypes.next();
 				for (Integer unitID : mapUnit.get(unitType)) {
 					if (MyUtil.distancePosition(MyVariable.mapUnitIDUnit.get(unitID).getPosition(), listTilePosition.get(0).toPosition()) < 32 * 1) {
 						listTilePosition.remove(0);

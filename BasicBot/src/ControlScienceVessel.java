@@ -4,14 +4,12 @@ import bwapi.UnitType;
 
 public class ControlScienceVessel extends ControlAbstract {
 	void actionMain(Unit unit, GroupAbstract groupAbstract) {
-
-		// 주위에 캐리어가 있고, 각 골리앗 마다 가장 가까운 녀석을 공격한다.
 		if (MyVariable.getEnemyUnit(UnitType.Zerg_Mutalisk).size() > 0) {
 			Unit mostCloseMutalisk = getMostCloseEnemyUnit(UnitType.Zerg_Mutalisk, unit);
 			if (mostCloseMutalisk != null) {
 				if (mostCloseMutalisk.getDistance(unit) < 1200 && unit.canUseTech(TechType.Irradiate, mostCloseMutalisk)) {
 					CommandUtil.useTech(unit, TechType.Irradiate, mostCloseMutalisk);
-					setSpecialAction(unit,0);
+					setSpecialAction(unit, 0);
 				}
 			}
 		}

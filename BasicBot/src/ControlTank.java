@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 import bwapi.Race;
 import bwapi.TechType;
 import bwapi.TilePosition;
@@ -26,7 +28,9 @@ public class ControlTank extends ControlAbstract {
 		}
 
 		if (result == false) {
-			for (Integer tankID : MyVariable.mapTankPosition.keySet()) {
+			Iterator<Integer> tankIDs = MyVariable.mapTankPosition.keySet().iterator();
+			while (tankIDs.hasNext()) {
+				Integer tankID = tankIDs.next();
 				TilePosition tp = MyVariable.mapTankPosition.get(tankID);
 				if (MyUtil.distancePosition(unit.getPosition(), tp.toPosition()) <= SIEGE_MODE_MAX_RANGE + 32) {
 					result = true;
