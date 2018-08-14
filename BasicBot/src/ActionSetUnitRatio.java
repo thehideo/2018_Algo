@@ -56,16 +56,17 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 	}
 
 	public void unitTerran() {
-		if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 6 && MyUtil.GetMyTankCnt() <= 4 && MyBotModule.Broodwar.getFrameCount() <= 10000 && MyVariable.findTank == false && MyVariable.findThreeGoliat == false) {
+		if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 12 && MyUtil.GetMyTankCnt() <= 4 && MyBotModule.Broodwar.getFrameCount() <= 10000 && MyVariable.findTank == false && MyVariable.findThreeGoliat == false) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
 		} else {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);
-			if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() < 4 && MyVariable.getSelfAttackUnit(UnitType.Terran_Wraith).size() * 4 <= MyUtil.GetMyTankCnt()) {
+			if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() < 10 && MyVariable.getSelfAttackUnit(UnitType.Terran_Wraith).size() * 4 <= MyUtil.GetMyTankCnt()) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
 			}
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() * 1 <= MyUtil.GetMyTankCnt()) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
-			}
+			// if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() * 1 <=
+			// MyUtil.GetMyTankCnt()) {
+			// MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
+			// }
 		}
 
 		if (MyVariable.getSelfUnit(UnitType.Terran_Physics_Lab).size() > 0) {

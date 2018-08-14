@@ -41,7 +41,7 @@ public class ControlWraith extends ControlAbstract {
 			}
 			// 적 유닛에게 공격
 			Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseUnit(wraith, MyVariable.enemyAttactUnit);
-			if (mostCloseEnemyAttackUnit != null && wraith.getDistance(mostCloseEnemyAttackUnit) < 400) {
+			if (mostCloseEnemyAttackUnit != null && wraith.getDistance(mostCloseEnemyAttackUnit) < 500 && mostCloseEnemyAttackUnit.getType() != UnitType.Terran_Goliath) {
 				CommandUtil.attackUnit(wraith, mostCloseEnemyAttackUnit);
 			}
 		}
@@ -121,7 +121,7 @@ public class ControlWraith extends ControlAbstract {
 		Iterator<Integer> turretIDs = MyVariable.mapTurretPosition.keySet().iterator();
 		while (turretIDs.hasNext()) {
 			Integer turretID = turretIDs.next();
-			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapTurretPosition.get(turretID)) < UnitType.Terran_Missile_Turret.airWeapon().maxRange() / 32 + 4) {
+			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapTurretPosition.get(turretID)) < 10) { // 터렛 최대 사거리 7
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 				return;
 			}
@@ -129,20 +129,20 @@ public class ControlWraith extends ControlAbstract {
 		Iterator<Integer> GoliatIDs = MyVariable.mapGoliatPosition.keySet().iterator();
 		while (GoliatIDs.hasNext()) {
 			Integer GoliatID = GoliatIDs.next();
-			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapGoliatPosition.get(GoliatID)) < UnitType.Terran_Goliath.airWeapon().maxRange() / 32 + 4) {
+			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapGoliatPosition.get(GoliatID)) < 11) { // 골리앗 최대 사거리 8
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 				return;
 			}
 		}
 		if (wraith.isDetected() == false && wraith.getEnergy() < 5) {
 			Unit Terran_Bunker = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Bunker, wraith);
-			if (Terran_Bunker != null && MyUtil.distanceTilePosition(Terran_Bunker.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Bunker.airWeapon().maxRange() / 32 + 5) {
+			if (Terran_Bunker != null && MyUtil.distanceTilePosition(Terran_Bunker.getTilePosition(), wraith.getTilePosition()) < 8) { // 마린 사거리 5
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 				return;
 			}
 
 			Unit Terran_Valkyrie = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Valkyrie, wraith);
-			if (Terran_Valkyrie != null && MyUtil.distanceTilePosition(Terran_Valkyrie.getTilePosition(), wraith.getTilePosition()) <= UnitType.Terran_Valkyrie.airWeapon().maxRange() / 32 + 5) {
+			if (Terran_Valkyrie != null && MyUtil.distanceTilePosition(Terran_Valkyrie.getTilePosition(), wraith.getTilePosition()) < 10) { // 발키리 사거리 7
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 				return;
 			}

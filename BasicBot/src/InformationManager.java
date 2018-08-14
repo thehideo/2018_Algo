@@ -250,7 +250,8 @@ public class InformationManager {
 		MyVariable.clearEnemyUnit();
 
 		// 빈 자리이면 탱크를 초기화 한다.
-		if (MyBotModule.Broodwar.self().supplyTotal() >= 380) {
+		//if (MyBotModule.Broodwar.self().supplyTotal() >= 380) 
+		{
 			Iterator<TilePosition> TilePositions = MyVariable.mapPositionTank.keySet().iterator();
 			while (TilePositions.hasNext()) {
 				TilePosition tp = TilePositions.next();

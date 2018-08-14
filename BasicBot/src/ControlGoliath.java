@@ -8,6 +8,7 @@ import bwapi.UnitType;
 
 public class ControlGoliath extends ControlAbstract {
 
+	public static final int SIEGE_MODE_MIN_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().minRange(); // 64
 	public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
 
 	void actionMain(Unit unit, GroupAbstract groupAbstract) {
@@ -17,14 +18,14 @@ public class ControlGoliath extends ControlAbstract {
 				Iterator<Integer> tankIDs = MyVariable.mapTankPosition.keySet().iterator();
 				while (tankIDs.hasNext()) {
 					Integer TankID = tankIDs.next();
-					if (MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.mapTankPosition.get(TankID)) < UnitType.Terran_Siege_Tank_Siege_Mode.airWeapon().maxRange() / 32 + 4) {
+					if (MyUtil.distancePosition(unit.getPosition(), MyVariable.mapTankPosition.get(TankID).toPosition()) <= SIEGE_MODE_MAX_RANGE + 32) {
 						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
 						return;
 					}
 				}
 			}
 		}
-		
+
 		// 주위에 캐리어가 있고, 각 골리앗 마다 가장 가까운 녀석을 공격한다.
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
 			Unit mostCloseCarrier = MyUtil.getMostCloseEnemyUnit(UnitType.Protoss_Carrier, unit);
@@ -53,7 +54,6 @@ public class ControlGoliath extends ControlAbstract {
 			patrolGroupAction(unit, groupAbstract);
 		}
 
-	
 		Position target = groupAbstract.getTargetPosition(unit);
 		CommandUtil.attackMove(unit, target);
 

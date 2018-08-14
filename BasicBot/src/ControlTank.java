@@ -59,6 +59,7 @@ public class ControlTank extends ControlAbstract {
 		}
 		if (need == true && !unit.isSieged()) {
 			CommandUtil.siege(unit);
+			setSpecialAction(unit, 50);
 		}
 		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
 	}

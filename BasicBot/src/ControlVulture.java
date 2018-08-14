@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.List;
 
 import bwapi.TechType;
@@ -8,9 +9,26 @@ import bwta.BaseLocation;
 
 public class ControlVulture extends ControlAbstract {
 
+	public static final int SIEGE_MODE_MIN_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().minRange(); // 64
+	public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
+
 	BaseLocation bl = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.self());
 
 	public void actionMain(Unit unit, GroupAbstract groupAbstract) {
+		// 어텍 그룹일 때는 탱크를 피해서 움직인다.
+		if (groupAbstract == GroupManager.instance().groupAttack) {
+			if (MyUtil.GetMyTankCnt() >= 1) {
+				Iterator<Integer> tankIDs = MyVariable.mapTankPosition.keySet().iterator();
+				while (tankIDs.hasNext()) {
+					Integer TankID = tankIDs.next();
+					if (MyUtil.distancePosition(unit.getPosition(), MyVariable.mapTankPosition.get(TankID).toPosition()) <= SIEGE_MODE_MAX_RANGE + 32) {
+						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+						return;
+					}
+				}
+			}
+		}
+
 		// Spinder Mines 사용
 		if (MyVariable.enemyStartLocation != null) {
 			boolean useSpider_Mines = false;
@@ -62,8 +80,7 @@ public class ControlVulture extends ControlAbstract {
 				}
 
 				// 적이 있을 때
-				if (enemyVultureCnt > 0)
-				{
+				if (enemyVultureCnt > 0) {
 					// 내가 상대방 보다 많으면 공격하고
 					if (selfVultureCnt > enemyVultureCnt) {
 						Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseUnit(unit, MyVariable.enemyAttactUnit);
