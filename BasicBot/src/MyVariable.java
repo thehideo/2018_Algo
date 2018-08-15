@@ -1,7 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.concurrent.ConcurrentHashMap;
-
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -60,7 +59,7 @@ public class MyVariable {
 	// 내 유닛 정보
 	/////////////////////////////////////////////
 
-	public static ConcurrentHashMap<Integer, Unit> mapUnitIDUnit = new ConcurrentHashMap<Integer, Unit>();
+	public static HashMap<Integer, Unit> mapUnitIDUnit = new HashMap<Integer, Unit>();
 
 	public static TilePosition myStartLocation = MyBotModule.Broodwar.self().getStartLocation();
 
@@ -100,10 +99,10 @@ public class MyVariable {
 	// 상대편 command center, neus, 해처리 개수 파악용
 	public static HashSet<TilePosition> mapSelfMainBuilding = new HashSet<TilePosition>();
 
-	public static ConcurrentHashMap<String, ArrayList<Unit>> mapBuildingSizeMap = new ConcurrentHashMap<String, ArrayList<Unit>>();
+	public static HashMap<String, ArrayList<Unit>> mapBuildingSizeMap = new HashMap<String, ArrayList<Unit>>();
 
 	// 전체
-	public static ConcurrentHashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new ConcurrentHashMap<UnitType, ArrayList<Unit>>();
+	public static HashMap<UnitType, ArrayList<Unit>> mapSelfUnit = new HashMap<UnitType, ArrayList<Unit>>();
 
 	public static int tankLineDistance = 13;
 
@@ -114,7 +113,7 @@ public class MyVariable {
 		return mapSelfUnit.get(unitType);
 	}
 
-	private static ConcurrentHashMap<UnitType, ArrayList<Unit>> mapSelfAttackUnit = new ConcurrentHashMap<UnitType, ArrayList<Unit>>();
+	private static HashMap<UnitType, ArrayList<Unit>> mapSelfAttackUnit = new HashMap<UnitType, ArrayList<Unit>>();
 
 	public static ArrayList<Unit> getSelfAttackUnit(UnitType unitType) {
 		if (!mapSelfAttackUnit.containsKey(unitType)) {
@@ -171,7 +170,7 @@ public class MyVariable {
 	// 유닛 구성
 	/////////////////////////////////////////////
 
-	public static ConcurrentHashMap<UnitType, Integer> attackUnitRatio = new ConcurrentHashMap<UnitType, Integer>();
+	public static HashMap<UnitType, Integer> attackUnitRatio = new HashMap<UnitType, Integer>();
 
 	public static double distanceOfMostCloseEnemyUnit = Double.MAX_VALUE;
 	public static Unit mostCloseEnemyUnit = null;
@@ -191,7 +190,7 @@ public class MyVariable {
 	public static HashSet<TilePosition> enemyBuildingUnit = new HashSet<TilePosition>();
 
 	// 전체
-	private static ConcurrentHashMap<UnitType, ArrayList<Unit>> mapEnemyUnit = new ConcurrentHashMap<UnitType, ArrayList<Unit>>();
+	private static HashMap<UnitType, ArrayList<Unit>> mapEnemyUnit = new HashMap<UnitType, ArrayList<Unit>>();
 
 	static public ArrayList<Unit> getEnemyUnit(UnitType unitType) {
 		if (!mapEnemyUnit.containsKey(unitType)) {
@@ -213,8 +212,8 @@ public class MyVariable {
 	public static ArrayList<Unit> enemyUnitAroundMyStartPoint = new ArrayList<>();
 
 	// 적 탱크
-	public static ConcurrentHashMap<Integer, TilePosition> mapTankPosition = new ConcurrentHashMap<Integer, TilePosition>();
-	public static ConcurrentHashMap<TilePosition, Integer> mapPositionTank = new ConcurrentHashMap<TilePosition, Integer>();
+	public static HashMap<Integer, TilePosition> mapTankPosition = new HashMap<Integer, TilePosition>();
+	public static HashMap<TilePosition, Integer> mapPositionTank = new HashMap<TilePosition, Integer>();
 
 	public static void updateTankPosition(Unit unit) {
 		Integer unitID = unit.getID();
@@ -245,8 +244,8 @@ public class MyVariable {
 	}
 
 	// 적 터렛
-	public static ConcurrentHashMap<Integer, TilePosition> mapTurretPosition = new ConcurrentHashMap<Integer, TilePosition>();
-	public static ConcurrentHashMap<TilePosition, Integer> mapPositionTurret = new ConcurrentHashMap<TilePosition, Integer>();
+	public static HashMap<Integer, TilePosition> mapTurretPosition = new HashMap<Integer, TilePosition>();
+	public static HashMap<TilePosition, Integer> mapPositionTurret = new HashMap<TilePosition, Integer>();
 
 	public static void updateTurretPosition(Unit unit) {
 		Integer unitID = unit.getID();
@@ -277,8 +276,8 @@ public class MyVariable {
 	}
 
 	// 적 곳리앗
-	public static ConcurrentHashMap<Integer, TilePosition> mapGoliatPosition = new ConcurrentHashMap<Integer, TilePosition>();
-	public static ConcurrentHashMap<TilePosition, Integer> mapPositionGoliat = new ConcurrentHashMap<TilePosition, Integer>();
+	public static HashMap<Integer, TilePosition> mapGoliatPosition = new HashMap<Integer, TilePosition>();
+	public static HashMap<TilePosition, Integer> mapPositionGoliat = new HashMap<TilePosition, Integer>();
 
 	public static void updateGoliatPosition(Unit unit) {
 		Integer unitID = unit.getID();

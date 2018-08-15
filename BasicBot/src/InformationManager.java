@@ -248,19 +248,22 @@ public class InformationManager {
 	private void updateEnemyUnitMap() {
 		MyVariable.clearEnemyUnit();
 
-		
-		// if (MyBotModule.Broodwar.self().supplyTotal() >= 380)
 		// 빈 자리이면 탱크를 초기화 한다.
+		// if (MyBotModule.Broodwar.self().supplyTotal() >= 380)
 		{
+			ArrayList<TilePosition> deleteList = new ArrayList<TilePosition>();
 			Iterator<TilePosition> TilePositions = MyVariable.mapPositionTank.keySet().iterator();
 			while (TilePositions.hasNext()) {
 				TilePosition tp = TilePositions.next();
 				if (MyBotModule.Broodwar.isVisible(tp)) {
 					List<Unit> unit = MyBotModule.Broodwar.getUnitsOnTile(tp);
 					if (unit == null || unit.size() == 0) {
-						MyVariable.removeTankPosition(tp);
+						deleteList.add(tp);
 					}
 				}
+			}
+			for (TilePosition tp : deleteList) {
+				MyVariable.removeTankPosition(tp);
 			}
 		}
 
