@@ -58,7 +58,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		}
 
 		// 7000 프레임 마다 확장을 하나씩 추가한다.
-		int needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 7000;
+		int needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 6000;
 		if (MyBotModule.Broodwar.self().minerals() > 600) {
 			needCommandCount = MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() + 1;
 		}
@@ -220,7 +220,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Comsat_Station, false);
 		}
 
-		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyVariable.findWraith == true) {
+		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && (MyVariable.findWraith == true || MyUtil.GetMyTankCnt() >= 2)) {
 			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
