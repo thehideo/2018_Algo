@@ -107,9 +107,21 @@ public class MyUtil {
 
 	static HashMap<TilePosition, List<TilePosition>> mapShortestPath = new HashMap<TilePosition, List<TilePosition>>();
 
+	static int framecount = 0;
+	static HashMap<Integer, TilePosition> getSaveTilePositionResult = new HashMap<Integer, TilePosition>();
+
 	// 방어할 ChokePoint를 구한다.
 	// 기본은 첫번째 초크 포인트
 	public static TilePosition getSaveTilePosition(int add) {
+		if (framecount != MyBotModule.Broodwar.getFrameCount()) {
+			framecount = MyBotModule.Broodwar.getFrameCount();
+			getSaveTilePositionResult.clear();
+		}
+
+		TilePosition resultTilePosition = getSaveTilePositionResult.get(add);
+		if (resultTilePosition != null) {
+			return resultTilePosition;
+		}
 
 		// 전진 위치 초기화
 		if (MyUtil.GetMyTankCnt() == 0 && MyVariable.isFullScaleAttackStarted == true) {
@@ -186,6 +198,8 @@ public class MyUtil {
 		} else {
 			target = shortestPath.get(0);
 		}
+
+		getSaveTilePositionResult.put(add, target);
 		return target;
 	}
 

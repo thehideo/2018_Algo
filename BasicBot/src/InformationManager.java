@@ -267,6 +267,24 @@ public class InformationManager {
 			}
 		}
 
+		// 빈자리이면 골리앗 정보 제거
+		{
+			ArrayList<TilePosition> deleteList = new ArrayList<TilePosition>();
+			Iterator<TilePosition> TilePositions = MyVariable.mapPositionGoliat.keySet().iterator();
+			while (TilePositions.hasNext()) {
+				TilePosition tp = TilePositions.next();
+				if (MyBotModule.Broodwar.isVisible(tp)) {
+					List<Unit> unit = MyBotModule.Broodwar.getUnitsOnTile(tp);
+					if (unit == null || unit.size() == 0) {
+						deleteList.add(tp);
+					}
+				}
+			}
+			for (TilePosition tp : deleteList) {
+				MyVariable.removeGoliatPosition(tp);
+			}
+		}
+
 		BaseLocation bl = InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().enemyPlayer);
 
 		if (bl != null) {

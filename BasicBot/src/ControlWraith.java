@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import bwapi.Race;
 import bwapi.TechType;
@@ -14,9 +15,25 @@ public class ControlWraith extends ControlAbstract {
 
 	void actionMain(Unit wraith, GroupAbstract groupAbstract) {
 
+		// 클로킹 관련 액션
+		cloakingAction(wraith, groupAbstract);
+
 		if (InformationManager.Instance().enemyRace == Race.Terran) {
+
+			if (groupAbstract == GroupManager.instance().groupAttack) {
+				attackGroupAction(wraith, groupAbstract);
+
+			}
 			// 터렛,골리앗,벙커,발키리를 만나면 뒤로 도망간다.
 			terranAction(wraith, groupAbstract);
+
+			// 적 Wraith를 1번으로 공격한다.
+			Unit Terran_Wraith = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Wraith, wraith);
+			if (Terran_Wraith != null) {
+				CommandUtil.attackUnit(wraith, Terran_Wraith);
+				return;
+			}
+
 			// 주위에 베슬이 보이면 바로 공격
 			Unit Terran_Science_Vessel = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Science_Vessel, wraith);
 			if (Terran_Science_Vessel != null && wraith.getDistance(Terran_Science_Vessel) < 400) {
@@ -24,9 +41,6 @@ public class ControlWraith extends ControlAbstract {
 				return;
 			}
 		}
-
-		// 클로킹 관련 액션
-		cloakingAction(wraith, groupAbstract);
 
 		if (groupAbstract == GroupManager.instance().groupWraithPatrol) {
 			wraithGroupAction(wraith, groupAbstract);
@@ -64,39 +78,74 @@ public class ControlWraith extends ControlAbstract {
 			}
 		}
 	}
-	/*
-	 * void attackGroupAction(Unit unit, GroupAbstract groupAbstract) { int
-	 * sizeEnemy = MyVariable.getEnemyUnit(UnitType.Terran_Valkyrie).size() +
-	 * MyVariable.getEnemyUnit(UnitType.Terran_Goliath).size() +
-	 * MyVariable.getEnemyUnit(UnitType.Terran_Missile_Turret).size() +
-	 * MyVariable.getEnemyUnit(UnitType.Terran_Marine).size() +
-	 * MyVariable.getEnemyUnit(UnitType.Terran_Bunker).size() * 3 +
-	 * MyVariable.getEnemyUnit(UnitType.Terran_Battlecruiser).size() * 2; int
-	 * sizeSelf = groupAbstract.mapUnit.get(UnitType.Terran_Wraith).size(); if
-	 * (sizeEnemy * 5 < sizeSelf) { Unit Terran_Missile_Turret =
-	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Missile_Turret, unit); if
-	 * (Terran_Missile_Turret != null) { CommandUtil.attackUnit(unit,
-	 * Terran_Missile_Turret); return; } Unit Terran_Goliath =
-	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Goliath, unit); if
-	 * (Terran_Goliath != null && unit.getDistance(Terran_Goliath) < 400) {
-	 * CommandUtil.attackUnit(unit, Terran_Goliath); return; } Unit Terran_Marine =
-	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Marine, unit); if (Terran_Marine
-	 * != null && unit.getDistance(Terran_Marine) < 400) {
-	 * CommandUtil.attackUnit(unit, Terran_Marine); return; } Unit Terran_Wraith =
-	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Wraith, unit); if (Terran_Wraith
-	 * != null && unit.getDistance(Terran_Wraith) < 400) {
-	 * CommandUtil.attackUnit(unit, Terran_Wraith); return; } Unit Terran_Bunker =
-	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Bunker, unit); if (Terran_Bunker
-	 * != null && unit.getDistance(Terran_Bunker) < 400) {
-	 * CommandUtil.attackUnit(unit, Terran_Bunker); return; } Unit
-	 * Terran_Battlecruiser =
-	 * MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Battlecruiser, unit); if
-	 * (Terran_Battlecruiser != null && unit.getDistance(Terran_Battlecruiser) <
-	 * 400) { CommandUtil.attackUnit(unit, Terran_Battlecruiser); return; } Unit
-	 * Terran_Valkyrie = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Valkyrie,
-	 * unit); if (Terran_Valkyrie != null && unit.getDistance(Terran_Valkyrie) <
-	 * 400) { CommandUtil.attackUnit(unit, Terran_Valkyrie); return; } } }
-	 */
+
+	void attackGroupAction(Unit unit, GroupAbstract groupAbstract) {
+
+		List<Unit> ourUnits = MyBotModule.Broodwar.getUnitsInRadius(unit.getPosition(), 32 * 10);
+
+		int enemyCnt = 0;
+
+		int selfWraithCnt = 0;
+
+		Double distanceMostClose = Double.MAX_VALUE;
+		Unit enemy = null;
+
+		for (Unit u : ourUnits) {
+			if (u.getPlayer() == MyBotModule.Broodwar.enemy()) {
+				boolean find = false;
+				if (unit.isDetected() == false) {
+					if (u.getType() == UnitType.Terran_Goliath) {
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Marine) {
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Wraith) {
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Bunker) {
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Battlecruiser) {
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Valkyrie) {
+						find = true;
+					}
+				} else {
+					if (u.getType() == UnitType.Terran_Goliath) {
+						enemyCnt = enemyCnt + 3;
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Marine) {
+						enemyCnt = enemyCnt + 1;
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Wraith) {
+						enemyCnt = enemyCnt + 1;
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Bunker) {
+						enemyCnt = enemyCnt + 10;
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Battlecruiser) {
+						enemyCnt = enemyCnt + 5;
+						find = true;
+					} else if (u.getType() == UnitType.Terran_Valkyrie) {
+						enemyCnt = enemyCnt + 3;
+						find = true;
+					}
+				}
+				if (find == true) {
+					double distanceEnemy = unit.getDistance(u);
+					if (distanceMostClose > distanceEnemy) {
+						distanceMostClose = distanceEnemy;
+						enemy = u;
+					}
+
+				}
+			} else if (u.getPlayer() == MyBotModule.Broodwar.self()) {
+				if (u.getType() == UnitType.Terran_Wraith) {
+					selfWraithCnt++;
+				}
+			}
+		}
+		if (enemy != null && selfWraithCnt >= enemyCnt) {
+			CommandUtil.attackUnit(unit, enemy);
+		}
+	}
 
 	void cloakingAction(Unit wraith, GroupAbstract groupAbstract) {
 		// 적이 근처에 없으면 클로킹 해제
@@ -121,31 +170,34 @@ public class ControlWraith extends ControlAbstract {
 		Iterator<Integer> turretIDs = MyVariable.mapTurretPosition.keySet().iterator();
 		while (turretIDs.hasNext()) {
 			Integer turretID = turretIDs.next();
-			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapTurretPosition.get(turretID)) < 10) { // 터렛 최대 사거리 7
+			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapTurretPosition.get(turretID)) < 9) { // 터렛 최대 사거리 7
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 				return;
 			}
 		}
-		Iterator<Integer> GoliatIDs = MyVariable.mapGoliatPosition.keySet().iterator();
-		while (GoliatIDs.hasNext()) {
-			Integer GoliatID = GoliatIDs.next();
-			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapGoliatPosition.get(GoliatID)) < 11) { // 골리앗 최대 사거리 8
-				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-				return;
+
+		if (wraith.isDetected() == false) {
+			Iterator<Integer> GoliatIDs = MyVariable.mapGoliatPosition.keySet().iterator();
+			while (GoliatIDs.hasNext()) {
+				Integer GoliatID = GoliatIDs.next();
+				if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapGoliatPosition.get(GoliatID)) < 10) { // 골리앗 최대 사거리 8
+					CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+					return;
+				}
 			}
-		}
-		if (wraith.isDetected() == false && wraith.getEnergy() < 5) {
+
 			Unit Terran_Bunker = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Bunker, wraith);
-			if (Terran_Bunker != null && MyUtil.distanceTilePosition(Terran_Bunker.getTilePosition(), wraith.getTilePosition()) < 8) { // 마린 사거리 5
+			if (Terran_Bunker != null && MyUtil.distanceTilePosition(Terran_Bunker.getTilePosition(), wraith.getTilePosition()) < 7) { // 마린 사거리 5
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 				return;
 			}
 
 			Unit Terran_Valkyrie = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Valkyrie, wraith);
-			if (Terran_Valkyrie != null && MyUtil.distanceTilePosition(Terran_Valkyrie.getTilePosition(), wraith.getTilePosition()) < 10) { // 발키리 사거리 7
+			if (Terran_Valkyrie != null && MyUtil.distanceTilePosition(Terran_Valkyrie.getTilePosition(), wraith.getTilePosition()) < 9) { // 발키리 사거리 7
 				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
 				return;
 			}
+
 		}
 	}
 

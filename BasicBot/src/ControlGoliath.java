@@ -19,7 +19,12 @@ public class ControlGoliath extends ControlAbstract {
 				while (tankIDs.hasNext()) {
 					Integer TankID = tankIDs.next();
 					if (MyUtil.distancePosition(unit.getPosition(), MyVariable.mapTankPosition.get(TankID).toPosition()) <= SIEGE_MODE_MAX_RANGE + 32) {
+						if(MyBotModule.Broodwar.getFrameCount()%2==0) {
 						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+						}
+						else {
+							CommandUtil.move(unit, MyVariable.myFirstchokePoint.toPosition());	
+						}
 						return;
 					}
 				}

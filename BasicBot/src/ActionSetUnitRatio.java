@@ -56,19 +56,26 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 	}
 
 	public void unitTerran() {
-		if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 12 && MyUtil.GetMyTankCnt() <= 4 && MyBotModule.Broodwar.getFrameCount() <= 10000 && MyVariable.findTank == false && MyVariable.findThreeGoliat == false) {
+        // 벌처 생산 조건
+		if (MyUtil.GetMyTankCnt() <= 4 && MyVariable.getSelfUnit(UnitType.Terran_Vulture).size()<=6) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
-		} else {
-			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);
-			if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() < 10 && MyVariable.getSelfAttackUnit(UnitType.Terran_Wraith).size() * 4 <= MyUtil.GetMyTankCnt()) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
-			}
-			// if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() * 1 <=
-			// MyUtil.GetMyTankCnt()) {
-			// MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
-			// }
+		}
+		// 탱크 생산 조건
+		MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);
+		
+		// 레이스 생산 조건
+		if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() < 10 && MyVariable.getSelfAttackUnit(UnitType.Terran_Wraith).size() * 4 <= MyUtil.GetMyTankCnt()) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
 		}
 
+		// 골리앗이 적을 때는 바로 업그레이드
+		//if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() <= 2) {
+		//	MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 8);
+		//} else if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() * 1 <= MyUtil.GetMyTankCnt()) {
+		//	MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
+		//}
+
+		// 배틀쿠르저 생산 조건
 		if (MyVariable.getSelfUnit(UnitType.Terran_Physics_Lab).size() > 0) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Battlecruiser, 2);
 		}

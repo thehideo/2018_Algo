@@ -12,13 +12,18 @@ public class ActionCreateUnit extends ActionControlAbstract {
 		if (MyVariable.isInitialBuildOrderFinished == false) {
 			return;
 		}
+
+		if (BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Command_Center) > 0 && MyBotModule.Broodwar.self().minerals() <= 400) {
+			return;
+		}
+
 		if (MyVariable.attackUnit.size() < 4 || MyBotModule.Broodwar.self().minerals() >= 200) {
 			HashMap<UnitType, Double> tmp = new HashMap<UnitType, Double>();
-			Iterator<UnitType> attackUnitRatioKey =	MyVariable.attackUnitRatio.keySet().iterator();			
+			Iterator<UnitType> attackUnitRatioKey = MyVariable.attackUnitRatio.keySet().iterator();
 			while (attackUnitRatioKey.hasNext()) {
 				// 0은 계산 불가
 				UnitType unitType = attackUnitRatioKey.next();
-				
+
 				if (MyVariable.attackUnitRatio.get(unitType) == 0 && MyBotModule.Broodwar.canMake(unitType) == false) {
 					continue;
 				}
@@ -36,9 +41,9 @@ public class ActionCreateUnit extends ActionControlAbstract {
 			Collections.sort(tmp2);
 			/// 여기 까지 정렬 완료
 			for (int i = 0; i < tmp2.size(); i++) {
-				Iterator<UnitType> 	attackUnitRatioKeys=MyVariable.attackUnitRatio.keySet().iterator();				
+				Iterator<UnitType> attackUnitRatioKeys = MyVariable.attackUnitRatio.keySet().iterator();
 				while (attackUnitRatioKeys.hasNext()) {
-					UnitType unitType=attackUnitRatioKeys.next();
+					UnitType unitType = attackUnitRatioKeys.next();
 					if (tmp.get(unitType) == tmp2.get(i)) {
 						if (MyBotModule.Broodwar.canMake(unitType)) {
 							if (BuildManager.Instance().buildQueue.getItemCount(unitType) == 0) {

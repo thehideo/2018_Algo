@@ -172,21 +172,23 @@ public class ActionUpgrade extends ActionControlAbstract {
 			}
 		}
 
-		// 메카닉 업그레이드
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Armory)) {
-			if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Weapons)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Vehicle_Weapons) == 0) {
-					{
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Vehicle_Weapons, false);
-						break;
+		if (MyUtil.GetMyTankCnt() >= 8) {
+			// 메카닉 업그레이드
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Armory)) {
+				if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Weapons)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Vehicle_Weapons) == 0) {
+						{
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Vehicle_Weapons, false);
+							break;
+						}
 					}
 				}
-			}
-			if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Plating)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Vehicle_Plating) == 0) {
-					{
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Vehicle_Plating, false);
-						break;
+				if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Plating)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Vehicle_Plating) == 0) {
+						{
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Vehicle_Plating, false);
+							break;
+						}
 					}
 				}
 			}
