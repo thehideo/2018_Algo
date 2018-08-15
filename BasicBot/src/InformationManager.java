@@ -267,6 +267,12 @@ public class InformationManager {
 			}
 		}
 
+		// 전진을 못하는 경우가 발생하여 내가 유리한 조건일 때 초기화 한다.
+		if (MyBotModule.Broodwar.self().supplyTotal() >= 380 && MyBotModule.Broodwar.getFrameCount() >= 45000 && MyBotModule.Broodwar.getFrameCount() % 5000 == 0) {
+			MyVariable.mapPositionTank.clear();
+			MyVariable.mapTankPosition.clear();
+		}
+
 		// 빈자리이면 골리앗 정보 제거
 		{
 			ArrayList<TilePosition> deleteList = new ArrayList<TilePosition>();
