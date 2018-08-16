@@ -65,16 +65,34 @@ public class ControlVulture extends ControlAbstract {
 			if (MyVariable.isFullScaleAttackStarted == false) {
 
 				List<Unit> ourUnits = MyBotModule.Broodwar.getUnitsInRadius(unit.getPosition(), 32 * 7);
-				int enemyVultureCnt = 0;
-				int selfVultureCnt = 0;
+				Double enemyVultureCnt = 0.0;
+				Double selfVultureCnt = 0.0;
 
 				for (Unit u : ourUnits) {
-					if (u.getType() == UnitType.Terran_Vulture) {
-						if (u.getPlayer() == MyBotModule.Broodwar.enemy()) {
+					if (u.getPlayer() == MyBotModule.Broodwar.enemy()) {
+						if (u.getType() == UnitType.Terran_Vulture) {
 							enemyVultureCnt++;
+						} else if (u.getType() == UnitType.Terran_Marine) {
+							enemyVultureCnt++;
+						} else if (u.getType() == UnitType.Terran_Goliath) {
+							enemyVultureCnt = enemyVultureCnt + 3;
+						} else if (u.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || u.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+							enemyVultureCnt = enemyVultureCnt + 3;
+						}else if (u.getType() == UnitType.Terran_SCV) {
+							enemyVultureCnt = enemyVultureCnt + 0.01;
 						}
-						if (u.getPlayer() == MyBotModule.Broodwar.self()) {
+					}
+					if (u.getPlayer() == MyBotModule.Broodwar.self()) {
+						if (u.getType() == UnitType.Terran_Vulture) {
 							selfVultureCnt++;
+						} else if (u.getType() == UnitType.Terran_Marine) {
+							selfVultureCnt++;
+						} else if (u.getType() == UnitType.Terran_Goliath) {
+							selfVultureCnt = selfVultureCnt + 3;
+						} else if (u.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || u.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+							selfVultureCnt = selfVultureCnt + 3;
+						}else if (u.getType() == UnitType.Terran_SCV) {
+							selfVultureCnt = selfVultureCnt + 0.01;
 						}
 					}
 				}
