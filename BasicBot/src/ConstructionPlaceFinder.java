@@ -450,7 +450,7 @@ public class ConstructionPlaceFinder {
 
 					// ResourceDepot / Addon 건물이 아닌 일반 건물의 경우, BaseLocation 과 Geyser 사이 타일
 					// (TilesToAvoid) 에는 건물을 짓지 않는다
-					if (b.getType().isResourceDepot() == false && b.getType().isAddon() == false) {
+					if (b.getType().isResourceDepot() == false && b.getType().isAddon() == false &&  b.getType()!=UnitType.Terran_Missile_Turret) {
 						if (isTilesToAvoid(x, y)) {
 							return false;
 						}
