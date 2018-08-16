@@ -27,6 +27,11 @@ public class GroupPatrol extends GroupAbstract {
 				if (Terran_Vulture >= 0) {
 					this.mapUnitTotal.put(UnitType.Terran_Vulture, Terran_Vulture);
 				}
+				
+				if (MyUtil.GetMyTankCnt() > 20) {
+					int Tank = MyUtil.GetMyTankCnt() / 10;
+					this.mapUnitTotal.put(UnitType.Terran_Siege_Tank_Tank_Mode, Tank);
+				}
 			}
 			if (MyVariable.getSelfUnit(UnitType.Terran_Battlecruiser).size() > 4) {
 				this.mapUnitTotal.put(UnitType.Terran_Battlecruiser, MyVariable.getSelfUnit(UnitType.Terran_Battlecruiser).size() / 4);

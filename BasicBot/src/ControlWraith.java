@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
+import bwapi.Position;
 import bwapi.Race;
 import bwapi.TechType;
 import bwapi.TilePosition;
@@ -12,6 +14,7 @@ import bwapi.UnitType;
 public class ControlWraith extends ControlAbstract {
 
 	HashMap<Integer, Boolean> mapMode = new HashMap<Integer, Boolean>();
+	Random r = new Random();
 
 	void actionMain(Unit wraith, GroupAbstract groupAbstract) {
 
@@ -19,26 +22,42 @@ public class ControlWraith extends ControlAbstract {
 		cloakingAction(wraith, groupAbstract);
 
 		if (InformationManager.Instance().enemyRace == Race.Terran) {
-
-			if (groupAbstract == GroupManager.instance().groupAttack) {
-				attackGroupAction(wraith, groupAbstract);
-
+			// 터렛을 만나면 뒤로 간다.
+			Iterator<Integer> turretIDs = MyVariable.mapTurretPosition.keySet().iterator();
+			while (turretIDs.hasNext()) {
+				Integer turretID = turretIDs.next();
+				TilePosition turretPosition = MyVariable.mapTurretPosition.get(turretID);
+				if (MyUtil.distanceTilePosition(wraith.getTilePosition(), turretPosition) < 11) { // 터렛 최대 사거리 7
+					int X2 = wraith.getPosition().getX();
+					int Y2 = wraith.getPosition().getY();
+					int X1 = turretPosition.toPosition().getX();
+					int Y1 = turretPosition.toPosition().getY();
+					CommandUtil.move(wraith, new Position(2 * X2 - X1, 2 * Y2 - Y1));
+					// setSpecialAction(wraith, 0);
+					return;
+				}
 			}
+
+			// 내가 유리한 상황이면 공격한다.
+			attackGroupAction(wraith, groupAbstract);
+
 			// 터렛,골리앗,벙커,발키리를 만나면 뒤로 도망간다.
 			terranAction(wraith, groupAbstract);
 
-			// 적 Wraith를 1번으로 공격한다.
-			Unit Terran_Wraith = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Wraith, wraith);
-			if (Terran_Wraith != null) {
-				CommandUtil.attackUnit(wraith, Terran_Wraith);
-				return;
-			}
+			if (groupAbstract == GroupManager.instance().groupAttack) {
+				// 적 Wraith를 1번으로 공격한다.
+				Unit Terran_Wraith = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Wraith, wraith);
+				if (Terran_Wraith != null) {
+					CommandUtil.attackUnit(wraith, Terran_Wraith);
+					return;
+				}
 
-			// 주위에 베슬이 보이면 바로 공격
-			Unit Terran_Science_Vessel = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Science_Vessel, wraith);
-			if (Terran_Science_Vessel != null && wraith.getDistance(Terran_Science_Vessel) < 400) {
-				CommandUtil.attackUnit(wraith, Terran_Science_Vessel);
-				return;
+				// 주위에 베슬이 보이면 바로 공격
+				Unit Terran_Science_Vessel = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Science_Vessel, wraith);
+				if (Terran_Science_Vessel != null && wraith.getDistance(Terran_Science_Vessel) < 400) {
+					CommandUtil.attackUnit(wraith, Terran_Science_Vessel);
+					return;
+				}
 			}
 		}
 
@@ -167,34 +186,45 @@ public class ControlWraith extends ControlAbstract {
 	}
 
 	void terranAction(Unit wraith, GroupAbstract groupAbstract) {
-		Iterator<Integer> turretIDs = MyVariable.mapTurretPosition.keySet().iterator();
-		while (turretIDs.hasNext()) {
-			Integer turretID = turretIDs.next();
-			if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapTurretPosition.get(turretID)) < 9) { // 터렛 최대 사거리 7
-				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-				return;
-			}
-		}
-
-		if (wraith.isDetected() == false) {
-			Iterator<Integer> GoliatIDs = MyVariable.mapGoliatPosition.keySet().iterator();
-			while (GoliatIDs.hasNext()) {
-				Integer GoliatID = GoliatIDs.next();
-				if (MyUtil.distanceTilePosition(wraith.getTilePosition(), MyVariable.mapGoliatPosition.get(GoliatID)) < 10) { // 골리앗 최대 사거리 8
-					CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
-					return;
-				}
-			}
+		// 적에게 노출이 되었다면 도망간다.
+		if (wraith.isDetected() == true) {
+			// Iterator<Integer> GoliatIDs =
+			// MyVariable.mapGoliatPosition.keySet().iterator();
+			// while (GoliatIDs.hasNext()) {
+			// Integer goliatID = GoliatIDs.next();
+			// TilePosition goliatPosition = MyVariable.mapGoliatPosition.get(goliatID);
+			// if (MyUtil.distanceTilePosition(wraith.getTilePosition(), goliatPosition) <
+			// 10) { // 골리앗 최대 사거리 8
+			// int X2 = wraith.getPosition().getX();
+			// int Y2 = wraith.getPosition().getY();
+			// int X1 = goliatPosition.toPosition().getX();
+			// int Y1 = goliatPosition.toPosition().getY();
+			// CommandUtil.move(wraith, new Position(2 * X2 - X1 + r.nextInt(3), 2 * Y2 - Y1
+			// + r.nextInt(3)));
+			// setSpecialAction(wraith, 0);
+			// return;
+			// }
+			// }
 
 			Unit Terran_Bunker = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Bunker, wraith);
 			if (Terran_Bunker != null && MyUtil.distanceTilePosition(Terran_Bunker.getTilePosition(), wraith.getTilePosition()) < 7) { // 마린 사거리 5
-				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+				int X2 = wraith.getPosition().getX();
+				int Y2 = wraith.getPosition().getY();
+				int X1 = Terran_Bunker.getPosition().getX();
+				int Y1 = Terran_Bunker.getPosition().getY();
+				CommandUtil.move(wraith, new Position(2 * X2 - X1 + r.nextInt(1), 2 * Y2 - Y1 + r.nextInt(1)));
+				setSpecialAction(wraith, 0);
 				return;
 			}
 
 			Unit Terran_Valkyrie = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Valkyrie, wraith);
 			if (Terran_Valkyrie != null && MyUtil.distanceTilePosition(Terran_Valkyrie.getTilePosition(), wraith.getTilePosition()) < 9) { // 발키리 사거리 7
-				CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+				int X2 = wraith.getPosition().getX();
+				int Y2 = wraith.getPosition().getY();
+				int X1 = Terran_Valkyrie.getPosition().getX();
+				int Y1 = Terran_Valkyrie.getPosition().getY();
+				CommandUtil.move(wraith, new Position(2 * X2 - X1 + r.nextInt(1), 2 * Y2 - Y1 + r.nextInt(1)));
+				setSpecialAction(wraith, 0);
 				return;
 			}
 

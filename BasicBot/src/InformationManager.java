@@ -256,8 +256,15 @@ public class InformationManager {
 			while (TilePositions.hasNext()) {
 				TilePosition tp = TilePositions.next();
 				if (MyBotModule.Broodwar.isVisible(tp)) {
-					List<Unit> unit = MyBotModule.Broodwar.getUnitsOnTile(tp);
-					if (unit == null || unit.size() == 0) {
+					List<Unit> units = MyBotModule.Broodwar.getUnitsOnTile(tp);
+					boolean find = false;
+					for (Unit unit : units) {
+						if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
+							find = true;
+							break;
+						}
+					}
+					if (find == false) {
 						deleteList.add(tp);
 					}
 				}
@@ -280,8 +287,15 @@ public class InformationManager {
 			while (TilePositions.hasNext()) {
 				TilePosition tp = TilePositions.next();
 				if (MyBotModule.Broodwar.isVisible(tp)) {
-					List<Unit> unit = MyBotModule.Broodwar.getUnitsOnTile(tp);
-					if (unit == null || unit.size() == 0) {
+					List<Unit> units = MyBotModule.Broodwar.getUnitsOnTile(tp);
+					boolean find = false;
+					for (Unit unit : units) {
+						if (unit.getType() == UnitType.Terran_Goliath) {
+							find = true;
+							break;
+						}
+					}
+					if (find == false) {
 						deleteList.add(tp);
 					}
 				}

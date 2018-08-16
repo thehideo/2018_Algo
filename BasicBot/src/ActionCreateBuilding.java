@@ -79,6 +79,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 							}
 						}
 						if (hasCommandCenterThere == false && !bl.getTilePosition().equals(bl1.getTilePosition()) && !bl.getTilePosition().equals(bl3.getTilePosition()) && !bl.getTilePosition().equals(bl4.getTilePosition()) && !MyVariable.mapSelfMainBuilding.contains(bl.getTilePosition()) && !MyVariable.mapEnemyMainBuilding.contains(bl.getTilePosition()) && !MyVariable.enemyBuildingUnit.contains(bl.getTilePosition())) {
+							// 가스를 지을 수 있는 곳에 확장한다.
 							TilePosition tilePosition = ConstructionPlaceFinder.Instance().getRefineryPositionNear(bl.getTilePosition());
 							if (tilePosition != null) {
 								listTilePosition.add(bl.getTilePosition());
