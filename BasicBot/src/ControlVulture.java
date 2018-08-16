@@ -78,7 +78,7 @@ public class ControlVulture extends ControlAbstract {
 							enemyVultureCnt = enemyVultureCnt + 3;
 						} else if (u.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || u.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
 							enemyVultureCnt = enemyVultureCnt + 3;
-						}else if (u.getType() == UnitType.Terran_SCV) {
+						} else if (u.getType() == UnitType.Terran_SCV) {
 							enemyVultureCnt = enemyVultureCnt + 0.01;
 						}
 					}
@@ -91,7 +91,7 @@ public class ControlVulture extends ControlAbstract {
 							selfVultureCnt = selfVultureCnt + 3;
 						} else if (u.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || u.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
 							selfVultureCnt = selfVultureCnt + 3;
-						}else if (u.getType() == UnitType.Terran_SCV) {
+						} else if (u.getType() == UnitType.Terran_SCV) {
 							selfVultureCnt = selfVultureCnt + 0.01;
 						}
 					}
