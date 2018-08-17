@@ -12,6 +12,14 @@ public class ControlScienceVessel extends ControlAbstract {
 					setSpecialAction(unit, 0);
 				}
 			}
+		}else if (MyVariable.getEnemyUnit(UnitType.Zerg_Lurker).size() > 0) {
+			Unit mostCloseLurker = getMostCloseEnemyUnit(UnitType.Zerg_Lurker, unit);
+			if (mostCloseLurker != null) {
+				if (mostCloseLurker.getDistance(unit) < 1200 && unit.canUseTech(TechType.Irradiate, mostCloseLurker)) {
+					CommandUtil.useTech(unit, TechType.Irradiate, mostCloseLurker);
+					setSpecialAction(unit, 0);
+				}
+			}
 		}
 		CommandUtil.move(unit, groupAbstract.getTargetPosition(unit));
 	}

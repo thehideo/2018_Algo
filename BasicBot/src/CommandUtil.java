@@ -167,6 +167,23 @@ public class CommandUtil {
 
 		attacker.move(targetPosition);
 	}
+	
+	static public void hold(Unit attacker) {
+
+		if (commandHash.contains(attacker) && attacker.getType() != UnitType.Terran_SCV) {
+			return;
+		} else {
+			commandHash.add(attacker);
+		}
+
+		//UnitCommand currentCommand = attacker.getLastCommand();
+
+		if (attacker.isIdle() == false) {
+			return;
+		}
+
+		attacker.holdPosition();
+	}
 
 	static public void rightClick(Unit unit, Unit target) {
 		UnitCommand currentCommand = unit.getLastCommand();

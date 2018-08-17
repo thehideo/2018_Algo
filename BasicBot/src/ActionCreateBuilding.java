@@ -81,13 +81,11 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 						if (hasCommandCenterThere == false && !bl.getTilePosition().equals(bl1.getTilePosition()) && !bl.getTilePosition().equals(bl3.getTilePosition()) && !bl.getTilePosition().equals(bl4.getTilePosition()) && !MyVariable.mapSelfMainBuilding.contains(bl.getTilePosition()) && !MyVariable.mapEnemyMainBuilding.contains(bl.getTilePosition()) && !MyVariable.enemyBuildingUnit.contains(bl.getTilePosition())) {
 							// 가스를 지을 수 있는 곳에 확장한다.
 							TilePosition tilePosition = ConstructionPlaceFinder.Instance().getRefineryPositionNear(bl.getTilePosition());
-							
-							// 가운데 지역은 건설하지 않는다.
-							if (tilePosition.getX() >= 50 && tilePosition.getX() <= 70 && tilePosition.getY() >= 50 && tilePosition.getY() <= 70) {
-								continue;
-							}
-							
 							if (tilePosition != null) {
+								// 가운데 지역은 건설하지 않는다.
+								if (tilePosition.getX() >= 50 && tilePosition.getX() <= 70 && tilePosition.getY() >= 50 && tilePosition.getY() <= 70) {
+									continue;
+								}
 								listTilePosition.add(bl.getTilePosition());
 							}
 						}
@@ -263,12 +261,14 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		// BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Control_Tower,
 		// BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 
-		if (MyUtil.GetMyTankCnt() > 10) {
+		if (MyUtil.GetMyTankCnt() > 8) {
 			// 1번째 Terran_Armory 건설
 			if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 1) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 			}
+		}
 
+		if (MyUtil.GetMyTankCnt() > 12) {
 			// 2번째 Terran_Armory 건설
 			if (checkNeedToBuild(UnitType.Terran_Armory, 2) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 1 && MyUtil.GetMyTankCnt() >= 8) {
 				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Armory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
@@ -507,6 +507,10 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 
 		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		}
+
+		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 20) {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 

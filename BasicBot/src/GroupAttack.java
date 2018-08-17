@@ -138,7 +138,7 @@ public class GroupAttack extends GroupAbstract {
 			// 저그 공격 조건
 			else {
 				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-					if (MyVariable.attackUnit.size() > 30) {
+					if (MyVariable.attackUnit.size() > 40) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
