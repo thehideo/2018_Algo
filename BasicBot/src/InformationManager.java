@@ -414,6 +414,9 @@ public class InformationManager {
 			if (MyVariable.getEnemyUnit(UnitType.Terran_Bunker).size() > 0) {
 				MyVariable.findBunker = true;
 			}
+			if (MyVariable.getEnemyUnit(UnitType.Terran_Goliath).size() >= 0) {
+				MyVariable.findGoliat = true;
+			}
 			if (MyVariable.getEnemyUnit(UnitType.Terran_Goliath).size() >= 3) {
 				MyVariable.findThreeGoliat = true;
 			}
