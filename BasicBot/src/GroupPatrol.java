@@ -31,6 +31,7 @@ public class GroupPatrol extends GroupAbstract {
 				if (MyUtil.GetMyTankCnt() > 10) {
 					int Tank = MyUtil.GetMyTankCnt() / 10;
 					this.mapUnitTotal.put(UnitType.Terran_Siege_Tank_Tank_Mode, Tank);
+					this.mapUnitTotal.put(UnitType.Terran_Siege_Tank_Siege_Mode, Tank);
 				}
 			}
 			if (MyVariable.getSelfUnit(UnitType.Terran_Battlecruiser).size() > 4) {
