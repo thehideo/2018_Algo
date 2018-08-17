@@ -100,7 +100,7 @@ public class ControlVulture extends ControlAbstract {
 				// 적이 있을 때
 				if (enemyVultureCnt > 0) {
 					// 내가 상대방 보다 많으면 공격하고
-					if (selfVultureCnt > enemyVultureCnt) {
+					if (selfVultureCnt >= enemyVultureCnt) {
 						Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseUnit(unit, MyVariable.enemyAttactUnit);
 						if (mostCloseEnemyAttackUnit != null) {
 							CommandUtil.attackUnit(unit, mostCloseEnemyAttackUnit);
@@ -120,7 +120,7 @@ public class ControlVulture extends ControlAbstract {
 				// 그렇지 않으면 상대 본진으로 가면서 마인을 심고 돌아온다.
 
 				// 탱크나 벙커가 안보이면 마인을 심고 가서 적 본진 앞에 대기하고
-				if (MyVariable.findTank == false && MyVariable.findBunker == false && MyVariable.findWraith == false && MyVariable.getSelfUnit(UnitType.Terran_Vulture).size()>=4) {
+				if (MyVariable.findTank == false && MyVariable.findBunker == false) {
 					CommandUtil.attackMove(unit, InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.enemy()).getPoint());
 				}
 				// 그렇지 않으면 마인만 심는다.

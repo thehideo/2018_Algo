@@ -72,6 +72,12 @@ public class ControlWraith extends ControlAbstract {
 					return;
 				}
 			}
+
+			if (MyVariable.findWraith == false && MyVariable.findGoliat == false) {
+				CommandUtil.attackMove(wraith, MyVariable.enemyStartLocation.toPosition());
+				return;
+			}
+
 			// 적 유닛에게 공격
 			Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseUnit(wraith, MyVariable.enemyAttactUnit);
 			if (mostCloseEnemyAttackUnit != null && wraith.getDistance(mostCloseEnemyAttackUnit) < 500 && mostCloseEnemyAttackUnit.getType() != UnitType.Terran_Goliath) {
@@ -168,21 +174,21 @@ public class ControlWraith extends ControlAbstract {
 
 	void cloakingAction(Unit wraith, GroupAbstract groupAbstract) {
 		// 적이 근처에 없으면 클로킹 해제
-		if (MyVariable.enemyAttactUnit.size() == 0) {
-			if (wraith.isCloaked() == true) {
-				wraith.decloak();
-				CommandUtil.commandHash.add(wraith);
+		// if (MyVariable.enemyAttactUnit.size() == 0) {
+		// if (wraith.isCloaked() == true) {
+		// wraith.decloak();
+		// CommandUtil.commandHash.add(wraith);
+		// return;
+		// }
+		// } else {
+		// 전쟁 상황이면 클로킹
+		if (wraith.isUnderAttack() == true) {
+			if (wraith.canUseTech(TechType.Cloaking_Field)) {
+				CommandUtil.useTech(wraith, TechType.Cloaking_Field);
 				return;
 			}
-		} else {
-			// 전쟁 상황이면 클로킹
-			if (wraith.isUnderAttack() == true) {
-				if (wraith.canUseTech(TechType.Cloaking_Field)) {
-					CommandUtil.useTech(wraith, TechType.Cloaking_Field);
-					return;
-				}
-			}
 		}
+		// }
 	}
 
 	void terranAction(Unit wraith, GroupAbstract groupAbstract) {

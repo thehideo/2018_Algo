@@ -119,7 +119,7 @@ public class CommandUtil {
 			return;
 		}
 
-		if (targetPosition == null || attacker == null || !targetPosition.isValid() || attacker.isDetected() == false) {
+		if (targetPosition == null || attacker == null || !targetPosition.isValid()) {
 			return;
 		}
 
