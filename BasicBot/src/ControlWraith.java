@@ -39,7 +39,7 @@ public class ControlWraith extends ControlAbstract {
 			}
 
 			// 내가 유리한 상황이면 공격한다.
-			attackGroupAction(wraith, groupAbstract);
+			// attackGroupAction(wraith, groupAbstract);
 
 			// 터렛,골리앗,벙커,발키리를 만나면 뒤로 도망간다.
 			terranAction(wraith, groupAbstract);

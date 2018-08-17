@@ -28,7 +28,7 @@ public class GroupPatrol extends GroupAbstract {
 					this.mapUnitTotal.put(UnitType.Terran_Vulture, Terran_Vulture);
 				}
 				
-				if (MyUtil.GetMyTankCnt() > 20) {
+				if (MyUtil.GetMyTankCnt() > 10) {
 					int Tank = MyUtil.GetMyTankCnt() / 10;
 					this.mapUnitTotal.put(UnitType.Terran_Siege_Tank_Tank_Mode, Tank);
 				}
