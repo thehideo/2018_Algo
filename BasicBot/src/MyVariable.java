@@ -51,6 +51,8 @@ public class MyVariable {
 	public static boolean findBunker = false;
 
 	public static boolean findThreeGoliat = false;
+	
+	public static boolean findGoliat = false;
 
 	// 초당(1000ms) 프레임수(game speed 에 따라 다름)s
 	public static int nFrameCntPerMin = Math.round(1000 / Config.SetLocalSpeed);
