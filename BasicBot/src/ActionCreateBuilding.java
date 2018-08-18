@@ -56,9 +56,15 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			if (checkNeedToBuild(UnitType.Terran_Physics_Lab, 1) && MyVariable.getSelfUnit(UnitType.Terran_Science_Facility).size() >= 1)
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Physics_Lab, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 		}
+		int needCommandCount = 0;
+		if (InformationManager.Instance().enemyRace == Race.Terran) {
+			// 6000 프레임 마다 확장을 하나씩 추가한다.
+			needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 6000;
+		} else {
+			// 7000 프레임 마다 확장을 하나씩 추가한다.
+			needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 7000;
+		}
 
-		// 7000 프레임 마다 확장을 하나씩 추가한다.
-		int needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 7000;
 		if (MyBotModule.Broodwar.self().minerals() > 600) {
 			needCommandCount = MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() + 1;
 		}
@@ -495,10 +501,12 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		}
 
 		// 무탈이 보이면 터렛 건설
-		//if (MyVariable.findMutal) {
-		//	if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 5) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1)
-		//		BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-		//}
+		// if (MyVariable.findMutal) {
+		// if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 5) &&
+		// MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1)
+		// BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Missile_Turret,
+		// BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		// }
 
 		if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2)
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, MyUtil.GetMyBunkerBuildPosition().toTilePosition(), false);

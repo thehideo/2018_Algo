@@ -29,7 +29,7 @@ public class ControlGhost extends ControlAbstract {
 		if (ghost.isUnderAttack() == true && ghost.isCloaked() == false) {
 			if (ghost.canUseTech(TechType.Personnel_Cloaking)) {
 				CommandUtil.useTech(ghost, TechType.Personnel_Cloaking);
-
+				setSpecialAction(ghost, 0);
 			}
 		}
 

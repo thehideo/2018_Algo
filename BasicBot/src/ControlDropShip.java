@@ -41,7 +41,7 @@ public class ControlDropShip extends ControlAbstract {
 		// 적을 발견하면 유닛을 모두 내린다
 		if (findEnemy == true && unit.canUnloadAllPosition(unit.getPosition())) {
 			CommandUtil.unloadAll(unit);
-			setSpecialAction(unit,100);
+			setSpecialAction(unit,0);
 			return;
 		}
 		// 다 채웠으면 적 기지로 날아간다.

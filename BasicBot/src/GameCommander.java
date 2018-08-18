@@ -124,6 +124,8 @@ public class GameCommander {
 			}
 			if (MyBotModule.Broodwar.getFrameCount() % 2000 == 0) {
 				MyBotModule.Broodwar.sendText("FrameCnt=" + MyBotModule.Broodwar.getFrameCount() + " index=" + MyUtil.indexToGo);
+			} else if (MyBotModule.Broodwar.getFrameCount() % 500 == 0) {
+				MyBotModule.Broodwar.sendText("G=" + MyVariable.mapPositionGoliat.size() + " T=" + MyVariable.mapPositionTank.size());
 			}
 
 			// Time & Memory check
@@ -212,13 +214,14 @@ public class GameCommander {
 
 		// 적군 유닛 메모리에서 제거
 		if (unit.getPlayer() == MyBotModule.Broodwar.enemy()) {
-			if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
-				MyVariable.removeTankPosition(unit);
-			} else if (unit.getType() == UnitType.Terran_Missile_Turret) {
-				MyVariable.removeTurretPosition(unit);
-			} else if (unit.getType() == UnitType.Terran_Goliath) {
-				MyVariable.removeGoliatPosition(unit);
-			}
+			// if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType()
+			// == UnitType.Terran_Siege_Tank_Tank_Mode) {
+			MyVariable.removeTankPosition(unit);
+			// } else if (unit.getType() == UnitType.Terran_Missile_Turret) {
+			MyVariable.removeTurretPosition(unit);
+			// } else if (unit.getType() == UnitType.Terran_Goliath) {
+			MyVariable.removeGoliatPosition(unit);
+			// }
 		}
 	}
 

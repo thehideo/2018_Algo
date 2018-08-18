@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import bwapi.Position;
 import bwapi.TilePosition;
 import bwapi.Unit;
 import bwapi.UnitType;
@@ -214,13 +216,13 @@ public class MyVariable {
 	public static ArrayList<Unit> enemyUnitAroundMyStartPoint = new ArrayList<>();
 
 	// 적 탱크
-	public static HashMap<Integer, TilePosition> mapTankPosition = new HashMap<Integer, TilePosition>();
-	public static HashMap<TilePosition, Integer> mapPositionTank = new HashMap<TilePosition, Integer>();
+	public static HashMap<Integer, Position> mapTankPosition = new HashMap<Integer, Position>();
+	public static HashMap<Position, Integer> mapPositionTank = new HashMap<Position, Integer>();
 
 	public static void updateTankPosition(Unit unit) {
 		Integer unitID = unit.getID();
-		TilePosition tpNow = unit.getTilePosition();
-		TilePosition tpOld = mapTankPosition.get(unitID);
+		Position tpNow = unit.getPosition();
+		Position tpOld = mapTankPosition.get(unitID);
 		if (tpOld != null && !tpOld.equals(tpNow)) {
 			mapPositionTank.remove(tpOld);
 		}
@@ -230,14 +232,14 @@ public class MyVariable {
 
 	public static void removeTankPosition(Unit unit) {
 		Integer unitID = unit.getID();
-		TilePosition tpOld = mapTankPosition.get(unitID);
+		Position tpOld = mapTankPosition.get(unitID);
 		if (tpOld != null) {
 			mapPositionTank.remove(tpOld);
 		}
 		mapTankPosition.remove(unitID);
 	}
 
-	public static void removeTankPosition(TilePosition tp) {
+	public static void removeTankPosition(Position tp) {
 		Integer tankID = mapPositionTank.get(tp);
 		if (tankID != null) {
 			mapTankPosition.remove(tankID);
@@ -246,13 +248,13 @@ public class MyVariable {
 	}
 
 	// 적 터렛
-	public static HashMap<Integer, TilePosition> mapTurretPosition = new HashMap<Integer, TilePosition>();
-	public static HashMap<TilePosition, Integer> mapPositionTurret = new HashMap<TilePosition, Integer>();
+	public static HashMap<Integer, Position> mapTurretPosition = new HashMap<Integer, Position>();
+	public static HashMap<Position, Integer> mapPositionTurret = new HashMap<Position, Integer>();
 
 	public static void updateTurretPosition(Unit unit) {
 		Integer unitID = unit.getID();
-		TilePosition tpNow = unit.getTilePosition();
-		TilePosition tpOld = mapTurretPosition.get(unitID);
+		Position tpNow = unit.getPosition();
+		Position tpOld = mapTurretPosition.get(unitID);
 		if (tpOld != null && !tpOld.equals(tpNow)) {
 			mapPositionTurret.remove(tpOld);
 		}
@@ -262,14 +264,14 @@ public class MyVariable {
 
 	public static void removeTurretPosition(Unit unit) {
 		Integer unitID = unit.getID();
-		TilePosition tpOld = mapTurretPosition.get(unitID);
+		Position tpOld = mapTurretPosition.get(unitID);
 		if (tpOld != null) {
 			mapPositionTurret.remove(tpOld);
 		}
 		mapTurretPosition.remove(unitID);
 	}
 
-	public static void removeTurretPosition(TilePosition tp) {
+	public static void removeTurretPosition(Position tp) {
 		Integer TurretID = mapPositionTurret.get(tp);
 		if (TurretID != null) {
 			mapTurretPosition.remove(TurretID);
@@ -278,13 +280,13 @@ public class MyVariable {
 	}
 
 	// 적 곳리앗
-	public static HashMap<Integer, TilePosition> mapGoliatPosition = new HashMap<Integer, TilePosition>();
-	public static HashMap<TilePosition, Integer> mapPositionGoliat = new HashMap<TilePosition, Integer>();
+	public static HashMap<Integer, Position> mapGoliatPosition = new HashMap<Integer, Position>();
+	public static HashMap<Position, Integer> mapPositionGoliat = new HashMap<Position, Integer>();
 
 	public static void updateGoliatPosition(Unit unit) {
 		Integer unitID = unit.getID();
-		TilePosition tpNow = unit.getTilePosition();
-		TilePosition tpOld = mapGoliatPosition.get(unitID);
+		Position tpNow = unit.getPosition();
+		Position tpOld = mapGoliatPosition.get(unitID);
 		if (tpOld != null && !tpOld.equals(tpNow)) {
 			mapPositionGoliat.remove(tpOld);
 		}
@@ -294,14 +296,14 @@ public class MyVariable {
 
 	public static void removeGoliatPosition(Unit unit) {
 		Integer unitID = unit.getID();
-		TilePosition tpOld = mapGoliatPosition.get(unitID);
+		Position tpOld = mapGoliatPosition.get(unitID);
 		if (tpOld != null) {
 			mapPositionGoliat.remove(tpOld);
 		}
 		mapGoliatPosition.remove(unitID);
 	}
 
-	public static void removeGoliatPosition(TilePosition tp) {
+	public static void removeGoliatPosition(Position tp) {
 		Integer GoliatID = mapPositionGoliat.get(tp);
 		if (GoliatID != null) {
 			mapGoliatPosition.remove(GoliatID);

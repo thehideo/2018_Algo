@@ -56,7 +56,7 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 	}
 
 	public void unitTerran() {
-		if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 12 && MyUtil.GetMyTankCnt() <= 4 && MyBotModule.Broodwar.getFrameCount() <= 10000 && MyVariable.findTank == false && MyVariable.findThreeGoliat == false) {
+		if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 12 && MyUtil.GetMyTankCnt() <= 4 && MyBotModule.Broodwar.getFrameCount() <= 12000 && MyVariable.findTank == false) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
 		} else {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);

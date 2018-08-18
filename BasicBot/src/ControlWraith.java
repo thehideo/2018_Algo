@@ -26,14 +26,14 @@ public class ControlWraith extends ControlAbstract {
 			Iterator<Integer> turretIDs = MyVariable.mapTurretPosition.keySet().iterator();
 			while (turretIDs.hasNext()) {
 				Integer turretID = turretIDs.next();
-				TilePosition turretPosition = MyVariable.mapTurretPosition.get(turretID);
-				if (MyUtil.distanceTilePosition(wraith.getTilePosition(), turretPosition) < 11) { // 터렛 최대 사거리 7
+				Position turretPosition = MyVariable.mapTurretPosition.get(turretID);
+				if (MyUtil.distancePosition(wraith.getPosition(), turretPosition) < 11 * 32) { // 터렛 최대 사거리 7
 					int X2 = wraith.getPosition().getX();
 					int Y2 = wraith.getPosition().getY();
-					int X1 = turretPosition.toPosition().getX();
-					int Y1 = turretPosition.toPosition().getY();
+					int X1 = turretPosition.getX();
+					int Y1 = turretPosition.getY();
 					CommandUtil.move(wraith, new Position(2 * X2 - X1, 2 * Y2 - Y1));
-					// setSpecialAction(wraith, 0);
+					setSpecialAction(wraith, 0);
 					return;
 				}
 			}
@@ -65,13 +65,13 @@ public class ControlWraith extends ControlAbstract {
 			wraithGroupAction(wraith, groupAbstract);
 		} else if (groupAbstract == GroupManager.instance().groupAttack) {
 			// 공격 당하고 있는 유닛 쪽으로 이동
-			if (MyVariable.attackedUnit.size() > 0 && !CommandUtil.commandHash.contains(wraith)) {
-				Unit mostCloseEnemy = MyUtil.getMostCloseUnit(wraith, MyVariable.attackedUnit);
-				if (mostCloseEnemy != null) {
-					CommandUtil.attackUnit(wraith, mostCloseEnemy);
-					return;
-				}
-			}
+			//if (MyVariable.attackedUnit.size() > 0 && !CommandUtil.commandHash.contains(wraith)) {
+			//	Unit attackedUnit = MyUtil.getMostCloseUnit(wraith, MyVariable.attackedUnit);
+			//	if (attackedUnit != null) {
+			//		CommandUtil.attackMove(wraith, attackedUnit.getPosition());
+			//		return;
+			//	}
+			//}
 
 			if (MyVariable.findWraith == false && MyVariable.findGoliat == false) {
 				CommandUtil.attackMove(wraith, MyVariable.enemyStartLocation.toPosition());

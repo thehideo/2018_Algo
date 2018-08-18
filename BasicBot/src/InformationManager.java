@@ -251,12 +251,12 @@ public class InformationManager {
 		// 빈 자리이면 탱크를 초기화 한다.
 		// if (MyBotModule.Broodwar.self().supplyTotal() >= 380)
 		{
-			ArrayList<TilePosition> deleteList = new ArrayList<TilePosition>();
-			Iterator<TilePosition> TilePositions = MyVariable.mapPositionTank.keySet().iterator();
-			while (TilePositions.hasNext()) {
-				TilePosition tp = TilePositions.next();
-				if (MyBotModule.Broodwar.isVisible(tp)) {
-					List<Unit> units = MyBotModule.Broodwar.getUnitsOnTile(tp);
+			ArrayList<Position> deleteList = new ArrayList<Position>();
+			Iterator<Position> positions = MyVariable.mapPositionTank.keySet().iterator();
+			while (positions.hasNext()) {
+				Position tp = positions.next();
+				if (MyBotModule.Broodwar.isVisible(tp.toTilePosition())) {
+					List<Unit> units = MyBotModule.Broodwar.getUnitsOnTile(tp.toTilePosition());
 					boolean find = false;
 					for (Unit unit : units) {
 						if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType() == UnitType.Terran_Siege_Tank_Tank_Mode) {
@@ -269,7 +269,7 @@ public class InformationManager {
 					}
 				}
 			}
-			for (TilePosition tp : deleteList) {
+			for (Position tp : deleteList) {
 				MyVariable.removeTankPosition(tp);
 			}
 		}
@@ -282,12 +282,12 @@ public class InformationManager {
 
 		// 빈자리이면 골리앗 정보 제거
 		{
-			ArrayList<TilePosition> deleteList = new ArrayList<TilePosition>();
-			Iterator<TilePosition> TilePositions = MyVariable.mapPositionGoliat.keySet().iterator();
-			while (TilePositions.hasNext()) {
-				TilePosition tp = TilePositions.next();
-				if (MyBotModule.Broodwar.isVisible(tp)) {
-					List<Unit> units = MyBotModule.Broodwar.getUnitsOnTile(tp);
+			ArrayList<Position> deleteList = new ArrayList<Position>();
+			Iterator<Position> positions = MyVariable.mapPositionGoliat.keySet().iterator();
+			while (positions.hasNext()) {
+				Position tp = positions.next();
+				if (MyBotModule.Broodwar.isVisible(tp.toTilePosition())) {
+					List<Unit> units = MyBotModule.Broodwar.getUnitsOnTile(tp.toTilePosition());
 					boolean find = false;
 					for (Unit unit : units) {
 						if (unit.getType() == UnitType.Terran_Goliath) {
@@ -300,7 +300,7 @@ public class InformationManager {
 					}
 				}
 			}
-			for (TilePosition tp : deleteList) {
+			for (Position tp : deleteList) {
 				MyVariable.removeGoliatPosition(tp);
 			}
 		}

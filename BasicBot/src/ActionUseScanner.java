@@ -63,21 +63,21 @@ public class ActionUseScanner extends ActionControlAbstract {
 			}
 			if (unit.getEnergy() >= ScanPoint) {
 				if (InformationManager.Instance().enemyRace == Race.Terran) {
-					TilePosition tilePosition = MyUtil.getSaveTilePosition(5);					
+					Position position = MyUtil.getSaveTilePosition(5).toPosition();
 					if (MyVariable.mapPositionTank.size() > 0) {
-						int index=r.nextInt(MyVariable.mapPositionTank.size());
-						int i=0;	
-						
-						Iterator<TilePosition> mapPositionTankKeys=MyVariable.mapPositionTank.keySet().iterator();						
-						while (mapPositionTankKeys.hasNext()){
-							TilePosition tp =mapPositionTankKeys.next();
-							if(i==index) {
-								tilePosition=tp;
+						int index = r.nextInt(MyVariable.mapPositionTank.size());
+						int i = 0;
+
+						Iterator<Position> mapPositionTankKeys = MyVariable.mapPositionTank.keySet().iterator();
+						while (mapPositionTankKeys.hasNext()) {
+							Position tp = mapPositionTankKeys.next();
+							if (i == index) {
+								position = tp;
 							}
 							i++;
 						}
-					}					
-					if (tilePosition != null && useScanner_Sweep(tilePosition.toPosition())) {
+					}
+					if (position != null && useScanner_Sweep(position)) {
 						use = true;
 					}
 				} else {

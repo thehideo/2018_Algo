@@ -15,6 +15,7 @@ public class ControlBarrack extends ControlAbstract {
 			// target = new Position(target.getX() - 1, target.getY() - 1);
 
 			CommandUtil.move(unit, target);
+			setSpecialAction(unit, 0);
 		}
 	}
 }

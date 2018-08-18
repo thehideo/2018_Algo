@@ -9,8 +9,8 @@ import bwta.BaseLocation;
 
 public class ControlVulture extends ControlAbstract {
 
-	public static final int SIEGE_MODE_MIN_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().minRange(); // 64
-	public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
+	//public static final int SIEGE_MODE_MIN_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().minRange(); // 64
+	//public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
 
 	BaseLocation bl = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.self());
 
@@ -21,7 +21,7 @@ public class ControlVulture extends ControlAbstract {
 				Iterator<Integer> tankIDs = MyVariable.mapTankPosition.keySet().iterator();
 				while (tankIDs.hasNext()) {
 					Integer TankID = tankIDs.next();
-					if (MyUtil.distancePosition(unit.getPosition(), MyVariable.mapTankPosition.get(TankID).toPosition()) <= SIEGE_MODE_MAX_RANGE + 32) {
+					if (MyUtil.distancePosition(unit.getPosition(), MyVariable.mapTankPosition.get(TankID)) <= 384 + 32) {
 						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
 						return;
 					}
@@ -100,7 +100,7 @@ public class ControlVulture extends ControlAbstract {
 				// 적이 있을 때
 				if (enemyVultureCnt > 0) {
 					// 내가 상대방 보다 많으면 공격하고
-					if (selfVultureCnt >= enemyVultureCnt) {
+					if (selfVultureCnt > enemyVultureCnt) {
 						Unit mostCloseEnemyAttackUnit = MyUtil.getMostCloseUnit(unit, MyVariable.enemyAttactUnit);
 						if (mostCloseEnemyAttackUnit != null) {
 							CommandUtil.attackUnit(unit, mostCloseEnemyAttackUnit);
