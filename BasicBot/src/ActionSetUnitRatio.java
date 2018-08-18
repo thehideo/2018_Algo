@@ -61,7 +61,7 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 		} else {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);
 
-			if (MyVariable.getSelfUnit(UnitType.Terran_Academy).size() > 0 && MyVariable.mapPositionGoliat.size() >= 5) {
+			if (MyVariable.getSelfUnit(UnitType.Terran_Armory).size() > 0 && MyVariable.mapPositionGoliat.size() >= 5) {
 				if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() * 4 <= MyUtil.GetMyTankCnt()) {
 					MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 				}
