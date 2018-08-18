@@ -21,8 +21,12 @@ public class ControlVulture extends ControlAbstract {
 				Iterator<Integer> tankIDs = MyVariable.mapTankPosition.keySet().iterator();
 				while (tankIDs.hasNext()) {
 					Integer TankID = tankIDs.next();
-					if (MyUtil.distancePosition(unit.getPosition(), MyVariable.mapTankPosition.get(TankID)) <= 384 + 32) {
-						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+					if (MyUtil.distancePosition(unit.getPosition(), MyVariable.mapTankPosition.get(TankID)) <= 384 + 32 * 4) {
+						if (MyBotModule.Broodwar.getFrameCount() % 2 == 0) {
+							CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+						} else {
+							CommandUtil.move(unit, MyVariable.myFirstchokePoint.toPosition());
+						}
 						return;
 					}
 				}

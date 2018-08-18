@@ -60,7 +60,7 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 2);
 		} else {
-			if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 4) {
+			if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 4 && MyUtil.GetMyTankCnt() <= 10) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 8);
 			}
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);
