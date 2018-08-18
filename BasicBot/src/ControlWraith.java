@@ -32,7 +32,13 @@ public class ControlWraith extends ControlAbstract {
 					int Y2 = wraith.getPosition().getY();
 					int X1 = turretPosition.getX();
 					int Y1 = turretPosition.getY();
-					CommandUtil.move(wraith, new Position(2 * X2 - X1, 2 * Y2 - Y1));
+
+					Position postion = new Position(2 * X2 - X1, 2 * Y2 - Y1);
+					if (postion.isValid() == false) {
+						CommandUtil.move(wraith, MyVariable.myStartLocation.toPosition());
+					} else {
+						CommandUtil.move(wraith, postion);
+					}
 					setSpecialAction(wraith, 0);
 					return;
 				}
@@ -65,13 +71,14 @@ public class ControlWraith extends ControlAbstract {
 			wraithGroupAction(wraith, groupAbstract);
 		} else if (groupAbstract == GroupManager.instance().groupAttack) {
 			// 공격 당하고 있는 유닛 쪽으로 이동
-			//if (MyVariable.attackedUnit.size() > 0 && !CommandUtil.commandHash.contains(wraith)) {
-			//	Unit attackedUnit = MyUtil.getMostCloseUnit(wraith, MyVariable.attackedUnit);
-			//	if (attackedUnit != null) {
-			//		CommandUtil.attackMove(wraith, attackedUnit.getPosition());
-			//		return;
-			//	}
-			//}
+			// if (MyVariable.attackedUnit.size() > 0 &&
+			// !CommandUtil.commandHash.contains(wraith)) {
+			// Unit attackedUnit = MyUtil.getMostCloseUnit(wraith, MyVariable.attackedUnit);
+			// if (attackedUnit != null) {
+			// CommandUtil.attackMove(wraith, attackedUnit.getPosition());
+			// return;
+			// }
+			// }
 
 			if (MyVariable.findWraith == false && MyVariable.findGoliat == false) {
 				CommandUtil.attackMove(wraith, MyVariable.enemyStartLocation.toPosition());
@@ -84,7 +91,11 @@ public class ControlWraith extends ControlAbstract {
 				CommandUtil.attackUnit(wraith, mostCloseEnemyAttackUnit);
 			}
 		}
-		CommandUtil.attackMove(wraith, groupAbstract.getTargetPosition(wraith));
+		if (MyVariable.findGoliat == false) {
+			CommandUtil.attackMove(wraith, MyVariable.enemyStartLocation.toPosition());
+		} else {
+			CommandUtil.attackMove(wraith, groupAbstract.getTargetPosition(wraith));
+		}
 	}
 
 	static HashMap<Integer, ArrayList<TilePosition>> mapWaithPatrol = new HashMap<Integer, ArrayList<TilePosition>>();

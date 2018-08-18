@@ -64,7 +64,7 @@ public class ControlVulture extends ControlAbstract {
 		if (groupAbstract == GroupManager.instance().groupAttack) {
 			if (MyVariable.isFullScaleAttackStarted == false) {
 
-				List<Unit> ourUnits = MyBotModule.Broodwar.getUnitsInRadius(unit.getPosition(), 32 * 7);
+				List<Unit> ourUnits = MyBotModule.Broodwar.getUnitsInRadius(unit.getPosition(), 32 * 10);
 				Double enemyVultureCnt = 0.0;
 				Double selfVultureCnt = 0.0;
 

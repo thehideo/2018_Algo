@@ -3,6 +3,7 @@ import bwapi.Unit;
 
 public class ControlBarrack extends ControlAbstract {
 	void actionMain(Unit unit, GroupAbstract groupAbstract) {
+		/*		
 		if (unit.canLift() == true) {
 			unit.lift();
 		} else {
@@ -16,6 +17,6 @@ public class ControlBarrack extends ControlAbstract {
 
 			CommandUtil.move(unit, target);
 			setSpecialAction(unit, 0);
-		}
+		}*/
 	}
 }

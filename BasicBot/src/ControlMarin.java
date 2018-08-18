@@ -1,3 +1,4 @@
+import bwapi.Race;
 import bwapi.Unit;
 import bwapi.UnitType;
 
@@ -15,6 +16,14 @@ public class ControlMarin extends ControlAbstract {
 					CommandUtil.commandHash.add(unit);
 					unit.rightClick(bunker);
 					break;
+				}
+			}
+		}
+
+		if (InformationManager.Instance().enemyRace == Race.Terran) {
+			if (MyVariable.isFullScaleAttackStarted == false) {
+				if (MyVariable.enemyStartLocation != null) {
+					CommandUtil.attackMove(unit, MyUtil.getSaveTilePosition(6).toPosition());
 				}
 			}
 		}
