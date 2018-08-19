@@ -123,14 +123,70 @@ public class MyUtil {
 			return resultTilePosition;
 		}
 
-		// 전진 위치 초기화
-		if (MyUtil.GetMyTankCnt() == 0 && MyVariable.isFullScaleAttackStarted == true) {
-			indexToGo = 0;
-		}
-
 		TilePosition target = null;
 		if (InformationManager.Instance().enemyRace == Race.Terran) {
+			// 전진 위치 초기화
+			if (MyUtil.GetMyTankCnt() == 0 && MyVariable.isFullScaleAttackStarted == true) {
+				indexToGo = 0;
+			}
+
 			target = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition();
+
+			if (!mapShortestPath.containsKey(target) && InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()) != null) {
+				mapShortestPath.put(target, BWTA.getShortestPath(target, InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()).getTilePosition()));
+			}
+			List<TilePosition> shortestPath = mapShortestPath.get(target);
+
+			if (shortestPath != null && shortestPath.size() > 0 && GetMyTankCnt() > 2) {
+				for (int i = indexToGo; i < shortestPath.size(); i++) {
+					TilePosition tp = shortestPath.get(i);
+					TilePosition tp2 = new TilePosition(tp.getX() / 4, tp.getY() / 4);
+					if (MyVariable.spinderMinePosition.contains(tp2)) {
+						if (indexToGo < i - 13) {
+							indexToGo = i - 13;
+						}
+					}
+				}
+			}
+
+			if (shortestPath == null || shortestPath.size() == 0) {
+				shortestPath = new ArrayList<TilePosition>();
+				shortestPath.add(target);
+			}
+
+			// 탱크가 4마리 이상이면 앞으로 서서히 전진
+			if (MyUtil.GetMyTankCnt() >= 2) {
+				// 전진후 일정 시간이 지나면 한칸 더 앞으로 이동한다.
+				if ((MyVariable.enemyAttactUnit.size() == 0 && MyBotModule.Broodwar.getFrameCount() > goTimer + 100)) {
+					if (indexToGo >= shortestPath.size() - 30) {
+						MyVariable.isFullScaleAttackStarted = true;
+					} else {
+						indexToGo = indexToGo + 1;
+						goTimer = MyBotModule.Broodwar.getFrameCount();
+					}
+				}
+				// 적이 있으면 있으면 전진하지 않는다.
+				if (MyUtil.GetEnemyTankCnt() > 0) {
+					goTimer = MyBotModule.Broodwar.getFrameCount();
+				}
+
+			} else {
+				indexToGo = 0;
+			}
+
+			if (InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()) != null && InformationManager.Instance().enemyRace == Race.Terran && MyBotModule.Broodwar.self().hasResearched(TechType.Tank_Siege_Mode)) {
+				int totalIndexToGo = indexToGo + add;
+				if (totalIndexToGo < 0) {
+					totalIndexToGo = 0;
+				}
+				if (totalIndexToGo > shortestPath.size() - 1) {
+					totalIndexToGo = shortestPath.size() - 1;
+				}
+				target = shortestPath.get(totalIndexToGo);
+			} else {
+				target = shortestPath.get(0);
+			}
+
 		} else {
 			if (MyVariable.mostCloseBunker != null) {
 				target = MyVariable.mostCloseBunker.getTilePosition();
@@ -142,61 +198,6 @@ public class MyUtil {
 			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 || MyVariable.mapEnemyMainBuilding.size() >= 2 || MyVariable.attackUnit.size() > 30 || MyBotModule.Broodwar.getFrameCount() >= 14000) {
 				target = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition();
 			}
-		}
-
-		if (!mapShortestPath.containsKey(target) && InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()) != null) {
-			mapShortestPath.put(target, BWTA.getShortestPath(target, InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()).getTilePosition()));
-		}
-		List<TilePosition> shortestPath = mapShortestPath.get(target);
-
-		if (shortestPath != null && shortestPath.size() > 0 && GetMyTankCnt() > 2) {
-			for (int i = indexToGo; i < shortestPath.size(); i++) {
-				TilePosition tp = shortestPath.get(i);
-				TilePosition tp2 = new TilePosition(tp.getX() / 4, tp.getY() / 4);
-				if (MyVariable.spinderMinePosition.contains(tp2)) {
-					if (indexToGo < i - 13) {
-						indexToGo = i - 13;
-					}
-				}
-			}
-		}
-
-		if (shortestPath == null || shortestPath.size() == 0) {
-			shortestPath = new ArrayList<TilePosition>();
-			shortestPath.add(target);
-		}
-
-		// 탱크가 4마리 이상이면 앞으로 서서히 전진
-		if (MyUtil.GetMyTankCnt() >= 2) {
-			// 전진후 일정 시간이 지나면 한칸 더 앞으로 이동한다.
-			if ((MyVariable.enemyAttactUnit.size() == 0 && MyBotModule.Broodwar.getFrameCount() > goTimer + 100)) {
-				if (indexToGo >= shortestPath.size() - 30) {
-					MyVariable.isFullScaleAttackStarted = true;
-				} else {
-					indexToGo = indexToGo + 1;
-					goTimer = MyBotModule.Broodwar.getFrameCount();
-				}
-			}
-			// 적이 있으면 있으면 전진하지 않는다.
-			if (MyUtil.GetEnemyTankCnt() > 0) {
-				goTimer = MyBotModule.Broodwar.getFrameCount();
-			}
-
-		} else {
-			indexToGo = 0;
-		}
-
-		if (InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.enemy()) != null && InformationManager.Instance().enemyRace == Race.Terran && MyBotModule.Broodwar.self().hasResearched(TechType.Tank_Siege_Mode)) {
-			int totalIndexToGo = indexToGo + add;
-			if (totalIndexToGo < 0) {
-				totalIndexToGo = 0;
-			}
-			if (totalIndexToGo > shortestPath.size() - 1) {
-				totalIndexToGo = shortestPath.size() - 1;
-			}
-			target = shortestPath.get(totalIndexToGo);
-		} else {
-			target = shortestPath.get(0);
 		}
 
 		getSaveTilePositionResult.put(add, target);

@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.Iterator;
 
 import bwapi.Unit;
@@ -12,9 +13,9 @@ public class ActionMicroControl extends ActionControlAbstract {
 	@Override
 	public void action() {
 		CommandUtil.clearCommandHash();
-		Iterator<UnitType> unitTypes = MyVariable.mapSelfUnit.keySet().iterator();
-		while (unitTypes.hasNext()) {
-			UnitType unitType = unitTypes.next();
+		HashSet<UnitType> unitTypes = new HashSet<UnitType>();
+		unitTypes.addAll(MyVariable.mapSelfUnit.keySet());
+		for (UnitType unitType : unitTypes) {
 			ControlAbstract controlAbstract = GroupManager.instance().getControlAbstract(unitType);
 			if (controlAbstract != null) {
 				for (Unit unit : MyVariable.getSelfUnit(unitType)) {

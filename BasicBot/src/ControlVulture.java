@@ -1,6 +1,8 @@
+import java.nio.file.attribute.UserPrincipal;
 import java.util.Iterator;
 import java.util.List;
 
+import bwapi.Race;
 import bwapi.TechType;
 import bwapi.TilePosition;
 import bwapi.Unit;
@@ -9,12 +11,30 @@ import bwta.BaseLocation;
 
 public class ControlVulture extends ControlAbstract {
 
-	//public static final int SIEGE_MODE_MIN_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().minRange(); // 64
-	//public static final int SIEGE_MODE_MAX_RANGE = UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
+	// public static final int SIEGE_MODE_MIN_RANGE =
+	// UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().minRange(); // 64
+	// public static final int SIEGE_MODE_MAX_RANGE =
+	// UnitType.Terran_Siege_Tank_Siege_Mode.groundWeapon().maxRange(); // 384
 
 	BaseLocation bl = InformationManager.Instance().getFirstExpansionLocation(MyBotModule.Broodwar.self());
 
 	public void actionMain(Unit unit, GroupAbstract groupAbstract) {
+
+		if (InformationManager.Instance().enemyRace == Race.Terran) {
+			terranAction(unit, groupAbstract);
+		} else if (InformationManager.Instance().enemyRace == Race.Protoss) {
+			protossAction(unit, groupAbstract);
+		}
+
+		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
+	}
+
+	public void protossAction(Unit unit, GroupAbstract groupAbstract) {
+		
+
+	}
+
+	public void terranAction(Unit unit, GroupAbstract groupAbstract) {
 		// 어텍 그룹일 때는 탱크를 피해서 움직인다.
 		if (groupAbstract == GroupManager.instance().groupAttack) {
 			if (MyUtil.GetMyTankCnt() >= 1) {
@@ -136,6 +156,5 @@ public class ControlVulture extends ControlAbstract {
 
 			}
 		}
-		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
 	}
 }
