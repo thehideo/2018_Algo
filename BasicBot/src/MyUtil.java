@@ -195,7 +195,7 @@ public class MyUtil {
 			}
 
 			// 확장했으면 확장부분을 지킨다.
-			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 || MyVariable.mapEnemyMainBuilding.size() >= 2 || MyVariable.attackUnit.size() > 30 || MyBotModule.Broodwar.getFrameCount() >= 14000) {
+			if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() >= 2 || MyVariable.attackUnit.size() > 30 || MyBotModule.Broodwar.getFrameCount() >= 14000) {
 				target = InformationManager.Instance().getSecondChokePoint(InformationManager.Instance().selfPlayer).getPoint().toTilePosition();
 			}
 		}
