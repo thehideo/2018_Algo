@@ -27,7 +27,7 @@ public class GroupPatrol extends GroupAbstract {
 				if (Terran_Vulture >= 0) {
 					this.mapUnitTotal.put(UnitType.Terran_Vulture, Terran_Vulture);
 				}
-				
+
 				if (MyUtil.GetMyTankCnt() > 10) {
 					int Tank = MyUtil.GetMyTankCnt() / 10;
 					this.mapUnitTotal.put(UnitType.Terran_Siege_Tank_Tank_Mode, Tank);
@@ -53,11 +53,13 @@ public class GroupPatrol extends GroupAbstract {
 		if (listTilePosition.size() > 0) {
 			Iterator<UnitType> unitTypes = this.mapUnit.keySet().iterator();
 			while (unitTypes.hasNext()) {
-				UnitType unitType = unitTypes.next();
-				for (Integer unitID : mapUnit.get(unitType)) {
-					if (MyUtil.distancePosition(MyVariable.mapUnitIDUnit.get(unitID).getPosition(), listTilePosition.get(0).toPosition()) < 32 * 1) {
-						listTilePosition.remove(0);
-						break;
+				if (listTilePosition.size() > 0) {
+					UnitType unitType = unitTypes.next();
+					for (Integer unitID : mapUnit.get(unitType)) {
+						if (MyUtil.distancePosition(MyVariable.mapUnitIDUnit.get(unitID).getPosition(), listTilePosition.get(0).toPosition()) < 32 * 1) {
+							listTilePosition.remove(0);
+							break;
+						}
 					}
 				}
 			}
