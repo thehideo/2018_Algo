@@ -61,19 +61,22 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Physics_Lab, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 		int needCommandCount = 0;
-		if (InformationManager.Instance().enemyRace == Race.Terran) {
-			// 6000 프레임 마다 확장을 하나씩 추가한다.
-			needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 6000;
-		} else {
-			// 7000 프레임 마다 확장을 하나씩 추가한다.
-			needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 7000;
+
+		if (MyVariable.findFastCarrier == false) {
+			if (InformationManager.Instance().enemyRace == Race.Terran) {
+				// 6000 프레임 마다 확장을 하나씩 추가한다.
+				needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 6000;
+			} else {
+				// 7000 프레임 마다 확장을 하나씩 추가한다.
+				needCommandCount = (MyBotModule.Broodwar.getFrameCount() + 1000) / 7000;
+			}
 		}
 
 		if (MyBotModule.Broodwar.self().minerals() > 600) {
 			needCommandCount = MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() + 1;
 		}
 
-		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() < needCommandCount && MyVariable.findFastCarrier == false) {
+		if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() < needCommandCount) {
 			if (checkNeedToBuild(UnitType.Terran_Command_Center, needCommandCount)) {
 				ArrayList<TilePosition> listTilePosition = new ArrayList<TilePosition>();
 				List<BaseLocation> listBaseLocation = BWTA.getBaseLocations();
