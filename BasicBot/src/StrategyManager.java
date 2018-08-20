@@ -159,7 +159,7 @@ public class StrategyManager {
 				}
 			}
 
-			if (workerCount <= 30 + MyVariable.mapSelfMainBuilding.size() * 10 && workerCount<=60) {
+			if (workerCount <= 30 + MyVariable.mapSelfMainBuilding.size() * 10 && workerCount <= 60) {
 				for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
 					if (unit.getType().isResourceDepot()) {
 						if (unit.isTraining() == false || unit.getLarva().size() > 0) {

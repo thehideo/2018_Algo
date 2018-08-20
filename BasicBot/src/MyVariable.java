@@ -42,6 +42,8 @@ public class MyVariable {
 	// 하이템플러를 찾았는지
 	public static boolean findHighTempler = false;
 
+	public static boolean findFastCarrier = false;
+
 	public static boolean findCarrier = false;
 
 	public static boolean findWraith = false;
@@ -53,7 +55,7 @@ public class MyVariable {
 	public static boolean findBunker = false;
 
 	public static boolean findThreeGoliat = false;
-	
+
 	public static boolean findGoliat = false;
 
 	// 초당(1000ms) 프레임수(game speed 에 따라 다름)s

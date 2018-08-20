@@ -57,13 +57,15 @@ public class GroupAttack extends GroupAbstract {
 
 	public boolean decisionWaitAroundBunker() {
 		boolean decision = false;
-		// 적이 나보다 많으면
-		if (MyVariable.enemyUnitAroundMyStartPoint.size() * 1.5 > MyVariable.attackUnit.size()) {
-			decision = true;
-		}
-		// 벙커 밖에서 벌처가 알짱거리면
-		if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.getType() == UnitType.Terran_Vulture && MyVariable.distanceOfMostCloseEnemyUnit > MyVariable.distanceOfMostCloseBunker) {
-			decision = true;
+		if (InformationManager.Instance().enemyRace != Race.Zerg) {
+			// 적이 나보다 많으면
+			if (MyVariable.enemyUnitAroundMyStartPoint.size() * 1.5 > MyVariable.attackUnit.size()) {
+				decision = true;
+			}
+			// 벙커 밖에서 벌처가 알짱거리면
+			if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.getType() == UnitType.Terran_Vulture && MyVariable.distanceOfMostCloseEnemyUnit > MyVariable.distanceOfMostCloseBunker) {
+				decision = true;
+			}
 		}
 		return decision;
 	}
@@ -117,7 +119,11 @@ public class GroupAttack extends GroupAbstract {
 
 			// 프로토스 공격 조건
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
-				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
+				if (MyVariable.findFastCarrier == true) {
+					if (MyVariable.attackUnit.size() > 40) {
+						MyVariable.isFullScaleAttackStarted = true;
+					}
+				} else if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
 					if (MyVariable.attackUnit.size() > 30) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}

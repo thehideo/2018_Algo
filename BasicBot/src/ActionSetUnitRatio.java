@@ -12,8 +12,11 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 9999);
 		} else {
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
-				if (MyVariable.findCarrier == true) {
+				if (MyVariable.findFastCarrier == true) {
 					unitProtossFastCarrier();
+				}
+				if (MyVariable.findCarrier == true) {
+					unitProtossCarrier();
 				} else {
 					unitProtoss();
 				}
@@ -26,19 +29,20 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 	}
 
 	public void unitProtossFastCarrier() {
-		if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() < 12) {
-			if (MyUtil.GetMyTankCnt() == 0) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 12);
-			} else {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 12);
-			}
-		} else {
-			MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 4);
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() / 4 > MyUtil.GetMyTankCnt()) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
-			}
+		MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
+		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
 		}
-		if (MyBotModule.Broodwar.self().minerals() > 400) {
+		// MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 1);
+	}
+
+	public void unitProtossCarrier() {
+		MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 4);
+		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() / 4 > MyUtil.GetMyTankCnt()) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
+		}
+
+		if (MyBotModule.Broodwar.self().minerals() > 1000) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
 			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
@@ -51,8 +55,13 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
 		}
-		MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
+		if (MyUtil.GetMyTankCnt() >= 4) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 1);
+		}
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
+		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Science_Vessel).size() < 3) {
+			MyVariable.attackUnitRatio.put(UnitType.Terran_Science_Vessel, 1);
+		}
 	}
 
 	public void unitTerran() {
@@ -95,10 +104,9 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 		}
 
 		if (MyVariable.findMutal) {
-			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Science_Vessel).size() < 3) {
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Science_Vessel).size() < 2) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Science_Vessel, 1);
 			}
-			MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
 		}
 
 	}

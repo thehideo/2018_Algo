@@ -394,6 +394,9 @@ public class InformationManager {
 			}
 			if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Fleet_Beacon).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Stargate).size() >= 1) {
 				MyVariable.findCarrier = true;
+				if (MyBotModule.Broodwar.getFrameCount() <= 14000) {
+					MyVariable.findFastCarrier = true;
+				}
 			}
 			if (MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar).size() > 0) {
 				MyVariable.findHighTempler = true;

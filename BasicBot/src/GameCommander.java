@@ -125,7 +125,7 @@ public class GameCommander {
 			if (MyBotModule.Broodwar.getFrameCount() % 2000 == 0) {
 				MyBotModule.Broodwar.sendText("FrameCnt=" + MyBotModule.Broodwar.getFrameCount() + " index=" + MyUtil.indexToGo);
 			} else if (MyBotModule.Broodwar.getFrameCount() % 500 == 0) {
-				MyBotModule.Broodwar.sendText("G=" + MyVariable.mapPositionGoliat.size() + " T=" + MyVariable.mapPositionTank.size());
+				MyBotModule.Broodwar.sendText("08192335 G=" + MyVariable.mapPositionGoliat.size() + " T=" + MyVariable.mapPositionTank.size());
 			}
 
 			// Time & Memory check

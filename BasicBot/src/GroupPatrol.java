@@ -40,7 +40,9 @@ public class GroupPatrol extends GroupAbstract {
 				this.mapUnitTotal.put(UnitType.Terran_Battlecruiser, 0);
 			}
 		} else {
-			this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
+			if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() >= 10) {
+				this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
+			}
 			if (MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() >= 20) {
 				this.mapUnitTotal.put(UnitType.Terran_Goliath, MyVariable.getSelfUnit(UnitType.Terran_Goliath).size() / 10);
 			}

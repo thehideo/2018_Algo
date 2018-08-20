@@ -13,7 +13,7 @@ public class ActionCreateUnit extends ActionControlAbstract {
 			return;
 		}
 
-		if (BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Command_Center) > 0 && MyBotModule.Broodwar.self().minerals() <= 400) {
+		if (BuildManager.Instance().getBuildQueue().getItemCount(UnitType.Terran_Command_Center) > 0 && MyBotModule.Broodwar.self().minerals() <= 450) {
 			return;
 		}
 

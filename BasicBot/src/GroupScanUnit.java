@@ -7,7 +7,7 @@ public class GroupScanUnit extends GroupAbstract {
 		// 공격 받는 유닛 쪽으로 이동(자기 자신이 아니면), 메딕한테는 안간다.
 		if (MyVariable.attackedUnit.size() > 0) {
 			for (Unit unit : MyVariable.attackedUnit) {
-				if (unit.getType() != UnitType.Terran_Science_Vessel && unit.getType() != UnitType.Terran_Medic && unit.getType().isBuilding() == false) {
+				if (unit.getType() != UnitType.Terran_Science_Vessel && unit.getType() != UnitType.Terran_SCV && unit.getType() != UnitType.Terran_Medic && unit.getType().isBuilding() == false) {
 					targetPosition = unit.getPosition();
 					break;
 				}

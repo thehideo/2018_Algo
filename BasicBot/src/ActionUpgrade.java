@@ -20,14 +20,16 @@ public class ActionUpgrade extends ActionControlAbstract {
 
 	public void updateProtoss() {
 		// 벌처
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
-			if (unit.canResearch(TechType.Spider_Mines)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Spider_Mines) == 0) {
-					BuildManager.Instance().buildQueue.queueAsHighestPriority(TechType.Spider_Mines, false);
-					break;
-				}
-			}
-		}
+		// for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
+		// if (unit.canResearch(TechType.Spider_Mines)) {
+		// if (BuildManager.Instance().buildQueue.getItemCount(TechType.Spider_Mines) ==
+		// 0) {
+		// BuildManager.Instance().buildQueue.queueAsHighestPriority(TechType.Spider_Mines,
+		// false);
+		// break;
+		// }
+		// }
+		// }
 
 		// Marine 사거리/스팀팩 업그레이드
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Academy)) {
@@ -45,77 +47,99 @@ public class ActionUpgrade extends ActionControlAbstract {
 			}
 		}
 
-		// 시즈 모드
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
-			if (unit.canResearch(TechType.Tank_Siege_Mode)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Tank_Siege_Mode) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
-					break;
+		if (MyVariable.findFastCarrier == false) {
+			// 바이오닉 공격력, 방어력 업그레이드
+			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 10) {
+				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay)) {
+					if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 20) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Weapons, false);
+						break;
+					}
+					if (unit.canUpgrade(UpgradeType.Terran_Infantry_Armor) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Armor) == 0) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Armor, false);
+						break;
+					}
 				}
 			}
-		}
 
-		// 레이스 클로킹
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Control_Tower)) {
-			if (unit.canResearch(TechType.Cloaking_Field)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Cloaking_Field) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Cloaking_Field, false);
-					break;
-				}
-			}
-		}
-
-		// 골리앗 사거리
-		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() > 4 || MyVariable.findCarrier == true) {
+			// 시즈 모드
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
-				if (unit.canUpgrade(UpgradeType.Charon_Boosters)) {
-					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Charon_Boosters) == 0) {
-						{
-							if (MyVariable.findCarrier == false) {
-								BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Charon_Boosters, false);
-							} else {
-								BuildManager.Instance().buildQueue.queueAsHighestPriority(UpgradeType.Charon_Boosters, true);
+				if (unit.canResearch(TechType.Tank_Siege_Mode)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Tank_Siege_Mode) == 0) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+						break;
+					}
+				}
+			}
+
+			// 레이스 클로킹
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Control_Tower)) {
+				if (unit.canResearch(TechType.Cloaking_Field)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Cloaking_Field) == 0) {
+						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Cloaking_Field, false);
+						break;
+					}
+				}
+			}
+
+			// 골리앗 사거리
+			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() > 4 || MyVariable.findCarrier == true) {
+				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
+					if (unit.canUpgrade(UpgradeType.Charon_Boosters)) {
+						if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Charon_Boosters) == 0) {
+							{
+								if (MyVariable.findCarrier == false) {
+									BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Charon_Boosters, false);
+								} else {
+									BuildManager.Instance().buildQueue.queueAsHighestPriority(UpgradeType.Charon_Boosters, true);
+								}
+								break;
 							}
+						}
+					}
+				}
+			}
+
+			// 메카닉 업그레이드
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Armory)) {
+				if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Weapons)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Vehicle_Weapons) == 0) {
+						{
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Vehicle_Weapons, false);
+							break;
+						}
+					}
+				}
+				if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Plating)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Vehicle_Plating) == 0) {
+						{
+							BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Vehicle_Plating, false);
 							break;
 						}
 					}
 				}
 			}
-		}
 
-		// 바이오닉 공격력, 방어력 업그레이드
-		if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 10) {
-			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay)) {
-				if (unit.canUpgrade(UpgradeType.Terran_Infantry_Armor) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Armor) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Armor, false);
+			// EMP
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Science_Facility)) {
+				if (unit.canResearch(TechType.EMP_Shockwave)) {
+					if (BuildManager.Instance().buildQueue.getItemCount(TechType.EMP_Shockwave) == 0) {
+						{
+							BuildManager.Instance().buildQueue.queueAsHighestPriority(TechType.EMP_Shockwave, true);
+						}
+					}
 					break;
 				}
+			}
+		}
+		// 패스트 캐리어이면 공업
+		else {
+			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay)) {
 				if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 20) {
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Weapons, false);
 				}
 			}
 		}
-
-		// 메카닉 업그레이드
-		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Armory)) {
-			if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Weapons)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Vehicle_Weapons) == 0) {
-					{
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Vehicle_Weapons, false);
-						break;
-					}
-				}
-			}
-			if (unit.canUpgrade(UpgradeType.Terran_Vehicle_Plating)) {
-				if (BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Vehicle_Plating) == 0) {
-					{
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Vehicle_Plating, false);
-						break;
-					}
-				}
-			}
-		}
-
 	}
 
 	public void updateTerran() {
@@ -200,12 +224,12 @@ public class ActionUpgrade extends ActionControlAbstract {
 		// 바이오닉 공격력, 방어력 업그레이드
 		if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 10) {
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay)) {
-				if (unit.canUpgrade(UpgradeType.Terran_Infantry_Armor) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Armor) == 0) {
-					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Armor, false);
-					break;
-				}
 				if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 20) {
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Weapons, false);
+					break;
+				}
+				if (unit.canUpgrade(UpgradeType.Terran_Infantry_Armor) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Armor) == 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Armor, false);
 					break;
 				}
 			}

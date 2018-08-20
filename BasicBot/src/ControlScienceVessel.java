@@ -4,6 +4,9 @@ import bwapi.Unit;
 import bwapi.UnitType;
 
 public class ControlScienceVessel extends ControlAbstract {
+	// 스캐너 사용
+	static int beforeTime = 0;
+
 	void actionMain(Unit unit, GroupAbstract groupAbstract) {
 		if (InformationManager.Instance().enemyRace == Race.Zerg) {
 			if (MyVariable.getEnemyUnit(UnitType.Zerg_Mutalisk).size() > 0) {
@@ -24,39 +27,34 @@ public class ControlScienceVessel extends ControlAbstract {
 				}
 			}
 		} else if (InformationManager.Instance().enemyRace == Race.Protoss) {
-			if (MyVariable.isFullScaleAttackStarted == true) {
+			if (MyBotModule.Broodwar.getFrameCount() - beforeTime > 24 * 2) {
+				Unit target = null;
 				if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
-					Unit Protoss_Carrier = MyUtil.getMostCloseEnemyUnit(unit, MyVariable.getEnemyUnit(UnitType.Protoss_Carrier), 600);
-					if (Protoss_Carrier != null) {
-						if (unit.canUseTech(TechType.EMP_Shockwave, Protoss_Carrier)) {
-							CommandUtil.useTech(unit, TechType.EMP_Shockwave, Protoss_Carrier);
-							setSpecialAction(unit, 0);
+					for (Unit Protoss_Carrier : MyVariable.getEnemyUnit(UnitType.Protoss_Carrier)) {
+						if (Protoss_Carrier.getShields() > 50 && unit.getDistance(Protoss_Carrier) < 800 && unit.canUseTech(TechType.EMP_Shockwave, Protoss_Carrier)) {
+							target = Protoss_Carrier;
+							break;
 						}
 					}
 				} else if (MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar).size() > 0) {
-					Unit Protoss_High_Templar = MyUtil.getMostCloseEnemyUnit(unit, MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar), 600);
-					if (Protoss_High_Templar != null) {
-						if (unit.canUseTech(TechType.EMP_Shockwave, Protoss_High_Templar)) {
-							CommandUtil.useTech(unit, TechType.EMP_Shockwave, Protoss_High_Templar);
-							setSpecialAction(unit, 0);
+					for (Unit Protoss_High_Templar : MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar)) {
+						if (Protoss_High_Templar.getEnergy() > 50 && unit.getDistance(Protoss_High_Templar) < 800 && unit.canUseTech(TechType.EMP_Shockwave, Protoss_High_Templar)) {
+							target = Protoss_High_Templar;
+							break;
 						}
 					}
 				} else if (MyVariable.getEnemyUnit(UnitType.Protoss_Dragoon).size() > 0) {
-					Unit Protoss_Dragoon = MyUtil.getMostCloseEnemyUnit(unit, MyVariable.getEnemyUnit(UnitType.Protoss_Dragoon), 600);
-					if (Protoss_Dragoon != null) {
-						if (unit.canUseTech(TechType.EMP_Shockwave, Protoss_Dragoon)) {
-							CommandUtil.useTech(unit, TechType.EMP_Shockwave, Protoss_Dragoon);
-							setSpecialAction(unit, 0);
+					for (Unit Protoss_Dragoon : MyVariable.getEnemyUnit(UnitType.Protoss_Dragoon)) {
+						if (Protoss_Dragoon.getShields() > 50 && unit.getDistance(Protoss_Dragoon) < 800 && unit.canUseTech(TechType.EMP_Shockwave, Protoss_Dragoon)) {
+							target = Protoss_Dragoon;
+							break;
 						}
 					}
-				} else if (MyVariable.getEnemyUnit(UnitType.Protoss_Zealot).size() > 0) {
-					Unit Protoss_Zealot = MyUtil.getMostCloseEnemyUnit(unit, MyVariable.getEnemyUnit(UnitType.Protoss_Zealot), 600);
-					if (Protoss_Zealot != null) {
-						if (unit.canUseTech(TechType.EMP_Shockwave, Protoss_Zealot)) {
-							CommandUtil.useTech(unit, TechType.EMP_Shockwave, Protoss_Zealot);
-							setSpecialAction(unit, 0);
-						}
-					}
+				}
+				if (target != null) {
+					CommandUtil.useTech(unit, TechType.EMP_Shockwave, target);
+					setSpecialAction(unit, 50);
+					beforeTime = MyBotModule.Broodwar.getFrameCount();
 				}
 			}
 		}
