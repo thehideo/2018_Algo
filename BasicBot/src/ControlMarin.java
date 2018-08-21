@@ -28,6 +28,14 @@ public class ControlMarin extends ControlAbstract {
 			}
 		}
 
+		for (Unit Protoss_High_Templar : MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar)) {
+			if (Protoss_High_Templar.getEnergy() >= 74) {
+				if (unit.getDistance(Protoss_High_Templar) < 12 * 32) {
+					CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+				}
+			}
+		}
+
 		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
 	}
 }

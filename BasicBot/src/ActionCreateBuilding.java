@@ -35,16 +35,29 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 	void commonBuild() {
 		// 베슬이 필요하면 바로 건설
 		if (MyVariable.needTerran_Science_Vessel) {
-			if (checkNeedToBuild(UnitType.Terran_Factory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Barracks).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1)
-				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
-			if (checkNeedToBuild(UnitType.Terran_Starport, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 1)
-				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Starport, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
-			if (checkNeedToBuild(UnitType.Terran_Control_Tower, 1) && MyVariable.getSelfUnit(UnitType.Terran_Starport).size() >= 1)
-				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Control_Tower, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
-			if (checkNeedToBuild(UnitType.Terran_Science_Facility, 1) && MyVariable.getSelfUnit(UnitType.Terran_Starport).size() >= 1)
-				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Facility, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
-			if (checkNeedToBuild(UnitType.Terran_Science_Vessel, 1) && MyVariable.getSelfUnit(UnitType.Terran_Science_Facility).size() >= 1)
-				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			if (InformationManager.Instance().enemyRace == Race.Zerg) {
+				if (checkNeedToBuild(UnitType.Terran_Factory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Barracks).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+				if (checkNeedToBuild(UnitType.Terran_Starport, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Starport, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+				if (checkNeedToBuild(UnitType.Terran_Control_Tower, 1) && MyVariable.getSelfUnit(UnitType.Terran_Starport).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Control_Tower, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+				if (checkNeedToBuild(UnitType.Terran_Science_Facility, 1) && MyVariable.getSelfUnit(UnitType.Terran_Starport).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Facility, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+				if (checkNeedToBuild(UnitType.Terran_Science_Vessel, 1) && MyVariable.getSelfUnit(UnitType.Terran_Science_Facility).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			} else {
+				if (checkNeedToBuild(UnitType.Terran_Factory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Barracks).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+				if (checkNeedToBuild(UnitType.Terran_Starport, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Starport, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+				if (checkNeedToBuild(UnitType.Terran_Control_Tower, 1) && MyVariable.getSelfUnit(UnitType.Terran_Starport).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Control_Tower, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+				if (checkNeedToBuild(UnitType.Terran_Science_Facility, 1) && MyVariable.getSelfUnit(UnitType.Terran_Starport).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Facility, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+				if (checkNeedToBuild(UnitType.Terran_Science_Vessel, 1) && MyVariable.getSelfUnit(UnitType.Terran_Science_Facility).size() >= 1)
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Science_Vessel, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			}
 		}
 
 		// 내가 유리하면 배틀크루즈 생산
@@ -327,6 +340,12 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 		}
 
+		// if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 2) &&
+		// MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 15) {
+		// BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Engineering_Bay,
+		// BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+		// }
+
 		if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 1) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1) {
 			Position BunkerDonthaveTurretPosition = MyUtil.GetMyBunkerDonthaveTurretPosition();
 			if (BunkerDonthaveTurretPosition == null) {
@@ -334,6 +353,10 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			} else {
 				BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Missile_Turret, BunkerDonthaveTurretPosition.toTilePosition(), true);
 			}
+		}
+
+		if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 12) {
+			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
 		if (checkNeedToBuild(UnitType.Terran_Refinery, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 2)
@@ -380,8 +403,11 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			// }
 
 		} else {
-			if (checkNeedToBuild(UnitType.Terran_Factory, 3) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1)
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			// if (checkNeedToBuild(UnitType.Terran_Factory, 3) &&
+			// MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 &&
+			// MyVariable.getSelfUnit(UnitType.Terran_Comsat_Station).size() >= 1)
+			// BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory,
+			// BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 
 			// Terran_Armory 건설
 			if (checkNeedToBuild(UnitType.Terran_Armory, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop).size() >= 2 && (MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Siege_Mode).size() + MyVariable.getSelfUnit(UnitType.Terran_Siege_Tank_Tank_Mode).size() >= 4)) {
@@ -398,20 +424,29 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			// }
 		}
 
-		if (checkNeedToBuild(UnitType.Terran_Factory, 6) && MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 && MyBotModule.Broodwar.self().minerals() > 400) {
-			TilePosition tp = null;
-			for (Unit commandCenter : MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
-				if (commandCenter.getTilePosition() != MyVariable.myStartLocation) {
-					tp = commandCenter.getTilePosition();
-					break;
-				}
-			}
-			if (tp == null) {
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-			} else {
-				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory, tp, false);
-			}
+		if (checkNeedToBuild(UnitType.Terran_Barracks, 10) && MyBotModule.Broodwar.self().minerals() >= 300 && MyUtil.GetMyTankCnt() >= 1) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Barracks, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
+
+		// if (checkNeedToBuild(UnitType.Terran_Factory, 6) &&
+		// MyVariable.getSelfUnit(UnitType.Terran_Refinery).size() >= 1 &&
+		// MyBotModule.Broodwar.self().minerals() > 400) {
+		// TilePosition tp = null;
+		// for (Unit commandCenter :
+		// MyVariable.getSelfUnit(UnitType.Terran_Command_Center)) {
+		// if (commandCenter.getTilePosition() != MyVariable.myStartLocation) {
+		// tp = commandCenter.getTilePosition();
+		// break;
+		// }
+		// }
+		// if (tp == null) {
+		// BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory,
+		// BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+		// } else {
+		// BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Factory,
+		// tp, false);
+		// }
+		// }
 
 	}
 

@@ -13,22 +13,22 @@ public class ControlGoliath extends ControlAbstract {
 
 	void actionMain(Unit unit, GroupAbstract groupAbstract) {
 		// 어텍 그룹일 때는 탱크를 피해서 움직인다.
-		if (groupAbstract == GroupManager.instance().groupAttack) {
-			if (MyUtil.GetMyTankCnt() >= 1) {
-				Iterator<Integer> tankIDs = MyVariable.mapTankPosition.keySet().iterator();
-				while (tankIDs.hasNext()) {
-					Integer TankID = tankIDs.next();
-					if (MyUtil.distancePosition(unit.getPosition(), MyVariable.mapTankPosition.get(TankID)) <= 384 + 32 * 4) {
-						if (MyBotModule.Broodwar.getFrameCount() % 2 == 0) {
-							CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
-						} else {
-							CommandUtil.move(unit, MyVariable.myFirstchokePoint.toPosition());
-						}
-						return;
+		// if (groupAbstract == GroupManager.instance().groupAttack) {
+		if (MyUtil.GetMyTankCnt() >= 1) {
+			Iterator<Integer> tankIDs = MyVariable.mapTankPosition.keySet().iterator();
+			while (tankIDs.hasNext()) {
+				Integer TankID = tankIDs.next();
+				if (MyUtil.distancePosition(unit.getPosition(), MyVariable.mapTankPosition.get(TankID)) <= 384 + 32 * 4) {
+					if (MyBotModule.Broodwar.getFrameCount() % 2 == 0) {
+						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+					} else {
+						CommandUtil.move(unit, MyVariable.myFirstchokePoint.toPosition());
 					}
+					return;
 				}
 			}
 		}
+		// }
 
 		// 주위에 캐리어가 있고, 각 골리앗 마다 가장 가까운 녀석을 공격한다.
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
@@ -65,17 +65,17 @@ public class ControlGoliath extends ControlAbstract {
 
 	static HashMap<Integer, ArrayList<TilePosition>> mapPatrol = new HashMap<Integer, ArrayList<TilePosition>>();
 
-	void patrolGroupAction(Unit wraith, GroupAbstract groupAbstract) {
-		if (!mapPatrol.containsKey(wraith.getID()) || mapPatrol.get(wraith.getID()).size() == 0) {
-			mapPatrol.put(wraith.getID(), GroupWraith.makeNewList());
+	void patrolGroupAction(Unit unit, GroupAbstract groupAbstract) {
+		if (!mapPatrol.containsKey(unit.getID()) || mapPatrol.get(unit.getID()).size() == 0) {
+			mapPatrol.put(unit.getID(), GroupWraith.makeNewList());
 		}
-		ArrayList<TilePosition> targetList = mapPatrol.get(wraith.getID());
+		ArrayList<TilePosition> targetList = mapPatrol.get(unit.getID());
 		if (targetList.size() > 0) {
 			TilePosition target = targetList.get(0);
-			if (MyUtil.distanceTilePosition(target, wraith.getTilePosition()) <= 2) {
+			if (MyUtil.distanceTilePosition(target, unit.getTilePosition()) <= 2) {
 				targetList.remove(0);
 			} else {
-				CommandUtil.attackMove(wraith, target.toPosition());
+				CommandUtil.attackMove(unit, target.toPosition());
 			}
 		}
 	}

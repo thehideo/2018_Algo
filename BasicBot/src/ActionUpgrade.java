@@ -66,7 +66,7 @@ public class ActionUpgrade extends ActionControlAbstract {
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
 				if (unit.canResearch(TechType.Tank_Siege_Mode)) {
 					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Tank_Siege_Mode) == 0) {
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Tank_Siege_Mode, false);
+						BuildManager.Instance().buildQueue.queueAsHighestPriority(TechType.Tank_Siege_Mode, true);
 						break;
 					}
 				}

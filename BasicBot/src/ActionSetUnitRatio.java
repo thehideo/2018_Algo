@@ -42,7 +42,7 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 		}
 
-		if (MyBotModule.Broodwar.self().minerals() > 1000) {
+		if (MyBotModule.Broodwar.self().minerals() > 500) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 4);
 			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
@@ -55,9 +55,9 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Medic).size() * 4 <= MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Medic, 1);
 		}
-		if (MyUtil.GetMyTankCnt() >= 4) {
-			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 1);
-		}
+		// if (MyUtil.GetMyTankCnt() >= 4) {
+		// MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 1);
+		// }
 		MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Science_Vessel).size() < 3) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Science_Vessel, 1);

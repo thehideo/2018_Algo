@@ -15,6 +15,8 @@ public class GroupWraith extends GroupAbstract {
 		}
 	}
 
+	static int cnt = 0;
+
 	static ArrayList<TilePosition> makeNewList() {
 
 		BaseLocation bl1 = InformationManager.Instance().getMainBaseLocation(MyBotModule.Broodwar.self());
@@ -105,6 +107,14 @@ public class GroupWraith extends GroupAbstract {
 					}
 				}
 			}
+		}
+
+		if (cnt == 0) {
+			ArrayList<TilePosition> listTilePosition2 = new ArrayList<TilePosition>();
+			for (int i = listTilePosition.size() - 1; i >= 0; i--) {
+				listTilePosition2.add(listTilePosition.get(i));
+			}
+			return listTilePosition2;
 		}
 		return listTilePosition;
 	}

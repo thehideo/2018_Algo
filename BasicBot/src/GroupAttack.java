@@ -125,7 +125,15 @@ public class GroupAttack extends GroupAbstract {
 					}
 				} else if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
 					if (MyVariable.attackUnit.size() > 30) {
-						MyVariable.isFullScaleAttackStarted = true;
+						if (MyVariable.needTerran_Science_Vessel == false) {
+							MyVariable.isFullScaleAttackStarted = true;
+						}
+						// 베슬이 필요하면 싸이언스 베슬이 있을 때 출발
+						else {
+							if (MyVariable.getSelfUnit(UnitType.Terran_Science_Vessel).size() > 0) {
+								MyVariable.isFullScaleAttackStarted = true;
+							}
+						}
 					}
 				}
 				// 확장 기지가 있다면
@@ -136,7 +144,9 @@ public class GroupAttack extends GroupAbstract {
 				}
 			}
 			// 테란 공격 조건
-			else if (InformationManager.Instance().enemyRace == Race.Terran) {
+			else if (InformationManager.Instance().enemyRace == Race.Terran)
+
+			{
 				if (MyBotModule.Broodwar.self().supplyTotal() >= 380) {
 					MyVariable.isFullScaleAttackStarted = true;
 				}

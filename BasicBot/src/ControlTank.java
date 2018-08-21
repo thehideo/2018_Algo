@@ -65,6 +65,17 @@ public class ControlTank extends ControlAbstract {
 			CommandUtil.siege(unit);
 			setSpecialAction(unit, 0);
 		}
+
+		// 하이템플러 우선 공격
+		for (Unit Protoss_High_Templar : MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar)) {
+			if (Protoss_High_Templar.getEnergy() >= 70) {
+				if (unit.getDistance(Protoss_High_Templar) < 384) {
+					CommandUtil.attackUnit(unit, Protoss_High_Templar);
+					break;
+				}
+			}
+		}
+
 		if (need == false) {
 			CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
 		}

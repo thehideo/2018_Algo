@@ -275,7 +275,7 @@ public class InformationManager {
 		}
 
 		// 전진을 못하는 경우가 발생하여 내가 유리한 조건일 때 초기화 한다.
-		if (MyBotModule.Broodwar.self().supplyTotal() >= 380 && MyBotModule.Broodwar.getFrameCount() % 1000 == 0) {
+		if (MyBotModule.Broodwar.self().supplyTotal() >= 380 && MyBotModule.Broodwar.getFrameCount() % 500 == 0) {
 			MyVariable.mapPositionTank.clear();
 			MyVariable.mapTankPosition.clear();
 		}
@@ -389,8 +389,9 @@ public class InformationManager {
 				MyVariable.findLucker = true;
 			}
 		} else if (InformationManager.Instance().enemyRace == Race.Protoss) {
-			if (MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0) {
+			if (MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0 || MyVariable.getEnemyUnit(UnitType.Protoss_Templar_Archives).size() > 0) {
 				MyVariable.findDarkTempler = true;
+				MyVariable.needTerran_Science_Vessel = true;
 			}
 			if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Fleet_Beacon).size() >= 1 || MyVariable.getEnemyUnit(UnitType.Protoss_Stargate).size() >= 1) {
 				MyVariable.findCarrier = true;
