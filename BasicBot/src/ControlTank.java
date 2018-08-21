@@ -66,11 +66,20 @@ public class ControlTank extends ControlAbstract {
 			setSpecialAction(unit, 0);
 		}
 
-		// 하이템플러 우선 공격
-		for (Unit Protoss_High_Templar : MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar)) {
-			if (Protoss_High_Templar.getEnergy() >= 70) {
-				if (unit.getDistance(Protoss_High_Templar) < 384) {
-					CommandUtil.attackUnit(unit, Protoss_High_Templar);
+		if (InformationManager.Instance().enemyRace == Race.Protoss) {
+			// 하이템플러 우선 공격
+			for (Unit Protoss_High_Templar : MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar)) {
+				if (Protoss_High_Templar.getEnergy() >= 70) {
+					if (unit.getDistance(Protoss_High_Templar) < 384) {
+						CommandUtil.attackUnit(unit, Protoss_High_Templar);
+						break;
+					}
+				}
+			}
+			// 리버 우선 공격
+			for (Unit Protoss_Reaver : MyVariable.getEnemyUnit(UnitType.Protoss_Reaver)) {
+				if (unit.getDistance(Protoss_Reaver) < 384) {
+					CommandUtil.attackUnit(unit, Protoss_Reaver);
 					break;
 				}
 			}

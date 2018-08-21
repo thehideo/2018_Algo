@@ -15,7 +15,7 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 				if (MyVariable.findFastCarrier == true) {
 					unitProtossFastCarrier();
 				}
-				if (MyVariable.findCarrier == true) {
+				if (MyVariable.findCarrier == true && MyVariable.findReaver == false && MyVariable.findArbiter == false) {
 					unitProtossCarrier();
 				} else {
 					unitProtoss();

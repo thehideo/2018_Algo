@@ -402,6 +402,14 @@ public class InformationManager {
 			if (MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar).size() > 0) {
 				MyVariable.findHighTempler = true;
 			}
+			if (MyVariable.getEnemyUnit(UnitType.Protoss_Arbiter).size() > 0) {
+				MyVariable.findArbiter = true;
+				MyVariable.needTerran_Science_Vessel = true;
+			}
+			if (MyVariable.getEnemyUnit(UnitType.Protoss_Reaver).size() > 0) {
+				MyVariable.findReaver = true;
+				MyVariable.needTerran_Science_Vessel = true;
+			}
 		} else if (InformationManager.Instance().enemyRace == Race.Terran) {
 			if (MyVariable.getEnemyUnit(UnitType.Terran_Wraith).size() > 0) {
 				MyVariable.findWraith = true;

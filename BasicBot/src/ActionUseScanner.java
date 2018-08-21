@@ -46,12 +46,22 @@ public class ActionUseScanner extends ActionControlAbstract {
 			}
 		}
 
+		if (InformationManager.Instance().enemyRace == Race.Protoss && MyVariable.findArbiter == true) {
+			for (Unit unit : MyVariable.enemyAttactingUnit) {
+				if (unit.isAttacking() && unit.isCloaked() == true && unit.isDetected() == false) {
+					MyVariable.needTerran_Science_Vessel = true;
+					useScanner_Sweep(unit);
+				}
+			}
+		}
+
 		// 스캔이 많이 남으면 적 본진을 스캔함
 		int ScanPoint = 200;
-		if (MyVariable.findDarkTempler == false && MyVariable.findLucker == false && InformationManager.Instance().enemyRace == Race.Protoss) {
+		if (MyVariable.findDarkTempler == false && MyVariable.findArbiter == false && MyVariable.findReaver == false && InformationManager.Instance().enemyRace == Race.Protoss) {
 			ScanPoint = 100;
-		}
-		if (MyVariable.findWraith == false && InformationManager.Instance().enemyRace == Race.Terran) {
+		} else if (MyVariable.findLucker == false && InformationManager.Instance().enemyRace == Race.Zerg) {
+			ScanPoint = 100;
+		} else if (MyVariable.findWraith == false && InformationManager.Instance().enemyRace == Race.Terran) {
 			ScanPoint = 100;
 		}
 

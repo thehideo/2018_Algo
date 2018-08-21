@@ -39,8 +39,12 @@ public class MyVariable {
 	// 다크템플러를 찾았는지
 	public static boolean findDarkTempler = false;
 
+	public static boolean findReaver = false;
+
 	// 하이템플러를 찾았는지
 	public static boolean findHighTempler = false;
+
+	public static boolean findArbiter = false;
 
 	public static boolean findFastCarrier = false;
 

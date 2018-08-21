@@ -122,11 +122,14 @@ public class GameCommander {
 			if (MyBotModule.Broodwar.isPaused() || MyBotModule.Broodwar.self() == null || MyBotModule.Broodwar.self().isDefeated() || MyBotModule.Broodwar.self().leftGame() || MyBotModule.Broodwar.enemy() == null || MyBotModule.Broodwar.enemy().isDefeated() || MyBotModule.Broodwar.enemy().leftGame()) {
 				return;
 			}
-			if (MyBotModule.Broodwar.getFrameCount() % 2000 == 0) {
-				MyBotModule.Broodwar.sendText("FrameCnt=" + MyBotModule.Broodwar.getFrameCount() + " index=" + MyUtil.indexToGo);
-			} else if (MyBotModule.Broodwar.getFrameCount() % 500 == 0) {
-				MyBotModule.Broodwar.sendText("08192335 G=" + MyVariable.mapPositionGoliat.size() + " T=" + MyVariable.mapPositionTank.size());
-			}
+			// if (MyBotModule.Broodwar.getFrameCount() % 2000 == 0) {
+			// MyBotModule.Broodwar.sendText("FrameCnt=" +
+			// MyBotModule.Broodwar.getFrameCount() + " index=" + MyUtil.indexToGo);
+			// } else if (MyBotModule.Broodwar.getFrameCount() % 500 == 0) {
+			// MyBotModule.Broodwar.sendText("08192335 G=" +
+			// MyVariable.mapPositionGoliat.size() + " T=" +
+			// MyVariable.mapPositionTank.size());
+			// }
 
 			// Time & Memory check
 			long startTime = System.currentTimeMillis();

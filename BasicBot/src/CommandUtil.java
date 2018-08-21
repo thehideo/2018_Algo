@@ -25,6 +25,17 @@ public class CommandUtil {
 		unit.useTech(TechType.Stim_Packs);
 	}
 
+	static public void holdPosition(Unit unit) {
+		if (commandHash.contains(unit)) {
+			return;
+		} else {
+			commandHash.add(unit);
+		}
+		if (unit.canHoldPosition()) {
+			unit.holdPosition();
+		}
+	}
+
 	static public void siege(Unit unit) {
 		if (commandHash.contains(unit)) {
 			return;
@@ -167,8 +178,7 @@ public class CommandUtil {
 
 		attacker.move(targetPosition);
 	}
-	
-	
+
 	static public void rightClick(Unit unit, Unit target) {
 		UnitCommand currentCommand = unit.getLastCommand();
 

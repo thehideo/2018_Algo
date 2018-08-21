@@ -32,6 +32,7 @@ public class GroupManager {
 
 	// 유닛마다 기본 컨트롤 할당
 	public GroupManager() {
+		mapUnitTypeControl.put(UnitType.Terran_Medic, new ControlMedic());
 		mapUnitTypeControl.put(UnitType.Terran_Marine, new ControlMarin());
 		mapUnitTypeControl.put(UnitType.Terran_Firebat, new ControlFireBat());
 		mapUnitTypeControl.put(UnitType.Terran_Ghost, new ControlGhost());
