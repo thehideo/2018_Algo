@@ -75,7 +75,7 @@ public class GroupAttack extends GroupAbstract {
 
 		boolean needToWaitVessel = false;
 		// scanner가 모두 소진되었고 베슬도 없으면 본진에 대기해야함 (싸이언스 베슬 생산이 완료될 때 까지)
-		if ((MyVariable.findDarkTempler || MyVariable.findLucker) && MyUtil.canUseScan() == false && !MyUtil.haveCompletedScienceVessle()) {
+		if ((MyVariable.findDarkTempler || MyVariable.findLucker || MyVariable.findArbiter) && MyUtil.canUseScan() == false && !MyUtil.haveCompletedScienceVessle()) {
 			needToWaitVessel = true;
 			MyVariable.isFullScaleAttackStarted = false;
 		}

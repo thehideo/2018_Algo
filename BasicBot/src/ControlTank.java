@@ -24,7 +24,7 @@ public class ControlTank extends ControlAbstract {
 					result = true;
 				}
 			}
-		} else {
+		} else if (MyVariable.enemyUnitAroundMyStartPoint.size() == 0) {
 			if (unit.getDistance(MyUtil.getSaveTilePosition(0).toPosition()) <= 2 * 32 && MyVariable.isFullScaleAttackStarted == false) {
 				result = true;
 			}
@@ -81,6 +81,15 @@ public class ControlTank extends ControlAbstract {
 				if (unit.getDistance(Protoss_Reaver) < 384) {
 					CommandUtil.attackUnit(unit, Protoss_Reaver);
 					break;
+				}
+			}
+		} else if (InformationManager.Instance().enemyRace == Race.Zerg) {
+			for (Unit Zerg_Lurker : MyVariable.getEnemyUnit(UnitType.Zerg_Lurker)) {
+				if (Zerg_Lurker.isDetected()) {
+					if (unit.getDistance(Zerg_Lurker) < 384) {
+						CommandUtil.attackUnit(unit, Zerg_Lurker);
+						break;
+					}
 				}
 			}
 		}

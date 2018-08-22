@@ -9,7 +9,6 @@ public class ControlMarin extends ControlAbstract {
 			setSpecialAction(unit, 0);
 			return;
 		}
-
 		if (groupAbstract == GroupManager.instance().groupAttack && ActionControlBunker.needMarinCnt > 0) {
 			for (Unit bunker : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
 				if (bunker.getLoadedUnits().size() < 4) {
@@ -19,23 +18,36 @@ public class ControlMarin extends ControlAbstract {
 				}
 			}
 		}
-
 		if (InformationManager.Instance().enemyRace == Race.Terran) {
 			if (MyVariable.isFullScaleAttackStarted == false) {
 				if (MyVariable.enemyStartLocation != null) {
 					CommandUtil.attackMove(unit, MyUtil.getSaveTilePosition(6).toPosition());
 				}
 			}
-		}
-
-		for (Unit Protoss_High_Templar : MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar)) {
-			if (Protoss_High_Templar.getEnergy() >= 74) {
-				if (unit.getDistance(Protoss_High_Templar) < 12 * 32) {
+		} else if (InformationManager.Instance().enemyRace == Race.Protoss) {
+			for (Unit Protoss_High_Templar : MyVariable.getEnemyUnit(UnitType.Protoss_High_Templar)) {
+				if (Protoss_High_Templar.getEnergy() >= 74) {
+					if (!MyVariable.mapMyRegion.contains(Protoss_High_Templar.getTilePosition())) {
+						if (unit.getDistance(Protoss_High_Templar) < 12 * 32) {
+							CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+						}
+					}
+				}
+			}
+			for (Unit Protoss_Reaver : MyVariable.getEnemyUnit(UnitType.Protoss_Reaver)) {
+				if (!MyVariable.mapMyRegion.contains(Protoss_Reaver.getTilePosition())) {
+					if (unit.getDistance(Protoss_Reaver) < 12 * 32) {
+						CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+					}
+				}
+			}
+			// 초반 입구방어 하면서 밖으로 튀어나가지 않도록 수정
+			if (MyVariable.isFullScaleAttackStarted == false && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
+				if (MyUtil.distanceTilePosition(unit.getTilePosition(), MyVariable.myStartLocation) > MyUtil.distanceTilePosition(groupAbstract.getTargetPosition(unit).toTilePosition(), MyVariable.myStartLocation) + 2) {
 					CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
 				}
 			}
 		}
-
 		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
 	}
 }
