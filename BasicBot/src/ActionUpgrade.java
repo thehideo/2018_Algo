@@ -51,7 +51,7 @@ public class ActionUpgrade extends ActionControlAbstract {
 			// 바이오닉 공격력, 방어력 업그레이드
 			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 10) {
 				for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay)) {
-					if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 20) {
+					if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0) {
 						BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Weapons, false);
 						break;
 					}
@@ -224,7 +224,7 @@ public class ActionUpgrade extends ActionControlAbstract {
 		// 바이오닉 공격력, 방어력 업그레이드
 		if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 10) {
 			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay)) {
-				if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() > 20) {
+				if (unit.canUpgrade(UpgradeType.Terran_Infantry_Weapons) && BuildManager.Instance().buildQueue.getItemCount(UpgradeType.Terran_Infantry_Weapons) == 0) {
 					BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Terran_Infantry_Weapons, false);
 					break;
 				}

@@ -47,6 +47,16 @@ public class ControlMarin extends ControlAbstract {
 					CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
 				}
 			}
+		} else if (InformationManager.Instance().enemyRace == Race.Zerg) {
+			for (Unit Zerg_Lurker : MyVariable.getEnemyUnit(UnitType.Zerg_Lurker)) {
+				if (MyUtil.distancePosition(unit.getPosition(), MyVariable.myStartLocation.toPosition()) < MyUtil.distancePosition(Zerg_Lurker.getPosition(), MyVariable.myStartLocation.toPosition())) {
+					if (Zerg_Lurker.isBurrowed() == true) {
+						if (unit.getDistance(Zerg_Lurker) < 8 * 32) { // 러커 사거리 6
+							CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+						}
+					}
+				}
+			}
 		}
 		CommandUtil.attackMove(unit, groupAbstract.getTargetPosition(unit));
 	}

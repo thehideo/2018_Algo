@@ -63,8 +63,16 @@ public class GroupAttack extends GroupAbstract {
 				decision = true;
 			}
 			// 벙커 밖에서 벌처가 알짱거리면
-			if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.getType() == UnitType.Terran_Vulture && MyVariable.distanceOfMostCloseEnemyUnit > MyVariable.distanceOfMostCloseBunker) {
-				decision = true;
+			if (InformationManager.Instance().enemyRace == Race.Terran) {
+				if (MyVariable.mostCloseEnemyUnit != null && MyVariable.mostCloseEnemyUnit.getType() == UnitType.Terran_Vulture && MyVariable.distanceOfMostCloseEnemyUnit > MyVariable.distanceOfMostCloseBunker) {
+					decision = true;
+				}
+			} else if (InformationManager.Instance().enemyRace == Race.Protoss) {
+				if (MyVariable.isFullScaleAttackStarted == false && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1 && MyUtil.GetMyTankCnt() <= 2) {
+					if (MyVariable.mostCloseEnemyUnit != null && MyVariable.distanceOfMostCloseEnemyUnit > MyVariable.distanceOfMostCloseBunker) {
+						decision = true;
+					}
+				}
 			}
 		}
 		return decision;
