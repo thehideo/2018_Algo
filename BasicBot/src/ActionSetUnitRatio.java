@@ -69,19 +69,26 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 4);
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 2);
 		} else {
-			if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 4 && MyUtil.GetMyTankCnt() <= 10) {
-				MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 8);
-			}
+
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 4);
-			if (MyVariable.getSelfUnit(UnitType.Terran_Armory).size() > 0 && MyVariable.mapPositionGoliat.size() >= 2) {
-				if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() * 4 <= MyUtil.GetMyTankCnt()) {
-					MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
+
+			if (MyVariable.findBattlecruiser == false) {
+				if (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() < 4 && MyUtil.GetMyTankCnt() <= 10) {
+					MyVariable.attackUnitRatio.put(UnitType.Terran_Vulture, 8);
+				}
+				if (MyVariable.getSelfUnit(UnitType.Terran_Armory).size() > 0 && MyVariable.mapPositionGoliat.size() >= 2) {
+					if (MyVariable.getSelfAttackUnit(UnitType.Terran_Goliath).size() * 4 <= MyUtil.GetMyTankCnt()) {
+						MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 1);
+					}
+				} else {
+					if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() < 4 && MyVariable.getSelfAttackUnit(UnitType.Terran_Wraith).size() * 4 <= MyUtil.GetMyTankCnt()) {
+						MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
+					}
 				}
 			} else {
-				if (MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() < 4 && MyVariable.getSelfAttackUnit(UnitType.Terran_Wraith).size() * 4 <= MyUtil.GetMyTankCnt()) {
-					MyVariable.attackUnitRatio.put(UnitType.Terran_Wraith, 1);
-				}
+				MyVariable.attackUnitRatio.put(UnitType.Terran_Goliath, 2);
 			}
+
 			if (MyUtil.GetMyTankCnt() >= 2 && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() == 0) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Marine, 9999);
 			}
@@ -102,15 +109,11 @@ public class ActionSetUnitRatio extends ActionControlAbstract {
 		if (MyUtil.GetMyTankCnt() * 4 < MyVariable.getSelfAttackUnit(UnitType.Terran_Marine).size()) {
 			MyVariable.attackUnitRatio.put(UnitType.Terran_Siege_Tank_Tank_Mode, 1);
 		}
-		if (MyVariable.getSelfAttackUnit(UnitType.Terran_Firebat).size() < 4) {
-			MyVariable.attackUnitRatio.put(UnitType.Terran_Firebat, 2);
-		}
 		if (MyVariable.findMutal) {
 			if (MyVariable.getSelfAttackUnit(UnitType.Terran_Science_Vessel).size() < 2) {
 				MyVariable.attackUnitRatio.put(UnitType.Terran_Science_Vessel, 1);
 			}
 		}
-
 	}
 
 }

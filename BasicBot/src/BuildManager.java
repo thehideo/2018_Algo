@@ -59,9 +59,6 @@ public class BuildManager {
 		// the current item to be used
 		BuildOrderItem currentItem = buildQueue.getHighestPriorityItem();
 
-		// System.out.println("current HighestPriorityItem is " +
-		// currentItem.metaType.getName());
-
 		// while there is still something left in the buildQueue
 		while (!buildQueue.isEmpty()) {
 			boolean isOkToRemoveQueue = true;
@@ -82,15 +79,7 @@ public class BuildManager {
 
 			// BasicBot 1.1 Patch End //////////////////////////////////////////////////
 
-			/*
-			 * if (currentItem.metaType.isUnit() &&
-			 * currentItem.metaType.getUnitType().isBuilding()) { if (producer != null) {
-			 * System.out.println("Build " + currentItem.metaType.getName() + " producer : "
-			 * + producer.getType() + " ID : " + producer.getID()); } else {
-			 * System.out.println("Build " + currentItem.metaType.getName() +
-			 * " producer null"); } }
-			 */
-
+		
 			Unit secondProducer = null;
 			boolean canMake = false;
 
@@ -189,8 +178,6 @@ public class BuildManager {
 				} else if (t.isUpgrade()) {
 					producer.upgrade(t.getUpgradeType());
 				}
-
-				// System.out.println(" build " + t.getName() + " started ");
 
 				// remove it from the buildQueue
 				if (isOkToRemoveQueue) {

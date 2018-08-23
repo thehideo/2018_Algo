@@ -19,18 +19,6 @@ public class ActionUpgrade extends ActionControlAbstract {
 	}
 
 	public void updateProtoss() {
-		// 벌처
-		// for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Machine_Shop)) {
-		// if (unit.canResearch(TechType.Spider_Mines)) {
-		// if (BuildManager.Instance().buildQueue.getItemCount(TechType.Spider_Mines) ==
-		// 0) {
-		// BuildManager.Instance().buildQueue.queueAsHighestPriority(TechType.Spider_Mines,
-		// false);
-		// break;
-		// }
-		// }
-		// }
-
 		// Marine 사거리/스팀팩 업그레이드
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Academy)) {
 			if (unit.canUpgrade(UpgradeType.U_238_Shells)) {
@@ -67,16 +55,6 @@ public class ActionUpgrade extends ActionControlAbstract {
 				if (unit.canResearch(TechType.Tank_Siege_Mode)) {
 					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Tank_Siege_Mode) == 0) {
 						BuildManager.Instance().buildQueue.queueAsHighestPriority(TechType.Tank_Siege_Mode, true);
-						break;
-					}
-				}
-			}
-
-			// 레이스 클로킹
-			for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Control_Tower)) {
-				if (unit.canResearch(TechType.Cloaking_Field)) {
-					if (BuildManager.Instance().buildQueue.getItemCount(TechType.Cloaking_Field) == 0) {
-						BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Cloaking_Field, false);
 						break;
 					}
 				}
@@ -258,7 +236,7 @@ public class ActionUpgrade extends ActionControlAbstract {
 				}
 			}
 		}
-
+		// Irradiate 개발
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Science_Facility)) {
 			if (unit.canResearch(TechType.Irradiate)) {
 				if (BuildManager.Instance().buildQueue.getItemCount(TechType.Irradiate) == 0) {
