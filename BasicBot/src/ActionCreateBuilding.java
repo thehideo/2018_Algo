@@ -485,9 +485,19 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		// BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		// }
 
-		if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2)
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, MyUtil.GetMyBunkerBuildPosition().toTilePosition(), false);
-
+		if (MyVariable.findFastZergling == true) {
+			if (checkNeedToBuild(UnitType.Terran_Bunker, 1)) {
+				if (MyVariable.getSelfUnit(UnitType.Terran_Barracks).size() > 0) {
+					BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, MyVariable.getSelfUnit(UnitType.Terran_Barracks).get(0).getTilePosition(), false);
+				}
+			}
+			if (MyVariable.getSelfUnit(UnitType.Terran_Marine).size() < 6) {
+				return;
+			}
+		} else {
+			if (checkNeedToBuild(UnitType.Terran_Bunker, 1) && MyVariable.getSelfUnit(UnitType.Terran_Marine).size() >= 2)
+				BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Bunker, MyUtil.GetMyBunkerBuildPosition().toTilePosition(), false);
+		}
 		if (checkNeedToBuild(UnitType.Terran_Refinery, 1) && MyVariable.getSelfUnit(UnitType.Terran_Bunker).size() >= 1)
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 

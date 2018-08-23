@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import bwapi.TilePosition;
@@ -19,7 +20,9 @@ public class GroupPatrol extends GroupAbstract {
 		this.mapUnitTotal.put(UnitType.Terran_Vulture, 1);
 
 		if (listTilePosition.size() > 0) {
-			for (UnitType unitType : this.mapUnit.keySet()) {
+			Iterator<UnitType> UnitTypes = this.mapUnit.keySet().iterator();
+			while (UnitTypes.hasNext()) {
+				UnitType unitType = UnitTypes.next();
 				for (Integer unitID : mapUnit.get(unitType)) {
 					if (MyUtil.distancePosition(MyVariable.mapUnitIDUnit.get(unitID).getPosition(), listTilePosition.get(0).toPosition()) < 32 * 1) {
 						listTilePosition.remove(0);

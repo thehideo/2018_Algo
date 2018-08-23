@@ -14,7 +14,7 @@ public class GroupWorker extends GroupAbstract {
 
 		if (InformationManager.Instance().enemyRace != Race.Terran && selfCnt < enemyCnt * 1.5 && selfCnt < 10 && MyBotModule.Broodwar.getFrameCount() < 12000 && MyVariable.distanceOfMostCloseEnemyUnit < MyVariable.distanceOfMostCloseBunker + 3) {
 			useWorker = true;
-		} 
+		}
 		// 일꾼이 오면 공격한다.
 		else if (InformationManager.Instance().enemyRace == Race.Terran && enemyCnt == 1 && MyVariable.getEnemyUnit(UnitType.Terran_Vulture).size() == 0) {
 			useWorker = true;
@@ -30,8 +30,14 @@ public class GroupWorker extends GroupAbstract {
 				double distance2 = MyUtil.distanceTilePosition(MyVariable.myStartLocation.getPoint(), unit.getPoint().toTilePosition());
 				if (distance1 > distance2) {
 					cnt++;
-					if (cnt >= MyVariable.enemyUnitAroundMyStartPoint.size() * 2 || cnt >= MyVariable.getSelfUnit(UnitType.Terran_SCV).size() - 4) {
-						break;
+					if (MyVariable.findFastZergling == false) {
+						if (cnt >= MyVariable.enemyUnitAroundMyStartPoint.size() * 2 || cnt >= MyVariable.getSelfUnit(UnitType.Terran_SCV).size() - 4) {
+							break;
+						}
+					} else {
+						if (cnt >= MyVariable.getSelfUnit(UnitType.Terran_SCV).size() - 4) {
+							break;
+						}
 					}
 					Unit enemyUnit = null;
 					Double minDistance = Double.MAX_VALUE;

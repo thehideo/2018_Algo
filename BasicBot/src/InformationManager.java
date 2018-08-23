@@ -388,6 +388,9 @@ public class InformationManager {
 			if (MyVariable.getEnemyUnit(UnitType.Zerg_Lurker).size() > 0) {
 				MyVariable.findLucker = true;
 			}
+			if (MyVariable.getEnemyUnit(UnitType.Zerg_Zergling).size() > 0 && MyBotModule.Broodwar.getFrameCount() < 5000) {
+				MyVariable.findFastZergling = true;
+			}
 		} else if (InformationManager.Instance().enemyRace == Race.Protoss) {
 			if (MyVariable.getEnemyUnit(UnitType.Protoss_Dark_Templar).size() > 0 || MyVariable.getEnemyUnit(UnitType.Protoss_Templar_Archives).size() > 0) {
 				MyVariable.findDarkTempler = true;

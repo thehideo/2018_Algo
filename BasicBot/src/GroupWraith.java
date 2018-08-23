@@ -39,19 +39,19 @@ public class GroupWraith extends GroupAbstract {
 				for (BaseLocation bl : listBaseLocation) {
 					tmpList.add(bl.getTilePosition());
 				}
-				Collections.sort(tmpList, new ComparatorBaseLocation());
+				Collections.sort(tmpList, new ComparatorBaseLocation());			
 
+				for (int i = tmpList.size() - 1; i >= 0; i--) {
+					if (tmpList.get(i).getX() >= 50 && tmpList.get(i).getX() <= 70 && tmpList.get(i).getY() >= 50 && tmpList.get(i).getY() <= 70) {
+						tmpList.remove(i);
+					}
+				}
+				
 				int indexB1 = 0;
 
 				for (int i = 0; i < tmpList.size(); i++) {
 					if (tmpList.get(i).equals(bl1.getTilePosition())) {
 						indexB1 = i;
-					}
-				}
-
-				for (int i = tmpList.size() - 1; i >= 0; i--) {
-					if (tmpList.get(i).getX() >= 50 && tmpList.get(i).getX() <= 70 && tmpList.get(i).getY() >= 50 && tmpList.get(i).getY() <= 70) {
-						tmpList.remove(i);
 					}
 				}
 

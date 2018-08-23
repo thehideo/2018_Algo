@@ -92,27 +92,27 @@ public class GroupPatrol extends GroupAbstract {
 				for (BaseLocation bl : listBaseLocation) {
 					tmpList.add(bl.getTilePosition());
 				}
-				Collections.sort(tmpList, new ComparatorBaseLocation());
-
-				int indexB1 = 0;
-
-				for (int i = 0; i < tmpList.size(); i++) {
-					if (tmpList.get(i).equals(bl1.getTilePosition())) {
-						indexB1 = i;
-					}
-				}
+				Collections.sort(tmpList, new ComparatorBaseLocation());		
 
 				for (int i = tmpList.size() - 1; i >= 0; i--) {
 					if (tmpList.get(i).getX() >= 50 && tmpList.get(i).getX() <= 70 && tmpList.get(i).getY() >= 50 && tmpList.get(i).getY() <= 70) {
 						tmpList.remove(i);
 					}
 				}
+				
+				int indexB1 = 0;
+				
+				for (int i = 0; i < tmpList.size(); i++) {
+					if (tmpList.get(i).equals(bl1.getTilePosition())) {
+						indexB1 = i;
+					}
+				}
 
 				int index = indexB1;
-				boolean findEneemy = false;
-				while (findEneemy == false) {
+				boolean findEnemy = false;
+				while (findEnemy == false) {
 					if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
-						findEneemy = true;
+						findEnemy = true;
 						break;
 					}
 					if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
@@ -126,10 +126,10 @@ public class GroupPatrol extends GroupAbstract {
 				index--;
 				if (index < 0)
 					index = tmpList.size() - 1;
-				findEneemy = false;
-				while (findEneemy == false) {
+				findEnemy = false;
+				while (findEnemy == false) {
 					if (tmpList.get(index).equals(bl3.getTilePosition()) || tmpList.get(index).equals(bl4.getTilePosition())) {
-						findEneemy = true;
+						findEnemy = true;
 						break;
 					}
 					if (!tmpList.get(index).equals(bl1.getTilePosition()) && !tmpList.get(index).equals(bl2.getTilePosition()) && !tmpList.get(index).equals(bl3.getTilePosition()) && !tmpList.get(index).equals(bl4.getTilePosition())) {
