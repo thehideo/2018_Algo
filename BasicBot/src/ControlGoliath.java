@@ -13,7 +13,6 @@ public class ControlGoliath extends ControlAbstract {
 
 	void actionMain(Unit unit, GroupAbstract groupAbstract) {
 		// 어텍 그룹일 때는 탱크를 피해서 움직인다.
-		// if (groupAbstract == GroupManager.instance().groupAttack) {
 		if (MyUtil.GetMyTankCnt() >= 1) {
 			Iterator<Integer> tankIDs = MyVariable.mapTankPosition.keySet().iterator();
 			while (tankIDs.hasNext()) {
@@ -28,7 +27,6 @@ public class ControlGoliath extends ControlAbstract {
 				}
 			}
 		}
-		// }
 
 		// 주위에 캐리어가 있고, 각 골리앗 마다 가장 가까운 녀석을 공격한다.
 		if (MyVariable.getEnemyUnit(UnitType.Protoss_Carrier).size() > 0) {
@@ -37,6 +35,16 @@ public class ControlGoliath extends ControlAbstract {
 				if (mostCloseCarrier.getDistance(unit) < 1200) {
 					CommandUtil.attackUnit(unit, mostCloseCarrier);
 					setSpecialAction(unit, 0);
+				}
+			}
+		}
+
+		// 주위에 캐리어가 있고, 각 골리앗 마다 가장 가까운 녀석을 공격한다.
+		if (MyVariable.getEnemyUnit(UnitType.Terran_Battlecruiser).size() > 0) {
+			Unit mostCloseBattlecruiser = MyUtil.getMostCloseEnemyUnit(UnitType.Terran_Battlecruiser, unit);
+			if (mostCloseBattlecruiser != null) {
+				if (mostCloseBattlecruiser.getDistance(unit) < 1200) {
+					CommandUtil.attackUnit(unit, mostCloseBattlecruiser);
 				}
 			}
 		}

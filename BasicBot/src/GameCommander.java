@@ -13,98 +13,98 @@ import bwta.BaseLocation;
 /// 스타크래프트 경기 도중 발생하는 이벤트들이 적절하게 처리되도록 해당 Manager 객체에게 이벤트를 전달하는 관리자 Controller 역할을 합니다
 public class GameCommander {
 
-	private boolean bTimeDPFlg = false; // 매 프레임마다 소요시간 콘솔 출력할지 여부(true:매 프레임마다 출력, false:55ms 초과시에만 출력)
-	private long lTotalSpendTime = 0L; // 프레임당 평균 소요시간 계산용(전체 소요시간)
-
 	/// 경기가 시작될 때 일회적으로 발생하는 이벤트를 처리합니다
 	public void onStart() {
-		// 맵의 사이즈 확인
-		// int max_x = 0;
-		for (int i = 0; i < 1000; i++) {
-			TilePosition tp = new TilePosition(i, 0);
-			if (tp.isValid() == true) {
-				MyVariable.map_max_x = i;
-			} else {
-				break;
-			}
-		}
-		// int max_y = 0;
-		for (int i = 0; i < 1000; i++) {
-			TilePosition tp = new TilePosition(0, i);
-			if (tp.isValid() == true) {
-				MyVariable.map_max_y = i;
-			} else {
-				break;
-			}
-		}
-
-		// 서플라이 지을 위치 예약
-		for (int x = 0; x <= MyVariable.map_max_x; x++) {
-			for (int y = 0; y <= 6; y++) {
-				MyVariable.supplyPlace.add(new TilePosition(x, y));
-			}
-
-			for (int y = MyVariable.map_max_y - 6; y <= MyVariable.map_max_y + 1; y++) {
-				MyVariable.supplyPlace.add(new TilePosition(x, y));
-			}
-		}
-
-		int totalX = 0;
-		int totalY = 0;
-
-		int avgX = 0;
-		int avgY = 0;
-
-		int minx = Integer.MAX_VALUE;
-		int miny = Integer.MAX_VALUE;
-
-		for (int i = 0; i < MyBotModule.Broodwar.getStartLocations().size(); i++) {
-			totalX += MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX();
-			totalY += MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getY();
-			if (minx > MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX()) {
-				minx = MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX();
-			}
-			if (miny > MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getY()) {
-				miny = MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getY();
-			}
-		}
-		avgX = totalX / MyBotModule.Broodwar.getStartLocations().size();
-		avgY = totalY / MyBotModule.Broodwar.getStartLocations().size();
-
-		if (avgX < MyVariable.myStartLocation.getX()) {
-			MyVariable.xx = 1;
-		}
-		if (avgY < MyVariable.myStartLocation.getY()) {
-			MyVariable.yy = 1;
-		}
-
-		TilePosition startLocation = MyBotModule.Broodwar.self().getStartLocation();
-		if (startLocation == TilePosition.None || startLocation == TilePosition.Unknown) {
-			return;
-		}
-
-		for (BaseLocation bl : BWTA.getBaseLocations()) {
-			TilePosition tp = bl.getTilePosition();
-			int width = UnitType.Terran_Command_Center.tileWidth() + 2;
-			int height = UnitType.Terran_Command_Center.tileHeight();
-			for (int x = tp.getX(); x < tp.getX() + width + 1; x++) {
-				for (int y = tp.getY(); y < tp.getY() + height; y++) {
-					TilePosition tp2 = new TilePosition(x, y);
-					MyVariable.addonPlace.add(tp2);
+		try {
+			// 맵의 사이즈 확인
+			// int max_x = 0;
+			for (int i = 0; i < 1000; i++) {
+				TilePosition tp = new TilePosition(i, 0);
+				if (tp.isValid() == true) {
+					MyVariable.map_max_x = i;
+				} else {
+					break;
 				}
 			}
+			// int max_y = 0;
+			for (int i = 0; i < 1000; i++) {
+				TilePosition tp = new TilePosition(0, i);
+				if (tp.isValid() == true) {
+					MyVariable.map_max_y = i;
+				} else {
+					break;
+				}
+			}
+
+			// 서플라이 지을 위치 예약
+			for (int x = 0; x <= MyVariable.map_max_x; x++) {
+				for (int y = 0; y <= 6; y++) {
+					MyVariable.supplyPlace.add(new TilePosition(x, y));
+				}
+
+				for (int y = MyVariable.map_max_y - 6; y <= MyVariable.map_max_y + 1; y++) {
+					MyVariable.supplyPlace.add(new TilePosition(x, y));
+				}
+			}
+
+			int totalX = 0;
+			int totalY = 0;
+
+			int avgX = 0;
+			int avgY = 0;
+
+			int minx = Integer.MAX_VALUE;
+			int miny = Integer.MAX_VALUE;
+
+			for (int i = 0; i < MyBotModule.Broodwar.getStartLocations().size(); i++) {
+				totalX += MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX();
+				totalY += MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getY();
+				if (minx > MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX()) {
+					minx = MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getX();
+				}
+				if (miny > MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getY()) {
+					miny = MyBotModule.Broodwar.getStartLocations().get(i).getPoint().getY();
+				}
+			}
+			avgX = totalX / MyBotModule.Broodwar.getStartLocations().size();
+			avgY = totalY / MyBotModule.Broodwar.getStartLocations().size();
+
+			if (avgX < MyVariable.myStartLocation.getX()) {
+				MyVariable.xx = 1;
+			}
+			if (avgY < MyVariable.myStartLocation.getY()) {
+				MyVariable.yy = 1;
+			}
+
+			TilePosition startLocation = MyBotModule.Broodwar.self().getStartLocation();
+			if (startLocation == TilePosition.None || startLocation == TilePosition.Unknown) {
+				return;
+			}
+			for (BaseLocation bl : BWTA.getBaseLocations()) {
+				TilePosition tp = bl.getTilePosition();
+				int width = UnitType.Terran_Command_Center.tileWidth() + 2;
+				int height = UnitType.Terran_Command_Center.tileHeight();
+				for (int x = tp.getX(); x < tp.getX() + width + 1; x++) {
+					for (int y = tp.getY(); y < tp.getY() + height; y++) {
+						TilePosition tp2 = new TilePosition(x, y);
+						MyVariable.addonPlace.add(tp2);
+					}
+				}
+			}
+			StrategyManager.Instance().onStart();
+			ActionManager.Instance().onStart();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-
-		StrategyManager.Instance().onStart();
-		ActionManager.Instance().onStart();
-
 	}
 
 	/// 경기가 종료될 때 일회적으로 발생하는 이벤트를 처리합니다
 	public void onEnd(boolean isWinner) {
-		StrategyManager.Instance().onEnd(isWinner);
-
-		System.out.println("[Info] 평균 소요시간 : " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
+		try {
+			StrategyManager.Instance().onEnd(isWinner);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	/// 경기 진행 중 매 프레임마다 발생하는 이벤트를 처리합니다
@@ -114,18 +114,6 @@ public class GameCommander {
 			if (MyBotModule.Broodwar.isPaused() || MyBotModule.Broodwar.self() == null || MyBotModule.Broodwar.self().isDefeated() || MyBotModule.Broodwar.self().leftGame() || MyBotModule.Broodwar.enemy() == null || MyBotModule.Broodwar.enemy().isDefeated() || MyBotModule.Broodwar.enemy().leftGame()) {
 				return;
 			}
-			// if (MyBotModule.Broodwar.getFrameCount() % 2000 == 0) {
-			// MyBotModule.Broodwar.sendText("FrameCnt=" +
-			// MyBotModule.Broodwar.getFrameCount() + " index=" + MyUtil.indexToGo);
-			// } else if (MyBotModule.Broodwar.getFrameCount() % 500 == 0) {
-			// MyBotModule.Broodwar.sendText("08192335 G=" +
-			// MyVariable.mapPositionGoliat.size() + " T=" +
-			// MyVariable.mapPositionTank.size());
-			// }
-
-			// Time & Memory check
-			long startTime = System.currentTimeMillis();
-			// long s_memory= Runtime.getRuntime().freeMemory();
 
 			// 아군 베이스 위치. 적군 베이스 위치. 각 유닛들의 상태정보 등을 Map 자료구조에 저장/업데이트
 			InformationManager.Instance().update();
@@ -151,19 +139,6 @@ public class GameCommander {
 
 			// JohnVer만의 추가 Action
 			ActionManager.Instance().update();
-
-			// 평균 소요시간 DP Start
-			long spendTime = (System.currentTimeMillis() - startTime);
-			lTotalSpendTime += spendTime;
-
-			if (MyBotModule.Broodwar.getFrameCount() > 0) {
-				if (spendTime > 55) { // 44ms 초과 시 Inform
-					System.out.println("[Warning][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
-				} else {
-					if (MyBotModule.Broodwar.getFrameCount() > 0 && bTimeDPFlg) // 1 프레임 부터 계산시작
-						System.out.println("[Info][#" + MyBotModule.Broodwar.getFrameCount() + " frame]" + " ### " + spendTime + "ms 소요, 평균 " + lTotalSpendTime / MyBotModule.Broodwar.getFrameCount() + "ms");
-				}
-			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -172,72 +147,79 @@ public class GameCommander {
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Create 될 때 발생하는 이벤트를 처리합니다
 	public void onUnitCreate(Unit unit) {
-		InformationManager.Instance().onUnitCreate(unit);
+		try {
+			InformationManager.Instance().onUnitCreate(unit);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Destroy 될 때 발생하는 이벤트를 처리합니다
 	public void onUnitDestroy(Unit unit) {
-		if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().canBuildAddon()) {
-			int width = unit.getType().tileWidth() + 2;
-			int height = unit.getType().tileHeight();
-			TilePosition tp = unit.getPosition().toTilePosition();
-			for (int x = tp.getX() - 2; x < tp.getX() + width - 1; x++) {
-				for (int y = tp.getY() - 1; y < tp.getY() + height - 1; y++) {
-					TilePosition tp2 = new TilePosition(x, y);
-					MyVariable.addonPlace.remove(tp2);
+		try {
+			if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().canBuildAddon()) {
+				int width = unit.getType().tileWidth() + 2;
+				int height = unit.getType().tileHeight();
+				TilePosition tp = unit.getPosition().toTilePosition();
+				for (int x = tp.getX() - 2; x < tp.getX() + width - 1; x++) {
+					for (int y = tp.getY() - 1; y < tp.getY() + height - 1; y++) {
+						TilePosition tp2 = new TilePosition(x, y);
+						MyVariable.addonPlace.remove(tp2);
+					}
 				}
 			}
-		}
 
-		// ResourceDepot 및 Worker 에 대한 처리
-		WorkerManager.Instance().onUnitDestroy(unit);
+			// ResourceDepot 및 Worker 에 대한 처리
+			WorkerManager.Instance().onUnitDestroy(unit);
 
-		InformationManager.Instance().onUnitDestroy(unit);
+			InformationManager.Instance().onUnitDestroy(unit);
 
-		if (MyVariable.isInitialBuildOrderFinished == false) {
-			if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().isBuilding() == false) {
-				BuildManager.Instance().buildQueue.queueAsHighestPriority(unit.getType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+			if (MyVariable.isInitialBuildOrderFinished == false) {
+				if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().isBuilding() == false) {
+					BuildManager.Instance().buildQueue.queueAsHighestPriority(unit.getType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
+				}
 			}
-		}
 
-		MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
+			MyVariable.enemyBuildingUnit.remove(unit.getTilePosition());
 
-		// 아군 유닛 제거
-		if (unit.getPlayer() == MyBotModule.Broodwar.self() && !unit.getType().isBuilding()) {
-			GroupManager.instance().remove(unit.getType(), unit.getID());
-		}
+			// 아군 유닛 제거
+			if (unit.getPlayer() == MyBotModule.Broodwar.self() && !unit.getType().isBuilding()) {
+				GroupManager.instance().remove(unit.getType(), unit.getID());
+			}
 
-		// 적군 유닛 메모리에서 제거
-		if (unit.getPlayer() == MyBotModule.Broodwar.enemy()) {
-			// if (unit.getType() == UnitType.Terran_Siege_Tank_Siege_Mode || unit.getType()
-			// == UnitType.Terran_Siege_Tank_Tank_Mode) {
-			MyVariable.removeTankPosition(unit);
-			// } else if (unit.getType() == UnitType.Terran_Missile_Turret) {
-			MyVariable.removeTurretPosition(unit);
-			// } else if (unit.getType() == UnitType.Terran_Goliath) {
-			MyVariable.removeGoliatPosition(unit);
-			// }
+			// 적군 유닛 메모리에서 제거
+			if (unit.getPlayer() == MyBotModule.Broodwar.enemy()) {
+				MyVariable.removeTankPosition(unit);
+				MyVariable.removeTurretPosition(unit);
+				MyVariable.removeGoliatPosition(unit);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Morph 될 때 발생하는 이벤트를 처리합니다<br>
 	/// Zerg 종족의 유닛은 건물 건설이나 지상유닛/공중유닛 생산에서 거의 대부분 Morph 형태로 진행됩니다
 	public void onUnitMorph(Unit unit) {
-		InformationManager.Instance().onUnitMorph(unit);
+		try {
+			InformationManager.Instance().onUnitMorph(unit);
 
-		// Zerg 종족 Worker 의 Morph 에 대한 처리
-		WorkerManager.Instance().onUnitMorph(unit);
+			// Zerg 종족 Worker 의 Morph 에 대한 처리
+			WorkerManager.Instance().onUnitMorph(unit);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)의 소속 플레이어가 바뀔 때 발생하는 이벤트를 처리합니다<br>
 	/// Gas Geyser에 어떤 플레이어가 Refinery 건물을 건설했을 때, Refinery 건물이 파괴되었을 때, Protoss 종족
 	/// Dark Archon 의 Mind Control 에 의해 소속 플레이어가 바뀔 때 발생합니다
 	public void onUnitRenegade(Unit unit) {
-		// Vespene_Geyser (가스 광산) 에 누군가가 건설을 했을 경우
-		// MyBotModule.Broodwar.sendText("A %s [%p] has renegaded. It is now owned by
-		// %s", unit.getType().c_str(), unit, unit.getPlayer().getName().c_str());
-
-		InformationManager.Instance().onUnitRenegade(unit);
+		try {
+			InformationManager.Instance().onUnitRenegade(unit);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
@@ -245,10 +227,14 @@ public class GameCommander {
 
 	/// 유닛(건물/지상유닛/공중유닛)의 하던 일 (건물 건설, 업그레이드, 지상유닛 훈련 등)이 끝났을 때 발생하는 이벤트를 처리합니다
 	public void onUnitComplete(Unit unit) {
-		InformationManager.Instance().onUnitComplete(unit);
+		try {
+			InformationManager.Instance().onUnitComplete(unit);
 
-		// ResourceDepot 및 Worker 에 대한 처리
-		WorkerManager.Instance().onUnitComplete(unit);
+			// ResourceDepot 및 Worker 에 대한 처리
+			WorkerManager.Instance().onUnitComplete(unit);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	// BasicBot 1.1 Patch End //////////////////////////////////////////////////
@@ -270,70 +256,74 @@ public class GameCommander {
 	/// 유닛(건물/지상유닛/공중유닛)이 Show 될 때 발생하는 이벤트를 처리합니다<br>
 	/// 아군 유닛이 Create 되었을 때 라든가, 적군 유닛이 Discover 되었을 때 발생합니다
 	public void onUnitShow(Unit unit) {
-		InformationManager.Instance().onUnitShow(unit);
+		try {
+			InformationManager.Instance().onUnitShow(unit);
 
-		if (unit.getType() == UnitType.Resource_Mineral_Field || unit.getType() == UnitType.Resource_Mineral_Field_Type_2 || unit.getType() == UnitType.Resource_Mineral_Field_Type_3) {
-			ConstructionPlaceFinder.Instance().getTilesToAvoid().add(unit.getTilePosition());
-		}
+			if (unit.getType() == UnitType.Resource_Mineral_Field || unit.getType() == UnitType.Resource_Mineral_Field_Type_2 || unit.getType() == UnitType.Resource_Mineral_Field_Type_3) {
+				ConstructionPlaceFinder.Instance().getTilesToAvoid().add(unit.getTilePosition());
+			}
 
-		if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().canBuildAddon()) {
-			int width = unit.getType().tileWidth() + 2;
-			int height = unit.getType().tileHeight();
-			TilePosition tp = unit.getPosition().toTilePosition();
-			for (int x = tp.getX() - 2; x < tp.getX() + width - 1; x++) {
-				for (int y = tp.getY() - 1; y < tp.getY() + height - 1; y++) {
-					TilePosition tp2 = new TilePosition(x, y);
-					MyVariable.addonPlace.add(tp2);
+			if (unit.getPlayer() == MyBotModule.Broodwar.self() && unit.getType().canBuildAddon()) {
+				int width = unit.getType().tileWidth() + 2;
+				int height = unit.getType().tileHeight();
+				TilePosition tp = unit.getPosition().toTilePosition();
+				for (int x = tp.getX() - 2; x < tp.getX() + width - 1; x++) {
+					for (int y = tp.getY() - 1; y < tp.getY() + height - 1; y++) {
+						TilePosition tp2 = new TilePosition(x, y);
+						MyVariable.addonPlace.add(tp2);
+					}
 				}
 			}
-		}
 
-		// 아군 유닛을 그룹에 등록
-		if (unit.getPlayer() == MyBotModule.Broodwar.self()) {
-			if (!unit.getType().isBuilding()) {
-				if (unit.getType() == UnitType.Terran_SCV) {
-					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupWorker);
-				}
-				// Wraith가 attackGroup에 있어야 patrolGroup에 들어가고 알고부장 일 때 검색한다.
-				else if (unit.getType() == UnitType.Terran_Science_Vessel) {
-					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupScanUnit);
-				} else if (unit.getType() == UnitType.Terran_Dropship) {
-					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupDropShip);
-				} else if (unit.getType() != UnitType.Terran_Vulture_Spider_Mine) {
-					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupAttack);
-				}
-			} else {
-
-				if (InformationManager.Instance().enemyRace == Race.Terran && unit.getType() == UnitType.Terran_Barracks) {
-					GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupLandBuilding);
-				}
-
-				if (unit.getType() != UnitType.Terran_Bunker && unit.getType() != UnitType.Terran_Missile_Turret) {
-					String key = MyUtil.getBuildingSizeKey(unit.getType());
-
-					if (!MyVariable.mapBuildingSizeMap.containsKey(key)) {
-						MyVariable.mapBuildingSizeMap.put(key, new ArrayList<Unit>());
+			// 아군 유닛을 그룹에 등록
+			if (unit.getPlayer() == MyBotModule.Broodwar.self()) {
+				if (!unit.getType().isBuilding()) {
+					if (unit.getType() == UnitType.Terran_SCV) {
+						GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupWorker);
 					}
-					MyVariable.mapBuildingSizeMap.get(key).add(unit);
-				}
+					// Wraith가 attackGroup에 있어야 patrolGroup에 들어가고 알고부장 일 때 검색한다.
+					else if (unit.getType() == UnitType.Terran_Science_Vessel) {
+						GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupScanUnit);
+					} else if (unit.getType() == UnitType.Terran_Dropship) {
+						GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupDropShip);
+					} else if (unit.getType() != UnitType.Terran_Vulture_Spider_Mine) {
+						GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupAttack);
+					}
+				} else {
 
-				// if (unit.getType() != UnitType.Terran_Bunker && unit.getType() !=
-				// UnitType.Terran_Missile_Turret)
-				{
-					TilePosition tp = unit.getTilePosition();
-					int X = tp.getX();
-					int Y = tp.getY();
-					for (int i = -10; i <= 10; i++) {
-						for (int j = -10; j <= 10; j++) {
-							TilePosition tp2 = new TilePosition(X + i, Y + j);
-							if (MyUtil.distanceTilePosition(tp, tp2) <= 10) {
-								MyVariable.mapMyRegion.add(tp2);
+					if (InformationManager.Instance().enemyRace == Race.Terran && unit.getType() == UnitType.Terran_Barracks) {
+						GroupManager.instance().addToGroup(unit.getType(), unit.getID(), GroupManager.instance().groupLandBuilding);
+					}
+
+					if (unit.getType() != UnitType.Terran_Bunker && unit.getType() != UnitType.Terran_Missile_Turret) {
+						String key = MyUtil.getBuildingSizeKey(unit.getType());
+
+						if (!MyVariable.mapBuildingSizeMap.containsKey(key)) {
+							MyVariable.mapBuildingSizeMap.put(key, new ArrayList<Unit>());
+						}
+						MyVariable.mapBuildingSizeMap.get(key).add(unit);
+					}
+
+					// if (unit.getType() != UnitType.Terran_Bunker && unit.getType() !=
+					// UnitType.Terran_Missile_Turret)
+					{
+						TilePosition tp = unit.getTilePosition();
+						int X = tp.getX();
+						int Y = tp.getY();
+						for (int i = -10; i <= 10; i++) {
+							for (int j = -10; j <= 10; j++) {
+								TilePosition tp2 = new TilePosition(X + i, Y + j);
+								if (MyUtil.distanceTilePosition(tp, tp2) <= 10) {
+									MyVariable.mapMyRegion.add(tp2);
+								}
 							}
 						}
 					}
 				}
-			}
 
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		// ResourceDepot 및 Worker 에 대한 처리
@@ -345,7 +335,11 @@ public class GameCommander {
 	/// 유닛(건물/지상유닛/공중유닛)이 Hide 될 때 발생하는 이벤트를 처리합니다<br>
 	/// 보이던 유닛이 Hide 될 때 발생합니다
 	public void onUnitHide(Unit unit) {
-		InformationManager.Instance().onUnitHide(unit);
+		try {
+			InformationManager.Instance().onUnitHide(unit);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	// BasicBot 1.1 Patch Start ////////////////////////////////////////////////
