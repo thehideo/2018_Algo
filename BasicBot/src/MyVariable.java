@@ -60,8 +60,10 @@ public class MyVariable {
 
 	public static boolean findThreeGoliat = false;
 
+	public static boolean findBattlecruiser = false;
+
 	public static boolean findGoliat = false;
-	
+
 	public static boolean findFastZergling = false;
 
 	// 초당(1000ms) 프레임수(game speed 에 따라 다름)s
@@ -176,7 +178,7 @@ public class MyVariable {
 
 		distanceOfMostCloseBunker = Double.MAX_VALUE;
 		mostCloseBunker = null;
-		
+
 		MyVariable.mapSelfMainBuilding.clear();
 	}
 
