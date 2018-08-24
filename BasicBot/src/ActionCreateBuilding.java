@@ -241,15 +241,11 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 		if (checkNeedToBuild(UnitType.Terran_Refinery, 1))
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Refinery, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 
-		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyVariable.getSelfUnit(UnitType.Terran_Factory).size() > 0) {
+		if (checkNeedToBuild(UnitType.Terran_Engineering_Bay, 1) && MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() >= 2) {
 			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Engineering_Bay, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
-		if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 1) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1) {
-			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
-		}
-
-		if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 2) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1 && MyVariable.findWraith) {
+		if (checkNeedToBuild(UnitType.Terran_Missile_Turret, 1) && MyVariable.getSelfUnit(UnitType.Terran_Engineering_Bay).size() >= 1 && MyVariable.findWraith) {
 			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Missile_Turret, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
@@ -262,8 +258,7 @@ public class ActionCreateBuilding extends ActionControlAbstract {
 			BuildManager.Instance().buildQueue.queueAsHighestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 
-		// Terran_Machine_Shop 건설
-		if (checkNeedToBuild(UnitType.Terran_Machine_Shop, MyVariable.getSelfUnit(UnitType.Terran_Factory).size()) && (MyVariable.getSelfUnit(UnitType.Terran_Vulture).size() >= 4 || MyUtil.GetMyTankCnt() >= 1)) {
+		if (checkNeedToBuild(UnitType.Terran_Machine_Shop, MyVariable.getSelfUnit(UnitType.Terran_Factory).size()) && MyVariable.getSelfUnit(UnitType.Terran_Wraith).size() > 2) {
 			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Terran_Machine_Shop, BuildOrderItem.SeedPositionStrategy.MainBaseLocation, false);
 		}
 

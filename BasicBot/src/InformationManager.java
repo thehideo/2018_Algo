@@ -566,7 +566,7 @@ public class InformationManager {
 			BaseLocation unexplored = null;
 
 			for (BaseLocation startLocation : BWTA.getStartLocations()) {
-				if (existsPlayerBuildingInRegion(BWTA.getRegion(startLocation.getTilePosition()), enemyPlayer)) {
+				if (existsPlayerBuildingInRegion(BWTA.getRegion(startLocation.getTilePosition()), enemyPlayer) && !existsPlayerBuildingInRegion(BWTA.getRegion(startLocation.getTilePosition()), selfPlayer)) {
 					if (enemyStartLocationFound == false) {
 						enemyStartLocationFound = true;
 						mainBaseLocations.put(enemyPlayer, startLocation);
