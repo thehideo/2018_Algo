@@ -57,8 +57,8 @@ public class GroupPatrol extends GroupAbstract {
 		if (listTilePosition.size() > 0) {
 			Iterator<UnitType> unitTypes = this.mapUnit.keySet().iterator();
 			while (unitTypes.hasNext()) {
-				if (listTilePosition.size() > 0) {
-					UnitType unitType = unitTypes.next();
+				UnitType unitType = unitTypes.next();
+				if (listTilePosition.size() > 0) {					
 					for (Integer unitID : mapUnit.get(unitType)) {
 						if (MyUtil.distancePosition(MyVariable.mapUnitIDUnit.get(unitID).getPosition(), listTilePosition.get(0).toPosition()) < 32 * 1) {
 							listTilePosition.remove(0);
