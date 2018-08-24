@@ -435,7 +435,7 @@ public class InformationManager {
 			if (MyVariable.getEnemyUnit(UnitType.Terran_Goliath).size() >= 3) {
 				MyVariable.findThreeGoliat = true;
 			}
-			if (MyVariable.getEnemyUnit(UnitType.Terran_Battlecruiser).size() >= 0) {
+			if (MyVariable.getEnemyUnit(UnitType.Terran_Battlecruiser).size() > 0) {
 				MyVariable.findBattlecruiser = true;
 			}
 		}
@@ -490,11 +490,13 @@ public class InformationManager {
 	/// Unit 에 대한 정보를 업데이트합니다 <br>
 	/// 유닛이 파괴/사망한 경우, 해당 유닛 정보를 삭제합니다
 	public void onUnitDestroy(Unit unit) {
-		if (unit.getType().isNeutral()) {
+		if (unit == null || unit.getType().isNeutral()) {
 			return;
 		}
 
-		unitData.get(unit.getPlayer()).removeUnit(unit);
+		if (unitData.get(unit.getPlayer()) != null) {
+			unitData.get(unit.getPlayer()).removeUnit(unit);
+		}
 	}
 
 	/// 해당 Player (아군 or 적군) 의 position 주위의 유닛 목록을 unitInfo 에 저장합니다

@@ -128,7 +128,7 @@ public class GroupAttack extends GroupAbstract {
 			// 프로토스 공격 조건
 			if (InformationManager.Instance().enemyRace == Race.Protoss) {
 				if (MyVariable.findFastCarrier == true) {
-					if (MyVariable.attackUnit.size() > 40) {
+					if (MyVariable.attackUnit.size() > 35) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				} else if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
@@ -162,13 +162,13 @@ public class GroupAttack extends GroupAbstract {
 			// 저그 공격 조건
 			else {
 				if (MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
-					if (MyVariable.attackUnit.size() > 40) {
+					if (MyVariable.attackUnit.size() > 35) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
 				// 확장 기지가 있다면
 				else {
-					if (MyVariable.attackUnit.size() > 40) {
+					if (MyVariable.attackUnit.size() > 35) {
 						MyVariable.isFullScaleAttackStarted = true;
 					}
 				}
