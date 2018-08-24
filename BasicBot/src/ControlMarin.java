@@ -45,10 +45,13 @@ public class ControlMarin extends ControlAbstract {
 				}
 			}
 
-			if (MyVariable.isFullScaleAttackStarted == true && MyVariable.getEnemyUnit(UnitType.Protoss_Dragoon).size() > 0 && unit.getDistance(MyVariable.myStartLocation.toPosition()) / 32 > MyVariable.distanceOfMostFarTank + 2) {
-				CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
-				return;
-			}
+			// if (MyVariable.isFullScaleAttackStarted == true && MyUtil.GetMyTankCnt() > 0
+			// && MyVariable.getEnemyUnit(UnitType.Protoss_Dragoon).size() > 0 &&
+			// unit.getDistance(MyVariable.myStartLocation.toPosition()) / 32 >
+			// MyVariable.distanceOfMostFarTank + 2) {
+			// CommandUtil.move(unit, MyVariable.myStartLocation.toPosition());
+			// return;
+			// }
 
 			// 초반 입구방어 하면서 밖으로 튀어나가지 않도록 수정
 			if (MyVariable.isFullScaleAttackStarted == false && MyVariable.getSelfUnit(UnitType.Terran_Command_Center).size() <= 1) {
