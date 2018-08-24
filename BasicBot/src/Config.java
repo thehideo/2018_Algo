@@ -7,16 +7,9 @@ public class Config {
 	// 봇 이름 및 파일 경로 기본값 변경
 
 	/// 봇 이름
-	public static final String BotName = "NoNameBot";
+	public static final String BotName = "JohnVerBot";
 	/// 봇 개발자 이름
-	public static final String BotAuthors = "NoName";
-
-	/// 로그 파일 이름
-	public static String LogFilename = BotName + "_LastGameLog.dat";
-	/// 읽기 파일 경로
-	public static String ReadDirectory = "c:\\starcraft\\bwapi-data\\read\\";
-	/// 쓰기 파일 경로
-	public static String WriteDirectory = "c:\\starcraft\\bwapi-data\\write\\";
+	public static final String BotAuthors = "yh5911.jang";
 
 	// BasicBot 1.1 Patch End //////////////////////////////////////////////////
 
@@ -57,37 +50,37 @@ public class Config {
 	public static int BuildingDefenseTowerSpacing = 0;
 
 	/// 화면 표시 여부 - 게임 정보
-	public static boolean DrawGameInfo = true;
+	public static boolean DrawGameInfo = false;
 
 	/// 화면 표시 여부 - 미네랄, 가스
 	public static boolean DrawResourceInfo = false;
 	/// 화면 표시 여부 - 지도
-	public static boolean DrawBWTAInfo = true;
+	public static boolean DrawBWTAInfo = false;
 	/// 화면 표시 여부 - 바둑판
 	public static boolean DrawMapGrid = false;
 
 	/// 화면 표시 여부 - 유닛 HitPoint
-	public static boolean DrawUnitHealthBars = true;
+	public static boolean DrawUnitHealthBars = false;
 	/// 화면 표시 여부 - 유닛 통계
-	public static boolean DrawEnemyUnitInfo = true;
+	public static boolean DrawEnemyUnitInfo = false;
 	/// 화면 표시 여부 - 유닛 ~ Target 간 직선
-	public static boolean DrawUnitTargetInfo = true;
+	public static boolean DrawUnitTargetInfo = false;
 
 	/// 화면 표시 여부 - 빌드 큐
-	public static boolean DrawProductionInfo = true;
+	public static boolean DrawProductionInfo = false;
 
 	/// 화면 표시 여부 - 건물 Construction 상황
-	public static boolean DrawBuildingInfo = true;
+	public static boolean DrawBuildingInfo = false;
 	/// 화면 표시 여부 - 건물 ConstructionPlace 예약 상황
 	public static boolean DrawReservedBuildingTiles = false;
 
 	/// 화면 표시 여부 - 정찰 상태
-	public static boolean DrawScoutInfo = true;
+	public static boolean DrawScoutInfo = false;
 	/// 화면 표시 여부 - 일꾼 목록
-	public static boolean DrawWorkerInfo = true;
+	public static boolean DrawWorkerInfo = false;
 
 	/// 화면 표시 여부 - 마우스 커서
-	public static boolean DrawMouseCursorInfo = true;
+	public static boolean DrawMouseCursorInfo = false;
 
 	public static final Color ColorLineTarget = Color.White;
 	public static final Color ColorLineMineral = Color.Cyan;

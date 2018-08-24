@@ -11,7 +11,7 @@ public class ActionControlBunker extends ActionControlAbstract {
 		for (Unit unit : MyVariable.getSelfUnit(UnitType.Terran_Bunker)) {
 			if (unit.isCompleted()) {
 				// 총 공격일 때는 다 꺼냄
-				if (MyVariable.isFullScaleAttackStarted == true) {
+				if (MyVariable.isFullScaleAttackStarted == true || MyVariable.distanceOfMostCloseEnemyUnit < MyVariable.distanceOfMostCloseBunker - 5) {
 					if (unit.getLoadedUnits().size() > 0) {
 						unit.unloadAll();
 					}
